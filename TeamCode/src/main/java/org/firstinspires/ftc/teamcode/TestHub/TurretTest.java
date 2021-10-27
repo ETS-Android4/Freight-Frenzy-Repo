@@ -14,8 +14,8 @@ public class TurretTest extends LinearOpMode {
     double vPivotMin = 0.8, vPivotMax = 3, vPivotSet = 1.15;
     double vPivotDifference = 0, vPivotMultiplied = 0, vPivotP = 3, vPivotD = 0;
 
-    double rotateMin = -270, rotateMax = 270, rotateSet = 0;
-    double rotateDifference = 0, rotateMultiplied = 0, rotateP = .0001, rotateD = 0;
+    double rotateMin = -5000, rotateMax = 5000, rotateSet = 0;
+    double rotateDifference = 0, rotateMultiplied = 0, rotateP = -.01, rotateD = 0;
 
     public void runOpMode() {
         robot.init(hardwareMap);
@@ -25,7 +25,7 @@ public class TurretTest extends LinearOpMode {
 
             extendSet = extendSet + (15 * (gamepad1.left_stick_x));
             vPivotSet = vPivotSet + (.02 * gamepad1.right_stick_y);
-            rotateSet = rotateSet + (.001 * gamepad1.right_stick_x);
+            rotateSet = rotateSet + (16 * gamepad1.right_stick_x);
             //Setpoint limits
             if(extendSet < extendMin){
                 extendSet = (extendMin + 2);
@@ -58,9 +58,9 @@ public class TurretTest extends LinearOpMode {
             rotateMultiplied = rotateDifference * rotateP;
 
             robot.Motor1.setPower(extendMultiplied);
-            robot.Motor2.setPower(vPivotMultiplied);/*
+            robot.Motor2.setPower(vPivotMultiplied);
             robot.Motor3.setPower(rotateMultiplied);
-            */
+
 
             telemetry.addData("vPivotSet", vPivotSet);
             telemetry.addData("rotateSet", rotateSet);

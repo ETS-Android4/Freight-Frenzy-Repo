@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode.TestHub;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 
 public class TestHubHardware {
     // Motors and Servos
@@ -14,6 +16,10 @@ public class TestHubHardware {
     public CRServo CRServo1;
     public CRServo CRServo2;
     public AnalogInput PivotPT;
+    public NormalizedColorSensor TurretHome;
+    DigitalChannel MagneticExtend;
+    DigitalChannel MagneticRotate;
+
 
     HardwareMap TestHubHardware;
 
@@ -27,6 +33,10 @@ public class TestHubHardware {
         CRServo1 = TestHubHardware.get(CRServo.class, "CRServo1");
         CRServo2 = TestHubHardware.get(CRServo.class, "CRServo2");
         PivotPT = TestHubHardware.get(AnalogInput.class, "PivotPT");
+        MagneticExtend = TestHubHardware.get(DigitalChannel.class, "MagneticTest");
+        MagneticRotate = TestHubHardware.get(DigitalChannel.class, "MagneticRotate");
+
+        TurretHome = TestHubHardware.get(NormalizedColorSensor.class, "TurretHome");
         // ColorSensor1 = JustmotorhardwareMap.get(NormalizedColorSensor.class, "ColorSensor1");
 
         //servo = hardwareMap.get(Servo.class, "servo");
@@ -47,6 +57,11 @@ public class TestHubHardware {
         Motor4.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Motor3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Motor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
+
+        MagneticRotate.setMode(DigitalChannel.Mode.INPUT);
+        MagneticExtend.setMode(DigitalChannel.Mode.INPUT);
     }
 
 }
