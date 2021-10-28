@@ -30,4 +30,9 @@ public class ExtendClass {
         return ExtendMotorPower;
     }
 
+        double speedP = 1, speedDifference, speedMultiplied = 0;
+    public void ExtendAutoMethod(double desiredset, double extendEncoder, boolean MagneticExtend){
+
+    }
+
 }
