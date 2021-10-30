@@ -110,10 +110,14 @@ public class OpenCVTest extends LinearOpMode {
         Mat L = new Mat();
         int avg1, avg2, avg3, avg4;
 
+        /*
+         * This function takes the RGB frame, converts to YCrCb,
+         * and extracts the Cb channel to the 'Cb' variable
+         */
 
         //actual image processing
         void inputToG(Mat input) {
-            Imgproc.cvtColor(input, HLS, Imgproc.COLOR_RGB2HLS);
+            Imgproc.cvtColor(input, HLS, Imgproc.COLOR_RGB2BGR);
             Core.extractChannel(HLS, L, 1);
         }
 
