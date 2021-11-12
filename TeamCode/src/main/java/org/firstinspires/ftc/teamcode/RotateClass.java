@@ -5,18 +5,34 @@ public class RotateClass{
 
     double rotateMin = -5000, rotateMax = 5000, rotateSet = 0;
     double rotateDifference = 0, MultipliedP = 0, rotateP = -.01, rotateD = 0; double lastError = 0; double MultipliedD = 0; double rotateMotorPower;
-    boolean lastrotatemag = false; double lastEncoder = 0;
+    boolean lastrotatemag = false; double lastEncoder = 0; double modifiedCurrentPos;
 
-    public double RotateMethod(double Controller, double rotateEncoder, boolean rotateMagnet){
+    public double RotateMethod(double RightTrig, double Lefttrig, double rotateEncoder, boolean rotateMagnet){
 
-        rotateSet = rotateSet + (16 * Controller);
+        //sets the target position of the rotate turret using the triggers
+       if(RightTrig > .05){
+           rotateSet = rotateSet + 16 * RightTrig;
+       }else if(Lefttrig > .05){
+           rotateSet = rotateSet + 16 * Lefttrig;
+       }
 
-        //ADD IN MAGNET RESET
-        /*if(rotateMagnet == true && lastrotatemag == false){
+
+
+        //Uses a magnetic sensor on the turret to reset where the turret is
+        // we do this to get the most accurate current position possible
+        if(rotateMagnet == true && lastrotatemag == false){
             if(lastEncoder - rotateEncoder < 0){
-
+                modifiedCurrentPos = 20;
+            }else if(lastEncoder - rotateEncoder > 0){
+                modifiedCurrentPos = -20;
             }
-        }*/
+            lastrotatemag = true;
+        }else if(rotateMagnet == true){
+            lastrotatemag = true;
+        }else if(rotateMagnet == false){
+            lastrotatemag = false;
+        }
+
         //Hpivot Limits
         if(rotateSet < rotateMin){
             rotateSet = rotateMin;
@@ -24,7 +40,7 @@ public class RotateClass{
             rotateSet = rotateMax;
         }
 
-
+        //PD cycle to control the position of the turret
         rotateDifference = rotateEncoder - rotateSet;
         MultipliedP = rotateDifference * rotateP;
         MultipliedD = (rotateDifference - lastError) * rotateD;
@@ -40,7 +56,21 @@ public class RotateClass{
 
         rotateSet = desiredset;
 
-        //ADD IN MAGNET RESET
+        //Uses a magnetic sensor on the turret to reset where the turret is
+        // we do this to get the most accurate current position possible
+        if(rotateMagnet == true && lastrotatemag == false){
+            if(lastEncoder - rotateEncoder < 0){
+                modifiedCurrentPos = 20;
+            }else if(lastEncoder - rotateEncoder > 0){
+                modifiedCurrentPos = -20;
+            }
+            lastrotatemag = true;
+        }else if(rotateMagnet == true){
+            lastrotatemag = true;
+        }else if(rotateMagnet == false){
+            lastrotatemag = false;
+        }
+
         //Hpivot Limits
         if(rotateSet < rotateMin){
             rotateSet = rotateMin;
@@ -48,7 +78,7 @@ public class RotateClass{
             rotateSet = rotateMax;
         }
 
-
+//PD cycle to control the position of the turret
         rotateDifference = rotateEncoder - rotateSet;
         MultipliedP = rotateDifference * rotateP;
         MultipliedD = (rotateDifference - lastError) * rotateD;
