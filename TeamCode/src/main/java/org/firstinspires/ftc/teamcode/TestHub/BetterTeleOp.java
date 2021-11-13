@@ -4,13 +4,16 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.RotateClass;
+import org.firstinspires.ftc.teamcode.TestHub.ExtendClass;
+import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
+import org.firstinspires.ftc.teamcode.TestHub.VPivotClass;
 
 @TeleOp
-public class MultiClassTurretTest extends LinearOpMode {
+public class BetterTeleOp extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
-    ExtendClass ExtendClass = new ExtendClass();
-    VPivotClass VPivotClass = new VPivotClass();
-    RotateClass RotateClass = new RotateClass();
+    org.firstinspires.ftc.teamcode.TestHub.ExtendClass ExtendClass = new ExtendClass();
+    org.firstinspires.ftc.teamcode.TestHub.VPivotClass VPivotClass = new VPivotClass();
+    org.firstinspires.ftc.teamcode.RotateClass RotateClass = new RotateClass();
     double x, y, z;
 
     public void runOpMode() {
@@ -19,8 +22,8 @@ public class MultiClassTurretTest extends LinearOpMode {
         while (opModeIsActive()) {
 
             //getting exponential joystick control for the drivetrain
-            x = -(Math.copySign(gamepad1.left_stick_x, gamepad1.left_stick_x * gamepad1.left_stick_x * gamepad1.left_stick_x));
-            y = -(Math.copySign(gamepad1.left_stick_y, gamepad1.left_stick_y * gamepad1.left_stick_y * gamepad1.left_stick_y));
+            x = Math.copySign(gamepad1.left_stick_x, gamepad1.left_stick_x * gamepad1.left_stick_x * gamepad1.left_stick_x);
+            y = Math.copySign(gamepad1.left_stick_y, gamepad1.left_stick_y * gamepad1.left_stick_y * gamepad1.left_stick_y);
             z = Math.copySign(gamepad1.right_stick_x, gamepad1.right_stick_x * gamepad1.right_stick_x * gamepad1.right_stick_x);
 
             //setting the possiblity of a slow speed on the drivetrain
@@ -36,27 +39,11 @@ public class MultiClassTurretTest extends LinearOpMode {
                 robot.RB_M.setPower(.8*(-((y)-x-(.8*z))));//RB
             }
 
-            if(gamepad1.a || gamepad2.a){
-                robot.RI_S.setPower(-1);
-                robot.LI_S.setPower(1);
-            }else if(gamepad1.b || gamepad2.b){
-                robot.RI_S.setPower(1);
-                robot.LI_S.setPower(-1);
-            }else{
-                robot.RI_S.setPower(0);
-                robot.LI_S.setPower(0);
-            }
-
 
             robot.TE_M.setPower(ExtendClass.ExtendMethod((-gamepad2.left_stick_y), robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
             robot.TP_M.setPower(VPivotClass.VPivotMethod(gamepad2.right_stick_y, robot.TP_P.getVoltage()));
             robot.TR_M.setPower(RotateClass.RotateMethod(gamepad2.right_trigger, gamepad2.left_trigger, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
 
-            telemetry.addData("rotate motor power",robot.TR_M.getPower());
-            telemetry.addData("extend motor power",robot.TE_M.getPower());
-            telemetry.addData("pivot motor power", robot.TP_M.getPower());
-            telemetry.addData("vpivotset", VPivotClass.PivotSetReturn());
-            telemetry.addData("pivot POT", robot.TP_P.getVoltage());
 
             telemetry.update();
         }

@@ -1,19 +1,19 @@
 package org.firstinspires.ftc.teamcode.TestHub;
 
 
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class ExtendClass {
-    double extendMin = 2, extendMax = 1300, extendSet = extendMin;
+    //setting variables for later use in the code
+    double extendMin = -2000, extendMax = 1300, extendSet = extendMin;
     double extendDifference = 0, extendMultipliedP = 0, extendP = -.02, extendD = 0, extendMultipliedD = 0;
-
+    double homingnextset; boolean HasExtended = false; double homingMin = 0; boolean isHomed = false;
     double ExtendMotorPower = 0, lastError = 0;
 
     public double ExtendMethod(double Controller, double extendEncoder, boolean MagneticExtend){
-        extendSet = extendSet + (15 * (Controller));//setting the setpoint using the controller input
+        extendSet = extendSet + (30 * (Controller));//setting the setpoint using the controller input
 
         //reseting the encoder minimum at the magnetic sensor so we stop at the sensor and not overrun
-        if(MagneticExtend == true){
+        if(MagneticExtend == false){
             extendMin = extendEncoder;
         }
 
@@ -71,7 +71,9 @@ public class ExtendClass {
 
     }
 
-    double homingnextset; boolean HasExtended = false; double homingMin = 0; boolean isHomed = false;
+
+    //A homing program for the extend
+    //we need a homing to know where we are at the start of the match
     public void ExtendHoming(boolean ManeticExtend, double Extendencoder){
 
         //looking to see if the slides are already fully retracted
@@ -96,4 +98,5 @@ public class ExtendClass {
     }
     //returns the bvarible ishomed so we can know if we have homed in the main loop
     public boolean isHomedReturn(){return isHomed;}
+
 }

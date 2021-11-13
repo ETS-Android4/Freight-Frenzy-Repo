@@ -2,13 +2,15 @@ package org.firstinspires.ftc.teamcode.TestHub;
 
 public class VPivotClass {
 
+    //setting variables for use in later code
     double vPivotMin = 0.8, vPivotMax = 3, vPivotSet = 1.15;
-    double vPivotDifference = 0, vPivotMultipliedP = 0, vPivotP = 3, vPivotD = 0, vPivotMultipliedD, FinalMotorPower;
+    double vPivotDifference = 0, vPivotMultipliedP = 0, vPivotP = 4, vPivotD = 1, vPivotMultipliedD, FinalMotorPower;
     double lastError;
 
+    //main TeleOp code for vertical Pivot
     public double VPivotMethod(double Controller, double POTReading){
 
-        vPivotSet = vPivotSet + (.02 * Controller);//setting the setpoint using the controller input
+        vPivotSet = vPivotSet + (.03 * Controller);//setting the setpoint using the controller input
 
         //VPivot Limits
         if(vPivotSet < vPivotMin){
@@ -29,6 +31,7 @@ public class VPivotClass {
         return FinalMotorPower;
     }
 
+    //Autonomous Code for vertical pivoting
     public double VPivotAutoMethod(double desiredsetpoint, double speed, double POTReading){
 
         vPivotSet = desiredsetpoint;//setting the setpoint
@@ -58,4 +61,5 @@ public class VPivotClass {
         //outputting a motor power when called
         return FinalMotorPower;
     }
+    public double PivotSetReturn(){return vPivotSet; }
 }

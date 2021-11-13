@@ -2,18 +2,19 @@ package org.firstinspires.ftc.teamcode;
 
 
 public class RotateClass{
-
+//setting variables for use later in code
     double rotateMin = -5000, rotateMax = 5000, rotateSet = 0;
     double rotateDifference = 0, MultipliedP = 0, rotateP = -.01, rotateD = 0; double lastError = 0; double MultipliedD = 0; double rotateMotorPower;
     boolean lastrotatemag = false; double lastEncoder = 0; double modifiedCurrentPos;
 
+    // main code for rotate for use in TeleOp
     public double RotateMethod(double RightTrig, double Lefttrig, double rotateEncoder, boolean rotateMagnet){
 
         //sets the target position of the rotate turret using the triggers
        if(RightTrig > .05){
-           rotateSet = rotateSet + 16 * RightTrig;
+           rotateSet = rotateSet + 35 * RightTrig;
        }else if(Lefttrig > .05){
-           rotateSet = rotateSet + 16 * Lefttrig;
+           rotateSet = rotateSet + -35 * Lefttrig;
        }
 
 
@@ -52,9 +53,10 @@ public class RotateClass{
         return rotateMotorPower;
     }
 
+    //main code for roate in autonomous
     public double RotateAutoMethod(double desiredset, double speed, double rotateEncoder, boolean rotateMagnet){
 
-        rotateSet = desiredset;
+        rotateSet = desiredset;//using the input to the method to set a universal set point variable
 
         //Uses a magnetic sensor on the turret to reset where the turret is
         // we do this to get the most accurate current position possible

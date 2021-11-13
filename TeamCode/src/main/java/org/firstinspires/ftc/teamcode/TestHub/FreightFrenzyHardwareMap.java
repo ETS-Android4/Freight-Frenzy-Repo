@@ -16,12 +16,11 @@ public class FreightFrenzyHardwareMap {
     public DcMotor TR_M;
     public DcMotor TP_M;
     public DcMotor TE_M;
-    public CRServo IR_S;
-    public CRServo IL_S;
-    public AnalogInput PivotPT;
-    public NormalizedColorSensor TurretHome;
-    DigitalChannel MagneticExtend;
-    DigitalChannel MagneticRotate;
+    public CRServo RI_S;
+    public CRServo LI_S;
+    public AnalogInput TP_P;
+    DigitalChannel TR_G;
+    DigitalChannel TE_G;
 
 
     HardwareMap TestHubHardware;
@@ -30,19 +29,18 @@ public class FreightFrenzyHardwareMap {
 
         // Define motors and servos
         LF_M = TestHubHardware.get(DcMotor.class, "LF_M");
-        LB_M = TestHubHardware.get(DcMotor.class, "LB-M");
+        LB_M = TestHubHardware.get(DcMotor.class, "LB_M");
         RF_M = TestHubHardware.get(DcMotor.class, "RF_M");
         RB_M = TestHubHardware.get(DcMotor.class, "RB_M");
         TR_M = TestHubHardware.get(DcMotor.class, "TR_M");
         TP_M = TestHubHardware.get(DcMotor.class, "TP_M");
         TE_M = TestHubHardware.get(DcMotor.class, "TE_M");
-        IR_S = TestHubHardware.get(CRServo.class, "IR_S");
-        IL_S = TestHubHardware.get(CRServo.class, "IL_S");
-        PivotPT = TestHubHardware.get(AnalogInput.class, "PivotPT");
-        MagneticExtend = TestHubHardware.get(DigitalChannel.class, "MagneticTest");
-        MagneticRotate = TestHubHardware.get(DigitalChannel.class, "MagneticRotate");
+        RI_S = TestHubHardware.get(CRServo.class, "RI_S");
+        LI_S = TestHubHardware.get(CRServo.class, "LI_S");
+        TP_P = TestHubHardware.get(AnalogInput.class, "TP_P");
+        TR_G = TestHubHardware.get(DigitalChannel.class, "TR_G");
+        TE_G = TestHubHardware.get(DigitalChannel.class, "TE_G");
 
-        TurretHome = TestHubHardware.get(NormalizedColorSensor.class, "TurretHome");
         // ColorSensor1 = JustmotorhardwareMap.get(NormalizedColorSensor.class, "ColorSensor1");
 
         //servo = hardwareMap.get(Servo.class, "servo");
@@ -74,8 +72,8 @@ public class FreightFrenzyHardwareMap {
         TE_M.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
-        MagneticRotate.setMode(DigitalChannel.Mode.INPUT);
-        MagneticExtend.setMode(DigitalChannel.Mode.INPUT);
+        TR_G.setMode(DigitalChannel.Mode.INPUT);
+        TE_G.setMode(DigitalChannel.Mode.INPUT);
     }
 
 }
