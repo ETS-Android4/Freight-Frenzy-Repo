@@ -62,9 +62,9 @@ public class ExtendClass {
         lastError = extendDifference;// setting last error for use in derivative
 
         //setting limits for speed to go a desired setpoint
-        if(ExtendMotorPower > speed && ExtendMotorPower > .05){
+        if(ExtendMotorPower > speed && speed > .05){
             ExtendMotorPower = speed;
-        }else if (ExtendMotorPower < -speed && ExtendMotorPower < -.05){
+        }else if (ExtendMotorPower < -speed && -speed < -.05){
             ExtendMotorPower = -speed;
         }
         //returning the motor power for use
