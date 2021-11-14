@@ -17,13 +17,14 @@ public class HomingProgram extends LinearOpMode {
         waitForStart();
         while(opModeIsActive()){
 
-            VPivotClass.VPivotAutoMethod(1.15,.5, robot.TP_P.getVoltage());
-            /*if(robot.TP_P.getVoltage() > 1.1 && robot.TP_P.getVoltage() < 1.25){
+            robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15,.5, robot.TP_P.getVoltage()));
+            if(robot.TP_P.getVoltage() > 1.1 && robot.TP_P.getVoltage() < 1.25){
                 ExtendClass.ExtendHoming(robot.TE_G.getState(), robot.TE_M.getCurrentPosition());
-                if(ExtendClass.isHomedExtendReturn() == true){
+                robot.TE_M.setPower(ExtendClass.ExtendMotorPowerReturn());
+                /*if(ExtendClass.isHomedExtendReturn() == true){
                     RotateClass.RotateHoming(robot.TR_G.getState(), robot.TR_M.getCurrentPosition());
-                }
-            }*/
+                }*/
+            }
 
             telemetry.addData("POT reading", robot.TP_P.getVoltage());
             telemetry.addData("EXtend is homed", ExtendClass.isHomedExtendReturn());

@@ -99,6 +99,7 @@ public class ExtendClass {
     }
     //returns the bvarible ishomed so we can know if we have homed in the main loop
     public boolean isHomedExtendReturn(){return isHomed;}
+    public double  ExtendMotorPowerReturn(){return ExtendMotorPower;}
 
 }
 
