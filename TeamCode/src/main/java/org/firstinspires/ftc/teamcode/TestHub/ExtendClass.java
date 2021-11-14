@@ -7,7 +7,7 @@ public class ExtendClass {
     double extendMin = -2000, extendMax = 1400, extendSet = extendMin;
     double extendDifference = 0, extendMultipliedP = 0, extendP = -.02, extendD = 0, extendMultipliedD = 0;
     double homingnextset; boolean HasExtended = false; double homingMin = 0; boolean isHomed = false;
-    double ExtendMotorPower = 0, lastError = 0;
+    public double ExtendMotorPower = 0, lastError = 0;
 
     public double ExtendMethod(double Controller, double extendEncoder, boolean MagneticExtend){
         extendSet = extendSet + (30 * (Controller));//setting the setpoint using the controller input

@@ -3,33 +3,20 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.DirectionCalcClass;
+import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.SpeedClass;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.TurnControl;
-import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
-import org.firstinspires.ftc.teamcode.RotateClass;
-import org.firstinspires.ftc.teamcode.TestHub.ExtendClass;
 import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
-import org.firstinspires.ftc.teamcode.TestHub.VPivotClass;
-
-import java.util.List;
 
 @Autonomous
 
-public class BlueAuto extends LinearOpMode {
+public class DiamondPattern extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     SpeedClass SpeedClass = new SpeedClass();
     DirectionCalcClass DirectionClass = new DirectionCalcClass();
     TurnControl TurnControl = new TurnControl();
     Odometry OdoClass = new Odometry();
-    RotateClass Rotate = new RotateClass();
-    ExtendClass Extend = new ExtendClass();
-    VPivotClass VPivot = new VPivotClass();
     //Uses Vuforia Developer Code
     //Declares Varibles
     double breakout;
@@ -54,12 +41,6 @@ public class BlueAuto extends LinearOpMode {
     double thetaDeccelerationDegree;
     double targetSpeed;
     double stopProgram;
-    double rotateSetpoint;
-    double rotateSpeed;
-    double extendSetpoint;
-    double extendSpeed;
-    double VPivotSetpoint;
-    double VPivotSpeed;
     double timepassed2;
 
     double action;
@@ -80,8 +61,8 @@ public class BlueAuto extends LinearOpMode {
         while (opModeIsActive() && stopProgram == 0) {
             //Moves to first power shot shooting position
             if (action == 1) {
-                xSetpoint = 0;
-                ySetpoint = 0;
+                xSetpoint = 15;
+                ySetpoint = 15;
                 thetaSetpoint = 0;
                 targetSpeed = 30;
                 accelerationDistance = .25;
@@ -90,14 +71,8 @@ public class BlueAuto extends LinearOpMode {
                 slowMovedDistance = 1;
                 thetaDeccelerationDegree = 2;
                 thetaTargetSpeed = .6;
-                rotateSpeed = .5;
-                extendSpeed = .5;
-                VPivotSpeed = .5;
-                rotateSetpoint = 0;
-                extendSetpoint = 0;
-                VPivotSetpoint = 1.5;
                 //Exits once the robot is a certain distance and angle away
-                if (opModeIsActive()) {
+                if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .5 && OdoClass.thetaInDegreesReturn() > -.5)) {
                     StopMotors();
                     action = 2;
                     startPointX = OdoClass.odoXReturn();
@@ -107,7 +82,7 @@ public class BlueAuto extends LinearOpMode {
                     breakout = 1;
                 }
             }
-            /*else if (action == 2) {
+            else if (action == 2) {
                 xSetpoint = 30;
                 ySetpoint = 0;
                 thetaSetpoint = 0;
@@ -123,16 +98,94 @@ public class BlueAuto extends LinearOpMode {
                     breakout = 1;
                 }
             }
-            */
+            else if (action == 3) {
+                xSetpoint = 15;
+                ySetpoint = -15;
+                thetaSetpoint = 0;
+                targetSpeed = 20;
+                //Exits once the robot is a certain distance and angle away
+                if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .5 && OdoClass.thetaInDegreesReturn() > -.5)) {
+                    StopMotors();
+                    action = 4;
+                    startPointX = OdoClass.odoXReturn();
+                    startPointY = OdoClass.odoYReturn();
+                    breakout = 0;
+                } else {
+                    breakout = 1;
+                }
+            }
+            else if (action == 4) {
+                xSetpoint = -15;
+                ySetpoint = 15;
+                thetaSetpoint = 0;
+                targetSpeed = 40;
+                //Exits once the robot is a certain distance and angle away
+                if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .5 && OdoClass.thetaInDegreesReturn() > -.5)) {
+                    StopMotors();
+                    action = 5;
+                    startPointX = OdoClass.odoXReturn();
+                    startPointY = OdoClass.odoYReturn();
+                    breakout = 0;
+                } else {
+                    breakout = 1;
+                }
+            }
+            else if (action == 5) {
+                xSetpoint = -30;
+                ySetpoint = 0;
+                thetaSetpoint = 0;
+                targetSpeed = 40;
+                //Exits once the robot is a certain distance and angle away
+                if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .5 && OdoClass.thetaInDegreesReturn() > -.5)) {
+                    StopMotors();
+                    action = 6;
+                    startPointX = OdoClass.odoXReturn();
+                    startPointY = OdoClass.odoYReturn();
+                    breakout = 0;
+                } else {
+                    breakout = 1;
+                }
+            }
+            else if (action == 6) {
+                xSetpoint = -15;
+                ySetpoint = -15;
+                thetaSetpoint = 0;
+                targetSpeed = 40;
+                //Exits once the robot is a certain distance and angle away
+                if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .5 && OdoClass.thetaInDegreesReturn() > -.5)) {
+                    StopMotors();
+                    action = 7;
+                    startPointX = OdoClass.odoXReturn();
+                    startPointY = OdoClass.odoYReturn();
+                    breakout = 0;
+                } else {
+                    breakout = 1;
+                }
+            }
+            else if (action == 7) {
+                xSetpoint = 0;
+                ySetpoint = 0;
+                thetaSetpoint = 0;
+                targetSpeed = 40;
+                //Exits once the robot is a certain distance and angle away
+                if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .5 && OdoClass.thetaInDegreesReturn() > -.5)) {
+                    StopMotors();
+                    action = 8;
+                    startPointX = OdoClass.odoXReturn();
+                    startPointY = OdoClass.odoYReturn();
+                    breakout = 0;
+                } else {
+                    breakout = 1;
+                }
+            }
+
+
             //If nothing else to do, stop the program
             else {
                 stopProgram = 1;
             }
             //Runs all of our equations each loop cycle
             Movement(xSetpoint, ySetpoint, thetaSetpoint, targetSpeed, thetaTargetSpeed, thetaDeccelerationDegree, slowMoveSpeed, accelerationDistance, decelerationDistance, slowMovedDistance);
-            Rotate.RotateAutoMethod(rotateSetpoint, rotateSpeed, robot.TR_M.getCurrentPosition(), robot.TR_G.getState());
-            Extend.ExtendAutoMethod(extendSetpoint, extendSpeed, robot.TE_M.getCurrentPosition(), robot.TE_G.getState());
-            VPivot.VPivotAutoMethod(VPivotSetpoint, VPivotSpeed, robot.TP_P.getVoltage());
             PowerSetting();
             Telemetry();
         }
@@ -176,13 +229,11 @@ public class BlueAuto extends LinearOpMode {
 
     public void PowerSetting() {
 
-        robot.TR_M.setPower(Rotate.rotateMotorPower);
-        robot.TE_M.setPower(Extend.ExtendMotorPower);
-        robot.TP_M.setPower(VPivot.FinalMotorPower);
-        robot.LF_M.setPower(DirectionClass.LF_M_DirectionReturn() * (SpeedClass.SpeedReturn() + .13));
-        robot.LB_M.setPower(DirectionClass.LB_M_DirectionReturn() * (SpeedClass.SpeedReturn() + .13));
-        robot.RF_M.setPower(DirectionClass.RF_M_DirectionReturn() * (SpeedClass.SpeedReturn() + .13));
-        robot.RB_M.setPower(DirectionClass.RB_M_DirectionReturn() * (SpeedClass.SpeedReturn() + .13));
+
+        robot.LF_M.setPower(DirectionClass.LF_M_DirectionReturn() * (SpeedClass.SpeedReturn() + .1));
+        robot.LB_M.setPower(DirectionClass.LB_M_DirectionReturn() * (SpeedClass.SpeedReturn() + .1));
+        robot.RF_M.setPower(DirectionClass.RF_M_DirectionReturn() * (SpeedClass.SpeedReturn() + .1));
+        robot.RB_M.setPower(DirectionClass.RB_M_DirectionReturn() * (SpeedClass.SpeedReturn() + .1));
 
     }
 

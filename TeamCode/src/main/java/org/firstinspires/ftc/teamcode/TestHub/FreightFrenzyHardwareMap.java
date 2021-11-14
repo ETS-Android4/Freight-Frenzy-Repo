@@ -19,8 +19,8 @@ public class FreightFrenzyHardwareMap {
     public CRServo RI_S;
     public CRServo LI_S;
     public AnalogInput TP_P;
-    DigitalChannel TR_G;
-    DigitalChannel TE_G;
+    public DigitalChannel TR_G;
+    public DigitalChannel TE_G;
 
 
     HardwareMap TestHubHardware;

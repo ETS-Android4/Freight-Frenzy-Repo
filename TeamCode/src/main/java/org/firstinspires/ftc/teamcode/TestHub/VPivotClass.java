@@ -4,7 +4,8 @@ public class VPivotClass {
 
     //setting variables for use in later code
     double vPivotMin = 0.8, vPivotMax = 3, vPivotSet = 1.15;
-    double vPivotDifference = 0, vPivotMultipliedP = 0, vPivotP = 6.5, vPivotD = 6, vPivotMultipliedD, FinalMotorPower;
+    double vPivotDifference = 0, vPivotMultipliedP = 0, vPivotP = 6.5, vPivotD = 6, vPivotMultipliedD;
+    public double FinalMotorPower;
     double lastError;
 
     //main TeleOp code for vertical Pivot

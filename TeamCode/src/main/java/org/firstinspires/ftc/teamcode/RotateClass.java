@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode;
 public class RotateClass{
 //setting variables for use later in code
     double rotateMin = -2500, rotateMax = 2500, rotateSet = 0;
-    double rotateDifference = 0, MultipliedP = 0, rotateP = -.01, rotateD = 0; double lastError = 0; double MultipliedD = 0; double rotateMotorPower;
+    double rotateDifference = 0, MultipliedP = 0, rotateP = -.01, rotateD = 0; double lastError = 0; double MultipliedD = 0; public double rotateMotorPower;
     boolean lastrotatemag = false; double lastEncoder = 0; double modifiedCurrentPos;
 
     boolean hasMagPrev = false, isRotateHomed = false;
