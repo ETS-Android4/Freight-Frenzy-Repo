@@ -4,13 +4,14 @@ public class VPivotClass {
 
     //setting variables for use in later code
     double vPivotMin = 0.8, vPivotMax = 3, vPivotSet = 1.15;
-    double vPivotDifference = 0, vPivotMultipliedP = 0, vPivotP = 4, vPivotD = 1, vPivotMultipliedD, FinalMotorPower;
+    double vPivotDifference = 0, vPivotMultipliedP = 0, vPivotP = 6.5, vPivotD = 6, vPivotMultipliedD, FinalMotorPower;
     double lastError;
 
     //main TeleOp code for vertical Pivot
     public double VPivotMethod(double Controller, double POTReading){
 
-        vPivotSet = vPivotSet + (.03 * Controller);//setting the setpoint using the controller input
+        //setting the setpoint using the controller input
+        vPivotSet = vPivotSet + (.03 * Controller);
 
         //VPivot Limits
         if(vPivotSet < vPivotMin){
@@ -19,13 +20,17 @@ public class VPivotClass {
             vPivotSet = vPivotMax;
         }
 
-        vPivotDifference = POTReading - vPivotSet;//finding the difference of setpoint to where we are for using below
-        vPivotMultipliedP = vPivotDifference * vPivotP;//proportional multiplying to correct to setpoint
-        vPivotMultipliedD = (vPivotDifference - lastError)* vPivotD;//derivative multiplying to even out the correction
+        //finding the difference of setpoint to where we are for using below
+        vPivotDifference = POTReading - vPivotSet;
+        //proportional multiplying to correct to setpoint
+        vPivotMultipliedP = vPivotDifference * vPivotP;
+        //derivative multiplying to even out the correction
+        vPivotMultipliedD = (vPivotDifference - lastError)* vPivotD;
+        //adding the two together to get 1 motor output
+        FinalMotorPower = vPivotMultipliedP + vPivotMultipliedD;
 
-        FinalMotorPower = vPivotMultipliedP + vPivotMultipliedD;//adding the two together to get 1 motor output
-
-        lastError = vPivotDifference;//setting last error for use next loop cycle
+        //setting last error for use next loop cycle
+        lastError = vPivotDifference;
 
         //outputting a motor power when called
         return FinalMotorPower;
@@ -43,11 +48,13 @@ public class VPivotClass {
             vPivotSet = vPivotMax;
         }
 
-        vPivotDifference = POTReading - vPivotSet;//finding the difference of setpoint to where we are for using below
-        vPivotMultipliedP = vPivotDifference * vPivotP;//proportional multiplying to correct to setpoint
+        //finding the difference of setpoint to where we are for using below
+        vPivotDifference = POTReading - vPivotSet;
+        vPivotMultipliedP = vPivotDifference * vPivotP; //proportional multiplying to correct to setpoint
         vPivotMultipliedD = (vPivotDifference - lastError)* vPivotD;//derivative multiplying to even out the correction
 
-        FinalMotorPower = vPivotMultipliedP + vPivotMultipliedD;//adding the two together to get 1 motor output
+        //adding the two together to get 1 motor output
+        FinalMotorPower = vPivotMultipliedP + vPivotMultipliedD;
 
         lastError = vPivotDifference;//setting last error for use next loop cycle
 
@@ -58,8 +65,7 @@ public class VPivotClass {
             FinalMotorPower = -speed;
         }
 
-        //outputting a motor power when called
-        return FinalMotorPower;
+        return FinalMotorPower; //outputting a motor power when called
     }
     public double PivotSetReturn(){return vPivotSet; }
 }

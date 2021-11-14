@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode.TestHub;
 
 public class ExtendClass {
     //setting variables for later use in the code
-    double extendMin = -2000, extendMax = 1300, extendSet = extendMin;
+    double extendMin = -2000, extendMax = 1400, extendSet = extendMin;
     double extendDifference = 0, extendMultipliedP = 0, extendP = -.02, extendD = 0, extendMultipliedD = 0;
     double homingnextset; boolean HasExtended = false; double homingMin = 0; boolean isHomed = false;
     double ExtendMotorPower = 0, lastError = 0;
@@ -15,6 +15,7 @@ public class ExtendClass {
         //reseting the encoder minimum at the magnetic sensor so we stop at the sensor and not overrun
         if(MagneticExtend == false){
             extendMin = extendEncoder;
+            extendMax = extendMin + 1400;
         }
 
         //Setpoint limits
@@ -100,3 +101,5 @@ public class ExtendClass {
     public boolean isHomedReturn(){return isHomed;}
 
 }
+
+

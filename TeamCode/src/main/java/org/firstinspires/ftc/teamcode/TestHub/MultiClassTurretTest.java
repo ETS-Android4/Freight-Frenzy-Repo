@@ -40,8 +40,8 @@ public class MultiClassTurretTest extends LinearOpMode {
                 robot.RI_S.setPower(-1);
                 robot.LI_S.setPower(1);
             }else if(gamepad1.b || gamepad2.b){
-                robot.RI_S.setPower(1);
-                robot.LI_S.setPower(-1);
+                robot.RI_S.setPower(.5);
+                robot.LI_S.setPower(-.5);
             }else{
                 robot.RI_S.setPower(0);
                 robot.LI_S.setPower(0);
