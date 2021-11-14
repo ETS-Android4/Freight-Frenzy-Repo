@@ -7,6 +7,9 @@ public class RotateClass{
     double rotateDifference = 0, MultipliedP = 0, rotateP = -.01, rotateD = 0; double lastError = 0; double MultipliedD = 0; double rotateMotorPower;
     boolean lastrotatemag = false; double lastEncoder = 0; double modifiedCurrentPos;
 
+    boolean hasMagPrev = false, isRotateHomed = false;
+    double homingNextSet = 0, homingFinal = 0;
+
     // main code for rotate for use in TeleOp
     public double RotateMethod(double RightTrig, double Lefttrig, double rotateEncoder, boolean rotateMagnet){
         //sets the target position of the rotate turret using the triggers
@@ -92,4 +95,24 @@ public class RotateClass{
         }
         return rotateMotorPower;
     }
+
+    public void RotateHoming(boolean RotateMagnetic, double rotateEncoder){
+
+        if(RotateMagnetic == false){
+            if(hasMagPrev == false){
+                homingNextSet = homingNextSet + 5;
+                RotateAutoMethod(homingNextSet, .5, rotateEncoder, RotateMagnetic);
+            }else{
+                isRotateHomed = true;
+                homingFinal = rotateEncoder;
+            }
+
+        }else{
+            homingNextSet = homingNextSet - 5;
+            RotateAutoMethod(homingNextSet, .5, rotateEncoder, RotateMagnetic);
+            hasMagPrev = true;
+        }
+    }
+    public boolean isHomedRotateReturn(){return isRotateHomed;}
+
 }
