@@ -7,7 +7,7 @@ public class ExtendClass {
     double extendMin = -2000, extendMax = 1400, extendSet = extendMin;
     double extendDifference = 0, extendMultipliedP = 0, extendP = -.02, extendD = 0, extendMultipliedD = 0;
     double homingnextset; boolean HasExtended = false; double homingMin = 0; boolean isHomed = false;
-    public double ExtendMotorPower = 0, lastError = 0;
+    double ExtendMotorPower = 0, lastError = 0, HomingMotorpower = 0;
 
     public double ExtendMethod(double Controller, double extendEncoder, boolean MagneticExtend){
         extendSet = extendSet + (30 * (Controller));//setting the setpoint using the controller input
@@ -75,15 +75,15 @@ public class ExtendClass {
 
     //A homing program for the extend
     //we need a homing to know where we are at the start of the match
-    public void ExtendHoming(boolean ManeticExtend, double Extendencoder){
+    public double ExtendHoming(boolean ManeticExtend, double Extendencoder){
 
         //looking to see if the slides are already fully retracted
         if(ManeticExtend == false){
             //dermeines if we started retracted or if we ran the homing sequence
                 if(HasExtended == false){
                     //setting the setpoint for the extension of homing
-                    homingnextset = Extendencoder + 5;
-                    ExtendAutoMethod(homingnextset,.5, Extendencoder, ManeticExtend);
+                    homingnextset = Extendencoder + 20;
+                    HomingMotorpower =  ExtendAutoMethod(homingnextset,.5, Extendencoder, ManeticExtend);
                 }else{
                     //sets the minimum
                     homingMin = Extendencoder;
@@ -92,14 +92,16 @@ public class ExtendClass {
 
         }else{
             //setting the setpoint for the retraction of homing
-            homingnextset = Extendencoder - 5;
-            ExtendAutoMethod(homingnextset,.5, Extendencoder, ManeticExtend);
+            homingnextset = Extendencoder - 20;
+            HomingMotorpower = ExtendAutoMethod(-20,.5, Extendencoder, ManeticExtend);
             HasExtended = true;
         }
+        return HomingMotorpower;
     }
     //returns the bvarible ishomed so we can know if we have homed in the main loop
     public boolean isHomedExtendReturn(){return isHomed;}
     public double  ExtendMotorPowerReturn(){return ExtendMotorPower;}
+    public double HomingnextSetReturn(){return homingnextset;}
 
 }
 
