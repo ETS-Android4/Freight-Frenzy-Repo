@@ -78,7 +78,7 @@ public class ExtendClass {
     public void ExtendHoming(boolean ManeticExtend, double Extendencoder){
 
         //looking to see if the slides are already fully retracted
-        if(ManeticExtend == true){
+        if(ManeticExtend == false){
             //dermeines if we started retracted or if we ran the homing sequence
                 if(HasExtended == false){
                     //setting the setpoint for the extension of homing
@@ -98,7 +98,7 @@ public class ExtendClass {
         }
     }
     //returns the bvarible ishomed so we can know if we have homed in the main loop
-    public boolean isHomedReturn(){return isHomed;}
+    public boolean isHomedExtendReturn(){return isHomed;}
 
 }
 
