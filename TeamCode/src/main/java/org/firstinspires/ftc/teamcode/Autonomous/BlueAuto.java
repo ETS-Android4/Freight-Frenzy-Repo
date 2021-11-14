@@ -83,7 +83,7 @@ public class BlueAuto extends LinearOpMode {
                 xSetpoint = 0;
                 ySetpoint = 0;
                 thetaSetpoint = 0;
-                targetSpeed = 3;
+                targetSpeed = 1;
                 accelerationDistance = .25;
                 decelerationDistance = 8;
                 slowMoveSpeed = 3.85;
@@ -94,10 +94,10 @@ public class BlueAuto extends LinearOpMode {
                 extendSpeed = .5;
                 VPivotSpeed = .5;
                 rotateSetpoint = 0;
-                extendSetpoint = 600;
+                extendSetpoint = 0;
                 VPivotSetpoint = 2;
                 //Exits once the robot is a certain distance and angle away
-                if (!opModeIsActive()) {
+                if (robot.TP_P.getVoltage() >= 1.9) {
                     StopMotors();
                     action = 2;
                     startPointX = OdoClass.odoXReturn();
@@ -105,6 +105,15 @@ public class BlueAuto extends LinearOpMode {
                     breakout = 0;
                 } else {
                     breakout = 1;
+                }
+            }
+            else if(action == 2){
+                extendSetpoint = 300;
+                if(!opModeIsActive()){
+                    action = 3;
+                    breakout =0;
+                } else {
+                    breakout =1;
                 }
             }
             /*else if (action == 2) {
