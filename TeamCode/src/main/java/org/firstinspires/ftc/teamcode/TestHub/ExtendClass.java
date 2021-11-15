@@ -107,17 +107,18 @@ public class ExtendClass {
             //dermeines if we started retracted or if we ran the homing sequence
                 if(HasExtended == false){
                     //setting the setpoint for the extension of homing
-                    homingnextset = Extendencoder + 20;
+                    homingnextset = extendModifiedEncoder + 20;
                     HomingMotorpower =  ExtendAutoMethod(homingnextset,.5, Extendencoder, ManeticExtend);
                 }else{
                     //sets the minimum
                     homingMin = Extendencoder;
+                    extendModifiedEncoder = 0;
                     isHomed = true;
                 }
 
         }else{
             //setting the setpoint for the retraction of homing
-            homingnextset = Extendencoder - 20;
+            homingnextset = extendModifiedEncoder - 20;
             HomingMotorpower = ExtendAutoMethod(homingnextset,.5, Extendencoder, ManeticExtend);
             HasExtended = true;
         }
