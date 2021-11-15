@@ -14,9 +14,7 @@ public class HomingProgram extends LinearOpMode {
 
     public void runOpMode(){
         robot.init(hardwareMap);
-        waitForStart();
-        while(opModeIsActive()){
-
+        while (RotateClass.isHomedRotateReturn() == false){
             robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15,.5, robot.TP_P.getVoltage()));
             if(robot.TP_P.getVoltage() > 1.1 && robot.TP_P.getVoltage() < 1.25){
                 robot.TE_M.setPower(ExtendClass.ExtendHoming(robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
@@ -24,6 +22,18 @@ public class HomingProgram extends LinearOpMode {
                     robot.TR_M.setPower(RotateClass.RotateHoming(robot.TR_G.getState(), robot.TR_M.getCurrentPosition()));
                 }
             }
+        }
+
+        waitForStart();
+        while(opModeIsActive()){
+/*
+            robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15,.5, robot.TP_P.getVoltage()));
+            if(robot.TP_P.getVoltage() > 1.1 && robot.TP_P.getVoltage() < 1.25){
+                robot.TE_M.setPower(ExtendClass.ExtendHoming(robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
+                if(ExtendClass.isHomedExtendReturn() == true){
+                    robot.TR_M.setPower(RotateClass.RotateHoming(robot.TR_G.getState(), robot.TR_M.getCurrentPosition()));
+                }
+            } */
 
             telemetry.addData("mag sensor", robot.TE_G.getState());
             telemetry.addData("homiing next set", ExtendClass.HomingnextSetReturn());
