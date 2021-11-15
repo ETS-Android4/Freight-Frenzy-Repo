@@ -48,13 +48,14 @@ public class MultiClassTurretTest extends LinearOpMode {
             }
 
             if(gamepad2.x){
-                robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15,.8,robot.TP_P.getVoltage()));
                 if(robot.TP_P.getVoltage() > 1.05 && robot.TP_P.getVoltage() < 1.25){
                     robot.TR_M.setPower(RotateClass.RotateAutoMethod(0,.8, robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
                     robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(300, .5, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
                 }
                 if(robot.TE_M.getCurrentPosition() > 290 && robot.TE_M.getCurrentPosition() < 310 && RotateClass.modifiedRotateCurrent() < 50 && RotateClass.modifiedRotateCurrent() > -50){
                     robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(.8,.8,robot.TP_P.getVoltage()));
+                }else{
+                    robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15,.8,robot.TP_P.getVoltage()));
                 }
 
             }else{
