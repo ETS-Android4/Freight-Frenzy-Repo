@@ -11,6 +11,7 @@ public class HomingProgram extends LinearOpMode {
     ExtendClass ExtendClass = new ExtendClass();
     VPivotClass VPivotClass = new VPivotClass();
     RotateClass RotateClass = new RotateClass();
+    double initPOsitionOrder = 1;
 
     public void runOpMode(){
         robot.init(hardwareMap);
@@ -25,7 +26,22 @@ public class HomingProgram extends LinearOpMode {
                 }
             }else{
                 telemetry.addData("homed",0);
-                robot.TR_M.setPower(RotateClass.RotateAutoMethod(0,.8,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
+                robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(10,.8,robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
+                if(initPOsitionOrder == 1){
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(500,.8,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
+                    if(RotateClass.modifiedRotateCurrent() > 450 && RotateClass.modifiedRotateCurrent() < 550){
+                        initPOsitionOrder = 2;
+                    }
+                }else if(initPOsitionOrder == 2){
+                    robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.8,1, robot.TP_P.getVoltage()));
+                    if(robot.TP_P.getVoltage() > 2 && robot.TP_P.getVoltage() < 1.6){
+                        initPOsitionOrder = 3;
+                    }
+                }else if(initPOsitionOrder == 3){
+
+                }
+
+
 
             }
             telemetry.addData("Rotate homed boolean", RotateClass.isHomedRotateReturn());
