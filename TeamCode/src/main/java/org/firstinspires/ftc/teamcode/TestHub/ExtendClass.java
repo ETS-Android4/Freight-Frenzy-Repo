@@ -42,8 +42,9 @@ public class ExtendClass {
         extendSet = desiredset;
 
         //reseting the encoder minimum at the magnetic sensor so we stop at the sensor and not overrun
-        if (MagneticExtend == true) {
+        if (MagneticExtend == false) {
             extendMin = extendEncoder;
+            extendMax = extendMin + 1400;
         }
 
         //Setpoint limits
@@ -62,9 +63,9 @@ public class ExtendClass {
         lastError = extendDifference;// setting last error for use in derivative
 
         //setting limits for speed to go a desired setpoint
-        if(ExtendMotorPower > speed && ExtendMotorPower > .05){
+        if(ExtendMotorPower > speed){
             ExtendMotorPower = speed;
-        }else if (ExtendMotorPower < -speed && ExtendMotorPower < -.05){
+        }else if (ExtendMotorPower < -speed ){
             ExtendMotorPower = -speed;
         }
         //returning the motor power for use
