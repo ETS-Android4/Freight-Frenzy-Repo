@@ -34,7 +34,7 @@ public class HomingProgram extends LinearOpMode {
                     }
                 }else if(initPOsitionOrder == 2){
                     robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.8,1, robot.TP_P.getVoltage()));
-                    if(robot.TP_P.getVoltage() > 2 && robot.TP_P.getVoltage() < 1.6){
+                    if(robot.TP_P.getVoltage() < 2 && robot.TP_P.getVoltage() > 1.6){
                         initPOsitionOrder = 3;
                     }
                 }else if(initPOsitionOrder == 3){
