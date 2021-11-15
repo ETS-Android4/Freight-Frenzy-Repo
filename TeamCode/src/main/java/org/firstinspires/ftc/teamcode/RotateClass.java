@@ -124,5 +124,6 @@ public class RotateClass{
     }
     public boolean isHomedRotateReturn(){return isRotateHomed;}
     public double modifiedRotateCurrent(){return modifiedCurrentPos;}
+    public double rotatemotorPowerReturn(){return rotateMotorPower;}
 
 }

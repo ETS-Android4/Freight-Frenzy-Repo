@@ -78,7 +78,7 @@ public class MultiClassTurretTest extends LinearOpMode {
 
 
             telemetry.addData("rotate motor power",robot.TR_M.getPower());
-            telemetry.addData("rotate motor power variable", RotateClass.RotateAutoMethod(0,.8, robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
+            telemetry.addData("rotate motor power", RotateClass.rotatemotorPowerReturn());
             telemetry.addData("extend motor power",robot.TE_M.getPower());
             telemetry.addData("pivot motor power", robot.TP_M.getPower());
             telemetry.addData("vpivotset", VPivotClass.PivotSetReturn());
