@@ -47,6 +47,9 @@ public class HomingProgram extends LinearOpMode {
 
             }
             telemetry.addData("Rotate homed boolean", RotateClass.isHomedRotateReturn());
+            telemetry.addData("initPosition order", initPOsitionOrder);
+            telemetry.addData("Vpiovot PT", robot.TP_P.getVoltage());
+            telemetry.addData("rotate modified", RotateClass.modifiedRotateCurrent());
             telemetry.update();
         }
 
