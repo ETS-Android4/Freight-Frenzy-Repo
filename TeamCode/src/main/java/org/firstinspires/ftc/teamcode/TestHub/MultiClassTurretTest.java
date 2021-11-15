@@ -51,14 +51,18 @@ public class MultiClassTurretTest extends LinearOpMode {
                 robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15,.8,robot.TP_P.getVoltage()));
                 if(robot.TP_P.getVoltage() > 1.05 && robot.TP_P.getVoltage() < 1.25){
                     robot.TR_M.setPower(RotateClass.RotateAutoMethod(0,.8, robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
+                    robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(300, .5, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
                 }
-
+                if(robot.TE_M.getCurrentPosition() > 290 && robot.TE_M.getCurrentPosition() < 310 && RotateClass.modifiedRotateCurrent() < 50 && RotateClass.modifiedRotateCurrent() > -50){
+                    robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(.5,.8,robot.TP_P.getVoltage()));
+                }
 
             }else{
                 robot.TR_M.setPower(RotateClass.RotateMethod(gamepad2.right_trigger, gamepad2.left_trigger, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
                 robot.TP_M.setPower(VPivotClass.VPivotMethod(gamepad2.right_stick_y, robot.TP_P.getVoltage()));
+                robot.TE_M.setPower(ExtendClass.ExtendMethod((-gamepad2.left_stick_y), robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
             }
-            robot.TE_M.setPower(ExtendClass.ExtendMethod((-gamepad2.left_stick_y), robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
+
 
 
             telemetry.addData("rotate motor power",robot.TR_M.getPower());
