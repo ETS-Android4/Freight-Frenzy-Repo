@@ -83,13 +83,13 @@ public class BlueAuto extends LinearOpMode {
                 xSetpoint = 0;
                 ySetpoint = 0;
                 thetaSetpoint = 0;
-                targetSpeed = 1;
-                accelerationDistance = .25;
-                decelerationDistance = 8;
-                slowMoveSpeed = .5;
-                slowMovedDistance = 1;
+                targetSpeed = .1;
+                accelerationDistance = .001;
+                decelerationDistance = .0001;
+                slowMoveSpeed = .1;
+                slowMovedDistance = .001;
                 thetaDeccelerationDegree = 2;
-                thetaTargetSpeed = .6;
+                thetaTargetSpeed = .1;
                 rotateSpeed = .5;
                 extendSpeed = .5;
                 VPivotSpeed = .5;
@@ -172,6 +172,7 @@ public class BlueAuto extends LinearOpMode {
         telemetry.addData("LF_Direction", DirectionClass.LF_M_DirectionReturn());
         telemetry.addData("Motor Power Ratio", DirectionClass.motorPowerRatioReturn());
         telemetry.addData("Action", action);
+        telemetry.addData("PT", robot.TP_P.getVoltage());
         telemetry.update();
     }
 
