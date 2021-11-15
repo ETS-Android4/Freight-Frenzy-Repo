@@ -56,7 +56,8 @@ public class ExtendClass {
 
         //reseting the encoder minimum at the magnetic sensor so we stop at the sensor and not overrun
         if (MagneticExtend == false && lastmagnetic == true) {
-            extendMin = extendEncoder;
+            extendMin = 0;
+            extendModifiedEncoder = 0;
             extendMax = extendMin + 1400;
             lastmagnetic = false;
         }else if(MagneticExtend == false){
@@ -66,6 +67,10 @@ public class ExtendClass {
             lastmagnetic = true;
         }
 
+        deltaEncoder = extendEncoder - lastencoder;
+
+        extendModifiedEncoder = extendModifiedEncoder + deltaEncoder;
+
         //Setpoint limits
         if (extendSet < extendMin) {
             extendSet = (extendMin);
@@ -74,9 +79,9 @@ public class ExtendClass {
         }
 
         //finding difference so we can use it for the proportional and derivative multipliers
-        extendDifference = extendEncoder - extendSet;
+        extendDifference = extendModifiedEncoder - extendSet;
         extendMultipliedP = extendDifference * extendP;//Proportional multiplying
-        extendMultipliedD = (extendEncoder - lastError) * extendD;//derivative multiplying
+        extendMultipliedD = (extendDifference - lastError) * extendD;//derivative multiplying
         ExtendMotorPower = extendMultipliedP + extendMultipliedD;//adding them together to give 1 motor power
 
         lastError = extendDifference;// setting last error for use in derivative
