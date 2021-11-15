@@ -39,7 +39,7 @@ public class HomingProgram extends LinearOpMode {
                     }
                 }else if(initPOsitionOrder == 3){
                     robot.TR_M.setPower(RotateClass.RotateAutoMethod(200,.4,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
-                    robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.8,1, robot.TP_P.getVoltage()));
+                    robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.65,1, robot.TP_P.getVoltage()));
 
                 }
 

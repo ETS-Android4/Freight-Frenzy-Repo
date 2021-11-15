@@ -128,8 +128,8 @@ public class SpeedClass {
             //Uses y = mx + b to find what our speed setpoint during acceleration should be at a certain point
             speedSetpoint = (distance - distancefrom) * (speedtarget / accelerationdistance);
             //Sets a  minimum speed
-            if (speedSetpoint <= .1) {
-                speedSetpoint = .1;
+            if (speedSetpoint <= .15) {
+                speedSetpoint = .15;
             }
         }
         //If we are not accelerating or decelerating then go at our desired speed
