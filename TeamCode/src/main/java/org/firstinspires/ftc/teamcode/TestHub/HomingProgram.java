@@ -38,6 +38,8 @@ public class HomingProgram extends LinearOpMode {
                         initPOsitionOrder = 3;
                     }
                 }else if(initPOsitionOrder == 3){
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(100,.8,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
+                    robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.8,1, robot.TP_P.getVoltage()));
 
                 }
 
