@@ -14,14 +14,21 @@ public class HomingProgram extends LinearOpMode {
 
     public void runOpMode(){
         robot.init(hardwareMap);
-        while (RotateClass.isHomedRotateReturn() == false){
-            robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15,.5, robot.TP_P.getVoltage()));
-            if(robot.TP_P.getVoltage() > 1.1 && robot.TP_P.getVoltage() < 1.25){
-                robot.TE_M.setPower(ExtendClass.ExtendHoming(robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
-                if(ExtendClass.isHomedExtendReturn() == true){
-                    robot.TR_M.setPower(RotateClass.RotateHoming(robot.TR_G.getState(), robot.TR_M.getCurrentPosition()));
+        while (!opModeIsActive()){
+            if(RotateClass.isHomedRotateReturn() == false){
+                robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15,.5, robot.TP_P.getVoltage()));
+                if(robot.TP_P.getVoltage() > 1.1 && robot.TP_P.getVoltage() < 1.25){
+                    robot.TE_M.setPower(ExtendClass.ExtendHoming(robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
+                    if(ExtendClass.isHomedExtendReturn() == true){
+                        robot.TR_M.setPower(RotateClass.RotateHoming(robot.TR_G.getState(), robot.TR_M.getCurrentPosition()));
+                    }
                 }
+            }else{
+                telemetry.addData("homed",0);
+                robot.TR_M.setPower(RotateClass.RotateAutoMethod(0,.8,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
+                telemetry.update();
             }
+
         }
 
         waitForStart();
