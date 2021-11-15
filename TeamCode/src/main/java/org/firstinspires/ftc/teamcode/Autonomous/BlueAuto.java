@@ -95,9 +95,9 @@ public class BlueAuto extends LinearOpMode {
                 VPivotSpeed = .5;
                 rotateSetpoint = 0;
                 extendSetpoint = 0;
-                VPivotSetpoint = 2;
+                VPivotSetpoint = -2;
                 //Exits once the robot is a certain distance and angle away
-                if (robot.TP_P.getVoltage() >= 1.9) {
+                if (robot.TP_P.getVoltage() <= -1.9) {
                     StopMotors();
                     action = 2;
                     startPointX = OdoClass.odoXReturn();
