@@ -99,8 +99,8 @@ public class BlueAuto extends LinearOpMode {
                 }
             }
             else if(action == 2){
-                extendSetpoint = 300;
-                if((robot.TE_M.getCurrentPosition() > 275) && (robot.TE_M.getCurrentPosition() < 325)){
+                extendSetpoint = 350;
+                if((Extend.extendModifiedEncoder <= 375 && Extend.extendModifiedEncoder >= 325)){
                     action = 3;
                     breakout =0;
                 } else {
@@ -109,7 +109,7 @@ public class BlueAuto extends LinearOpMode {
             }
             else if(action == 3){
                 rotateSetpoint = 500;
-                if(opModeIsActive()){
+                if(Rotate.modifiedRotateCurrent() <= 550&& Rotate.modifiedRotateCurrent() >= 450){
                     action = 4;
                     breakout =0;
                 } else {
