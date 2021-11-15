@@ -8,7 +8,7 @@ public class RotateClass{
     boolean lastrotatemag = false; double lastEncoder = 0; double modifiedCurrentPos;
 
     boolean hasMagPrev = false, isRotateHomed = false;
-    double homingNextSet = 0, homingFinal = 0;
+    double homingNextSet = 0, homingFinal = 0, homingmotorpower = 0, deltaEncoder = 0;
 
     // main code for rotate for use in TeleOp
     public double RotateMethod(double RightTrig, double Lefttrig, double rotateEncoder, boolean rotateMagnet){
@@ -34,6 +34,10 @@ public class RotateClass{
             lastrotatemag = false;
         }
 
+        deltaEncoder = rotateEncoder - lastEncoder;
+
+        modifiedCurrentPos = modifiedCurrentPos + deltaEncoder;
+
         //Hpivot Limits
         if(rotateSet < rotateMin){
             rotateSet = rotateMin;
@@ -42,7 +46,7 @@ public class RotateClass{
         }
 
         //PD cycle to control the position of the turret
-        rotateDifference = rotateEncoder - rotateSet;
+        rotateDifference = modifiedCurrentPos - rotateSet;
         MultipliedP = rotateDifference * rotateP;
         MultipliedD = (rotateDifference - lastError) * rotateD;
         rotateMotorPower = MultipliedP + MultipliedD;
@@ -71,6 +75,9 @@ public class RotateClass{
         }else if(rotateMagnet == false){
             lastrotatemag = false;
         }
+        deltaEncoder = rotateEncoder - lastEncoder;
+
+        modifiedCurrentPos = modifiedCurrentPos + deltaEncoder;
 
         //Hpivot Limits
         if(rotateSet < rotateMin){
@@ -80,38 +87,40 @@ public class RotateClass{
         }
 
         //PD cycle to control the position of the turret
-        rotateDifference = rotateEncoder - rotateSet;
+        rotateDifference = modifiedCurrentPos - rotateSet;
         MultipliedP = rotateDifference * rotateP;
         MultipliedD = (rotateDifference - lastError) * rotateD;
         rotateMotorPower = MultipliedP + MultipliedD;
 
 
         lastError = rotateDifference;
+        lastEncoder = rotateEncoder;
         //setting limits for speed to go a desired setpoint
-        if(rotateMotorPower > speed && rotateMotorPower > .05){
+        if(rotateMotorPower > speed){
             rotateMotorPower = speed;
-        }else if(rotateMotorPower < -speed && rotateMotorPower < .05){
+        }else if(rotateMotorPower < -speed){
             rotateMotorPower = -speed;
         }
         return rotateMotorPower;
     }
 
-    public void RotateHoming(boolean RotateMagnetic, double rotateEncoder){
+    public double RotateHoming(boolean RotateMagnetic, double rotateEncoder){
 
         if(RotateMagnetic == false){
             if(hasMagPrev == false){
-                homingNextSet = homingNextSet + 5;
-                RotateAutoMethod(homingNextSet, .5, rotateEncoder, RotateMagnetic);
+                homingNextSet = homingNextSet + 10;
+                homingmotorpower = RotateAutoMethod(homingNextSet, .5, rotateEncoder, RotateMagnetic);
             }else{
                 isRotateHomed = true;
                 homingFinal = rotateEncoder;
             }
 
         }else{
-            homingNextSet = homingNextSet - 5;
-            RotateAutoMethod(homingNextSet, .5, rotateEncoder, RotateMagnetic);
+            homingNextSet = homingNextSet - 10;
+            homingmotorpower =  RotateAutoMethod(homingNextSet, .5, rotateEncoder, RotateMagnetic);
             hasMagPrev = true;
         }
+        return homingmotorpower;
     }
     public boolean isHomedRotateReturn(){return isRotateHomed;}
 

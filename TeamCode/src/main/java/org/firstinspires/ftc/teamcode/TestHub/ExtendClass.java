@@ -6,16 +6,22 @@ public class ExtendClass {
     //setting variables for later use in the code
     double extendMin = -2000, extendMax = 1400, extendSet = extendMin;
     double extendDifference = 0, extendMultipliedP = 0, extendP = -.02, extendD = 0, extendMultipliedD = 0;
-    double homingnextset; boolean HasExtended = false; double homingMin = 0; boolean isHomed = false;
+    double homingnextset; boolean HasExtended = false; double homingMin = 0; boolean isHomed = false, lastmagnetic = true;
     public double ExtendMotorPower = 0, lastError = 0, HomingMotorpower = 0;
 
     public double ExtendMethod(double Controller, double extendEncoder, boolean MagneticExtend){
         extendSet = extendSet + (30 * (Controller));//setting the setpoint using the controller input
 
         //reseting the encoder minimum at the magnetic sensor so we stop at the sensor and not overrun
-        if(MagneticExtend == false){
+        if (MagneticExtend == false && lastmagnetic == true) {
             extendMin = extendEncoder;
             extendMax = extendMin + 1400;
+            lastmagnetic = false;
+        }else if(MagneticExtend == false){
+            lastmagnetic = false;
+        }
+        else{
+            lastmagnetic = true;
         }
 
         //Setpoint limits
@@ -42,16 +48,22 @@ public class ExtendClass {
         extendSet = desiredset;
 
         //reseting the encoder minimum at the magnetic sensor so we stop at the sensor and not overrun
-        if (MagneticExtend == false) {
+        if (MagneticExtend == false && lastmagnetic == true) {
             extendMin = extendEncoder;
             extendMax = extendMin + 1400;
+            lastmagnetic = false;
+        }else if(MagneticExtend == false){
+            lastmagnetic = false;
+        }
+        else{
+            lastmagnetic = true;
         }
 
         //Setpoint limits
         if (extendSet < extendMin) {
-            extendSet = (extendMin + 2);
+            extendSet = (extendMin);
         } else if (extendSet > extendMax) {
-            extendSet = (extendMax - 2);
+            extendSet = (extendMax);
         }
 
         //finding difference so we can use it for the proportional and derivative multipliers
@@ -94,7 +106,7 @@ public class ExtendClass {
         }else{
             //setting the setpoint for the retraction of homing
             homingnextset = Extendencoder - 20;
-            HomingMotorpower = ExtendAutoMethod(-200,.5, Extendencoder, ManeticExtend);
+            HomingMotorpower = ExtendAutoMethod(homingnextset,.5, Extendencoder, ManeticExtend);
             HasExtended = true;
         }
         return HomingMotorpower;
