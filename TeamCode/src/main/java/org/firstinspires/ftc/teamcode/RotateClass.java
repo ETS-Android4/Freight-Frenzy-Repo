@@ -113,6 +113,7 @@ public class RotateClass{
             }else{
                 isRotateHomed = true;
                 homingFinal = rotateEncoder;
+                modifiedCurrentPos = 20;
             }
 
         }else{
