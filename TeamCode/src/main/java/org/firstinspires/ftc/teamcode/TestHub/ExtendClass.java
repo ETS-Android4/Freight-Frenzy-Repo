@@ -7,14 +7,15 @@ public class ExtendClass {
     double extendMin = -2000, extendMax = 1400, extendSet = extendMin;
     double extendDifference = 0, extendMultipliedP = 0, extendP = -.02, extendD = 0, extendMultipliedD = 0;
     double homingnextset; boolean HasExtended = false; double homingMin = 0; boolean isHomed = false, lastmagnetic = true;
-    public double ExtendMotorPower = 0, lastError = 0, HomingMotorpower = 0;
+    public double ExtendMotorPower = 0, lastError = 0, HomingMotorpower = 0, extendModifiedEncoder = 0, deltaEncoder = 0, lastencoder = 0;
 
     public double ExtendMethod(double Controller, double extendEncoder, boolean MagneticExtend){
         extendSet = extendSet + (30 * (Controller));//setting the setpoint using the controller input
 
         //reseting the encoder minimum at the magnetic sensor so we stop at the sensor and not overrun
         if (MagneticExtend == false && lastmagnetic == true) {
-            extendMin = extendEncoder;
+            extendMin = 0;
+            extendModifiedEncoder = 0;
             extendMax = extendMin + 1400;
             lastmagnetic = false;
         }else if(MagneticExtend == false){
@@ -24,6 +25,10 @@ public class ExtendClass {
             lastmagnetic = true;
         }
 
+        deltaEncoder = extendEncoder - lastencoder;
+
+        extendModifiedEncoder = extendModifiedEncoder + deltaEncoder;
+
         //Setpoint limits
         if(extendSet < extendMin){
             extendSet = (extendMin + 2);
@@ -32,12 +37,14 @@ public class ExtendClass {
         }
 
         //finding difference so we can use it for the proportional and derivative multipliers
-        extendDifference = extendEncoder - extendSet;
+        extendDifference = extendModifiedEncoder - extendSet;
         extendMultipliedP = extendDifference * extendP;//Proportional multiplying
-        extendMultipliedD = (extendEncoder - lastError) * extendD;//derivative multiplying
+        extendMultipliedD = (extendDifference - lastError) * extendD;//derivative multiplying
         ExtendMotorPower = extendMultipliedP + extendMultipliedD;//adding them together to give 1 motor power
 
         lastError = extendDifference;// setting last error for use in derivative
+
+        lastencoder = extendEncoder;
 
         //returning the motor power for use
         return ExtendMotorPower;
