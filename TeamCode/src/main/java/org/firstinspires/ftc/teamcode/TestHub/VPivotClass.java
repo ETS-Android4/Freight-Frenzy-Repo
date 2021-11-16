@@ -5,7 +5,7 @@ public class VPivotClass {
     //setting variables for use in later code
     double vPivotMin = 0.8, vPivotMax = 3, vPivotSet = 1.15;
     double vPivotDifference = 0, vPivotMultipliedP = 0, vPivotP = 3.85, vPivotD = 3.5, vPivotMultipliedD; // 6.5, 6
-    public double FinalMotorPower;
+    public double FinalMotorPower, PDMultipliedMotorPower, lastset;
     double lastError;
 
     //main TeleOp code for vertical Pivot
@@ -55,6 +55,14 @@ public class VPivotClass {
         vPivotMultipliedD = (vPivotDifference - lastError)* vPivotD;//derivative multiplying to even out the correction
 
         //adding the two together to get 1 motor output
+        //PDMultipliedMotorPower = vPivotMultipliedP + vPivotMultipliedD;
+        /*
+        if(vPivotSet < lastset){
+            FinalMotorPower = FinalMotorPower + PDMultipliedMotorPower;
+        }else if(vPivotSet > lastset){
+            FinalMotorPower = FinalMotorPower - PDMultipliedMotorPower;
+        }
+*/
         FinalMotorPower = FinalMotorPower + vPivotMultipliedP + vPivotMultipliedD;
 
         lastError = vPivotDifference;//setting last error for use next loop cycle
@@ -65,6 +73,8 @@ public class VPivotClass {
         }else if(FinalMotorPower < -speed){
             FinalMotorPower = -speed;
         }
+
+        lastset = vPivotSet;
 
         return FinalMotorPower; //outputting a motor power when called
     }

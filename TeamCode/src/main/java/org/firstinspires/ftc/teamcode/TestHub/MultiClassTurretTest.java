@@ -12,6 +12,7 @@ public class MultiClassTurretTest extends LinearOpMode {
     VPivotClass VPivotClass = new VPivotClass();
     RotateClass RotateClass = new RotateClass();
     double x, y, z;
+    double Vpivotcontroller = 1.15;
 
     public void runOpMode() {
         robot.init(hardwareMap);
@@ -70,8 +71,11 @@ public class MultiClassTurretTest extends LinearOpMode {
 
             }else{
                     //else run TeleOp programs
+                Vpivotcontroller = Vpivotcontroller +(.03 * gamepad2.left_stick_y);
+                robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(Vpivotcontroller ,1,robot.TP_P.getVoltage()));
+                // robot.TP_M.setPower(VPivotClass.VPivotMethod(gamepad2.right_stick_y, robot.TP_P.getVoltage()));
                 robot.TR_M.setPower(RotateClass.RotateMethod(gamepad2.right_trigger, gamepad2.left_trigger, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
-                robot.TP_M.setPower(VPivotClass.VPivotMethod(gamepad2.right_stick_y, robot.TP_P.getVoltage()));
+
                 robot.TE_M.setPower(ExtendClass.ExtendMethod((-gamepad2.left_stick_y), robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
             }
 
