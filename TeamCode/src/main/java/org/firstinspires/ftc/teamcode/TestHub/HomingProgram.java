@@ -28,8 +28,8 @@ public class HomingProgram extends LinearOpMode {
                 telemetry.addData("homed",0);
                 robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(10,.8,robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
                 if(initPOsitionOrder == 1){
-                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(500,.8,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
-                    if(RotateClass.modifiedRotateCurrent() > 450 && RotateClass.modifiedRotateCurrent() < 550){
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(800,.8,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
+                    if(RotateClass.modifiedRotateCurrent() > 750 && RotateClass.modifiedRotateCurrent() < 850){
                         initPOsitionOrder = 2;
                     }
                 }else if(initPOsitionOrder == 2){
@@ -38,8 +38,8 @@ public class HomingProgram extends LinearOpMode {
                         initPOsitionOrder = 3;
                     }
                 }else if(initPOsitionOrder == 3){
-                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(500,.4,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
-                    robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.65,1, robot.TP_P.getVoltage()));
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(625,.4,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
+                    robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.72,1, robot.TP_P.getVoltage()));
 
                 }
 

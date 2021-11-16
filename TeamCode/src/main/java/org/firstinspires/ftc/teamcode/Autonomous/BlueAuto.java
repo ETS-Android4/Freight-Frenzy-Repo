@@ -91,7 +91,7 @@ public class BlueAuto extends LinearOpMode {
             if(action == 1) {
                 if ((robot.TP_P.getVoltage() >= 1.45) && (robot.TP_P.getVoltage() <= 1.55)) {
                     StopMotors();
-                    action = 4;
+                    action = 8;
                     startPointY = OdoClass.odoYReturn();
                     breakout = 0;
                 } else {
@@ -114,9 +114,39 @@ public class BlueAuto extends LinearOpMode {
                     breakout =0;
                 } else {
                     breakout =1;
+                    timepassed = 1;
                 }
             }
+            else if (action == 4){
+                if(timepassed == 1){
+                    timepassed2 = getRuntime();
+                    timepassed = 0;
+                }
+                if(timepassed2 + 1 <= getRuntime()){
+                    action = 5;
+                    timepassed = 1;
+                }
+                else{
+                    breakout = 1;
 
+                }
+            }
+            else if(action == 5){
+                if(timepassed == 1){
+                    timepassed2 = getRuntime();
+                    timepassed = 0;
+                }
+                robot.LI_S.setPower(.5);
+                robot.RI_S.setPower(-.5);
+                if(timepassed2 + 2 <= getRuntime()){
+                    action = 6;
+                    breakout =0;
+                    timepassed = 1;
+                } else {
+                    breakout =1;
+
+                }
+            }
            /* //Moves to first power shot shooting position
             thetaSetpoint = 0;
             accelerationDistance = .04;

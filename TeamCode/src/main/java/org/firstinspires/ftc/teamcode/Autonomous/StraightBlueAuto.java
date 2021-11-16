@@ -84,16 +84,18 @@ public class StraightBlueAuto extends LinearOpMode {
             decelerationDistance = 8;
             slowMoveSpeed = 3.85;
             slowMovedDistance = 1;
-            thetaDeccelerationDegree = 2;
-            thetaTargetSpeed = .6;
+            thetaDeccelerationDegree = 1;
+            thetaTargetSpeed = 1;
             VPivotSetpoint = .9;
-            VPivotSpeed = .3;
+            VPivotSpeed = .4;
+            rotateSetpoint = -650;
+            rotateSpeed = .3;
                 //Exits once the robot is a certain distance and angle away
                 if (action == 1) {
                     xSetpoint = 50;
-                    ySetpoint = .8;
+                    ySetpoint = .3;
                     thetaSetpoint = 0;
-                    targetSpeed = 30;
+                    targetSpeed = 35;
                     //Exits once the robot is a certain distance and angle away
                     if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .5 && OdoClass.thetaInDegreesReturn() > -.5)) {
                         StopMotors();
@@ -109,9 +111,9 @@ public class StraightBlueAuto extends LinearOpMode {
                 xSetpoint = 50;
                 ySetpoint = 25;
                 thetaSetpoint = 0;
-                targetSpeed = 15;
+                targetSpeed = 20;
                 //Exits once the robot is a certain distance and angle away
-                if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .5 && OdoClass.thetaInDegreesReturn() > -.5)) {
+                if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .3 && OdoClass.thetaInDegreesReturn() > -.3)) {
                     StopMotors();
                     action = 3;
                     startPointX = OdoClass.odoXReturn();
