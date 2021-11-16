@@ -47,7 +47,7 @@ public class MultiClassTurretTest extends LinearOpMode {
                 robot.LI_S.setPower(0);
             }
 
-            if(gamepad2.x){
+            /*if(gamepad2.x){
                     //if arm is between deadzone of setpoint
                 if(robot.TP_P.getVoltage() > 1.05 && robot.TP_P.getVoltage() < 1.25){
                         //rotate turret to "home"
@@ -73,7 +73,9 @@ public class MultiClassTurretTest extends LinearOpMode {
                 robot.TR_M.setPower(RotateClass.RotateMethod(gamepad2.right_trigger, gamepad2.left_trigger, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
                 robot.TP_M.setPower(VPivotClass.VPivotMethod(gamepad2.right_stick_y, robot.TP_P.getVoltage()));
                 robot.TE_M.setPower(ExtendClass.ExtendMethod((-gamepad2.left_stick_y), robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
-            }
+            }*/
+
+            robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(500, .8, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
 
 
 
