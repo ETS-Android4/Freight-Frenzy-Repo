@@ -4,7 +4,7 @@ public class VPivotClass {
 
     //setting variables for use in later code
     double vPivotMin = 0.8, vPivotMax = 3, vPivotSet = 1.15;
-    double vPivotDifference = 0, vPivotMultipliedP = 0, vPivotP = 1.5, vPivotD = 1, vPivotMultipliedD; // 6.5, 6
+    double vPivotDifference = 0, vPivotMultipliedP = 0, vPivotP = 6.5, vPivotD = 6, vPivotMultipliedD; // 6.5, 6
     public double FinalMotorPower;
     double lastError;
 
@@ -28,7 +28,7 @@ public class VPivotClass {
         //derivative multiplying to even out the correction
         vPivotMultipliedD = (vPivotDifference - lastError)* vPivotD;
         //adding the two together to get 1 motor output
-        FinalMotorPower = FinalMotorPower + vPivotMultipliedP + vPivotMultipliedD;
+        FinalMotorPower = vPivotMultipliedP + vPivotMultipliedD;
 
         //setting last error for use next loop cycle
         lastError = vPivotDifference;
@@ -55,7 +55,7 @@ public class VPivotClass {
         vPivotMultipliedD = (vPivotDifference - lastError)* vPivotD;//derivative multiplying to even out the correction
 
         //adding the two together to get 1 motor output
-        FinalMotorPower = FinalMotorPower + vPivotMultipliedP + vPivotMultipliedD;
+        FinalMotorPower = vPivotMultipliedP + vPivotMultipliedD;
 
         lastError = vPivotDifference;//setting last error for use next loop cycle
 
