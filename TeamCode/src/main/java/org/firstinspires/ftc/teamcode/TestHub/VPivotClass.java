@@ -60,11 +60,11 @@ public class VPivotClass {
         lastError = vPivotDifference;//setting last error for use next loop cycle
 
         //setting speed to go at a set speed and not go to fast and break something
-        if(FinalMotorPower > speed){
+       /* if(FinalMotorPower > speed){
             FinalMotorPower = speed;
         }else if(FinalMotorPower < -speed){
             FinalMotorPower = -speed;
-        }
+        }*/
 
         return FinalMotorPower; //outputting a motor power when called
     }
