@@ -55,15 +55,15 @@ public class VPivotClass {
         vPivotMultipliedD = (vPivotDifference - lastError)* vPivotD;//derivative multiplying to even out the correction
 
         //adding the two together to get 1 motor output
-        //PDMultipliedMotorPower = vPivotMultipliedP + vPivotMultipliedD;
-        /*
+        PDMultipliedMotorPower = vPivotMultipliedP + vPivotMultipliedD;
+
         if(vPivotSet < lastset){
-            FinalMotorPower = FinalMotorPower + PDMultipliedMotorPower;
+            FinalMotorPower = FinalMotorPower + Math.abs(PDMultipliedMotorPower);
         }else if(vPivotSet > lastset){
-            FinalMotorPower = FinalMotorPower - PDMultipliedMotorPower;
+            FinalMotorPower = FinalMotorPower - Math.abs(PDMultipliedMotorPower);
         }
-*/
-        FinalMotorPower = FinalMotorPower + vPivotMultipliedP + vPivotMultipliedD;
+
+        //FinalMotorPower = FinalMotorPower + vPivotMultipliedP + vPivotMultipliedD;
 
         lastError = vPivotDifference;//setting last error for use next loop cycle
 
