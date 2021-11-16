@@ -4,7 +4,7 @@ public class VPivotClass {
 
     //setting variables for use in later code
     double vPivotMin = 0.8, vPivotMax = 3, vPivotSet = 1.15;
-    double vPivotDifference = 0, vPivotMultipliedP = 0, vPivotP = 3.85, vPivotD = 3.5, vPivotMultipliedD; // 6.5, 6
+    double vPivotDifference = 0, vPivotMultipliedP = 0, vPivotP = 6.5, vPivotD = 6, vPivotMultipliedD; // 6.5, 6
     public double FinalMotorPower, PDMultipliedMotorPower, lastset;
     double lastError;
 
@@ -57,10 +57,10 @@ public class VPivotClass {
         //adding the two together to get 1 motor output
         PDMultipliedMotorPower = vPivotMultipliedP + vPivotMultipliedD;
 
-        if(vPivotSet < lastset){
-            FinalMotorPower = FinalMotorPower + Math.abs(PDMultipliedMotorPower);
-        }else if(vPivotSet > lastset){
-            FinalMotorPower = FinalMotorPower - Math.abs(PDMultipliedMotorPower);
+        if(vPivotSet < POTReading){
+            FinalMotorPower = Math.abs(PDMultipliedMotorPower);
+        }else if(vPivotSet > POTReading){
+            FinalMotorPower = Math.abs(PDMultipliedMotorPower)*-.3;
         }
 
         //FinalMotorPower = FinalMotorPower + vPivotMultipliedP + vPivotMultipliedD;
