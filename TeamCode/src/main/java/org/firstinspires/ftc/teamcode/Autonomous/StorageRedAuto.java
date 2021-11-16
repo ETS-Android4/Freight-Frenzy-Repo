@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.TestHub.VPivotClass;
 
 @Autonomous
 
-public class StraightRedAuto extends LinearOpMode {
+public class StorageRedAuto extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     SpeedClass SpeedClass = new SpeedClass();
     DirectionCalcClass DirectionClass = new DirectionCalcClass();
@@ -79,18 +79,16 @@ public class StraightRedAuto extends LinearOpMode {
             slowMovedDistance = 1;
             thetaDeccelerationDegree = 2;
             thetaTargetSpeed = .4   ;
-            VPivotSetpoint = .9;
-            VPivotSpeed = .3;
-            rotateSetpoint = -650;
-            rotateSpeed = .3;
+
+
                 //Exits once the robot is a certain distance and angle away
                 if (action == 1) {
-                    xSetpoint = -50;
-                    ySetpoint = .8;
+                    xSetpoint = 22;
+                    ySetpoint = 26.5;
                     thetaSetpoint = 0;
                     targetSpeed = 30;
                     //Exits once the robot is a certain distance and angle away
-                    if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .5 && OdoClass.thetaInDegreesReturn() > -.5)) {
+                    if (DirectionClass.distanceFromReturn() <= .3 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .3 && OdoClass.thetaInDegreesReturn() > -.3)) {
                         StopMotors();
                         action = 2;
                         startPointX = OdoClass.odoXReturn();
@@ -100,22 +98,6 @@ public class StraightRedAuto extends LinearOpMode {
                         breakout = 1;
                     }
                 }
-           else if (action == 2) {
-                xSetpoint = -50;
-                ySetpoint = 25;
-                thetaSetpoint = 0;
-                targetSpeed = 12.5;
-                //Exits once the robot is a certain distance and angle away
-                if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .5 && OdoClass.thetaInDegreesReturn() > -.5)) {
-                    StopMotors();
-                    action = 3;
-                    startPointX = OdoClass.odoXReturn();
-                    startPointY = OdoClass.odoYReturn();
-                    breakout = 0;
-                } else {
-                    breakout = 1;
-                }
-            }
                 /*
                 xSetpoint = 0;
                 ySetpoint = 0;
