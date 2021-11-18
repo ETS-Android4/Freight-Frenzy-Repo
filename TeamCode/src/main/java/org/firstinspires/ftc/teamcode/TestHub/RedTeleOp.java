@@ -117,6 +117,12 @@ public class RedTeleOp extends LinearOpMode {
                 Vpivotcontroller = VPivotClass.PivotSetReturn();
                 robot.TR_M.setPower(RotateClass.RotateAutoMethod(-1400,.8, robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
                 robot.TE_M.setPower(ExtendClass.ExtendMethod((-gamepad2.left_stick_y), robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
+            }else if(gamepad2.dpad_left){
+                robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15,.9,robot.TP_P.getVoltage()));
+                Vpivotcontroller = VPivotClass.PivotSetReturn();
+                robot.TR_M.setPower(RotateClass.RotateAutoMethod(1400,.8, robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
+                robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(0, .5, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
+
             }else{
                     //else run TeleOp programs
                 Vpivotcontroller = Vpivotcontroller +(.03 * gamepad2.right_stick_y);
