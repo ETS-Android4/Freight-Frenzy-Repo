@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.TestHub;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.RotateClass;
 
-@TeleOp
+//@Autonomous
 public class HomingProgram extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     ExtendClass ExtendClass = new ExtendClass();

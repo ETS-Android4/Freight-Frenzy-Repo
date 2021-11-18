@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.TestHub.ExtendClass;
 import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
 import org.firstinspires.ftc.teamcode.TestHub.VPivotClass;
 
-@TeleOp
+//@TeleOp
 public class BetterTeleOp extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     org.firstinspires.ftc.teamcode.TestHub.ExtendClass ExtendClass = new ExtendClass();

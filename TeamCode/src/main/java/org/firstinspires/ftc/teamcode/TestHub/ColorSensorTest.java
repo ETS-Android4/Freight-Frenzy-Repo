@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 import org.firstinspires.ftc.teamcode.Test;
-@TeleOp
+//@TeleOp
 public class ColorSensorTest extends LinearOpMode {
 
     TestHubHardware robot = new TestHubHardware();

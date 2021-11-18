@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.TestHub;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-@TeleOp
+//@TeleOp
 public class Mecanum extends  LinearOpMode {
 
 

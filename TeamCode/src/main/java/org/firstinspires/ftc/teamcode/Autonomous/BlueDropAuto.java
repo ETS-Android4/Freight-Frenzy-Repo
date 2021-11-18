@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.DirectionCalcClass;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
@@ -14,15 +15,15 @@ import org.firstinspires.ftc.teamcode.TestHub.VPivotClass;
 
 @Autonomous
 
-public class BlueAuto extends LinearOpMode {
+public class BlueDropAuto extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     SpeedClass SpeedClass = new SpeedClass();
     DirectionCalcClass DirectionClass = new DirectionCalcClass();
     TurnControl TurnControl = new TurnControl();
     Odometry OdoClass = new Odometry();
-    RotateClass Rotate = new RotateClass();
-    ExtendClass Extend = new ExtendClass();
-    VPivotClass VPivot = new VPivotClass();
+    ExtendClass ExtendClass = new ExtendClass();
+    VPivotClass VPivotClass = new VPivotClass();
+    RotateClass RotateClass = new RotateClass();
     //Uses Vuforia Developer Code
     //Declares Varibles
     double breakout;
@@ -56,118 +57,160 @@ public class BlueAuto extends LinearOpMode {
     double timepassed2;
 
     double action;
-
+    double initPOsitionOrder = 1;
     @Override
 
     public void runOpMode() {
         robot.init(hardwareMap);
+
+        //Depending on the ring stack we change our intake to diffrent heights to be able to reach the top of the stack
+        //Enters our 1 loop system, will exit once all actions are done
+        while (!opModeIsActive()) {
+            if (RotateClass.isHomedRotateReturn() == false) {
+                robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15, .5, robot.TP_P.getVoltage()));
+                if (robot.TP_P.getVoltage() > 1.1 && robot.TP_P.getVoltage() < 1.25) {
+                    robot.TE_M.setPower(ExtendClass.ExtendHoming(robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
+                    if (ExtendClass.isHomedExtendReturn() == true) {
+                        robot.TR_M.setPower(RotateClass.RotateHoming(robot.TR_G.getState(), robot.TR_M.getCurrentPosition()));
+                    }
+                }
+            } else {
+                telemetry.addData("homed", 0);
+                robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(10, .8, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
+                if (initPOsitionOrder == 1) {
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(800, .4, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+                    if (RotateClass.modifiedRotateCurrent() > 750 && RotateClass.modifiedRotateCurrent() < 850) {
+                        initPOsitionOrder = 2;
+                    }
+                } else if (initPOsitionOrder == 2) {
+                    robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.725, .5, robot.TP_P.getVoltage()));
+                    if (robot.TP_P.getVoltage() < 2 && robot.TP_P.getVoltage() > 1.6) {
+                        initPOsitionOrder = 3;
+                    }
+                } else if (initPOsitionOrder == 3) {
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(625, .4, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+                    robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.7, .5, robot.TP_P.getVoltage()));
+                }
+
+
+            }
+            telemetry.addData("Rotate homed boolean", RotateClass.isHomedRotateReturn());
+            telemetry.addData("initPosition order", initPOsitionOrder);
+            telemetry.addData("Vpiovot PT", robot.TP_P.getVoltage());
+            telemetry.addData("rotate modified", RotateClass.modifiedRotateCurrent());
+            telemetry.update();
+        }
         waitForStart();
+        robot.LF_M.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.LF_M.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.LB_M.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.LB_M.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.RF_M.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.RF_M.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //Shuts down Tensor Flow
         //Sets our intial varible setpoints
         action = 1;
         startPointX = 0;
         startPointY = 0;
         stopProgram = 0;
-        //Depending on the ring stack we change our intake to diffrent heights to be able to reach the top of the stack
-        //Enters our 1 loop system, will exit once all actions are done
+        xSetpoint = 0;
+        ySetpoint = 0;
+        thetaSetpoint = 0;
+        targetSpeed = 3;
+        accelerationDistance = 0;
+        decelerationDistance = 2;
+        slowMoveSpeed = 3.85;
+        slowMovedDistance = 1;
+        thetaDeccelerationDegree = 1;
+        thetaTargetSpeed = .4;
+        rotateSpeed = .325;
+        extendSpeed = .4;
+        VPivotSpeed = .25;
+        rotateSetpoint = 1550;
+        extendSetpoint = 0;
+        VPivotSetpoint = 1.2;
         while (opModeIsActive() && stopProgram == 0) {
 
-                xSetpoint = 0;
-                ySetpoint = 0;
-                thetaSetpoint = 0;
-                targetSpeed = 3;
-                accelerationDistance = 0;
-                decelerationDistance = 2;
-                slowMoveSpeed = 3.85;
-                slowMovedDistance = 1;
-                thetaDeccelerationDegree = 1;
-                thetaTargetSpeed = .4;
-                rotateSpeed = .25;
-                extendSpeed = .25;
-                VPivotSpeed = .25;
-                rotateSetpoint = 0;
-                extendSetpoint = 0;
-                VPivotSetpoint = .9;
-            if(action == 1) {
-                if ((robot.TP_P.getVoltage() >= 1.45) && (robot.TP_P.getVoltage() <= 1.55)) {
+            if (action == 1) {
+                if ((robot.TP_P.getVoltage() >= 1.15) && (robot.TP_P.getVoltage() <= 1.25)) {
                     StopMotors();
-                    action = 8;
+                    action = 2;
                     startPointY = OdoClass.odoYReturn();
                     breakout = 0;
                 } else {
                     breakout = 1;
                 }
-            }
-            else if(action == 2){
-                extendSetpoint = 350;
-                if((Extend.extendModifiedEncoder <= 375 && Extend.extendModifiedEncoder >= 325)){
+            } else if (action == 2) {
+                rotateSetpoint = 1550;
+                if (RotateClass.modifiedRotateCurrent() <= 1600 && RotateClass.modifiedRotateCurrent() >= 1500) {
                     action = 3;
-                    breakout =0;
+                    breakout = 0;
                 } else {
-                    breakout =1;
-                }
-            }
-            else if(action == 3){
-                rotateSetpoint = 500;
-                if(Rotate.modifiedRotateCurrent() <= 550&& Rotate.modifiedRotateCurrent() >= 450){
-                    action = 4;
-                    breakout =0;
-                } else {
-                    breakout =1;
+                    breakout = 1;
                     timepassed = 1;
                 }
-            }
-            else if (action == 4){
-                if(timepassed == 1){
+            } else if (action == 3) {
+                extendSetpoint = 1450;
+                if ((ExtendClass.extendModifiedEncoder <= 1500 && ExtendClass.extendModifiedEncoder >= 1400)) {
+                    action = 4;
+                    breakout = 0;
+                } else {
+                    breakout = 1;
+                    timepassed = 1;
+                }
+
+            } else if (action == 4) {
+                robot.LI_S.setPower(-.7);
+                robot.RI_S.setPower(.7);
+                if (timepassed == 1) {
                     timepassed2 = getRuntime();
                     timepassed = 0;
                 }
-                if(timepassed2 + 1 <= getRuntime()){
+                if (timepassed2 + 3.5 <= getRuntime()) {
                     action = 5;
+                    breakout = 0;
                     timepassed = 1;
-                }
-                else{
+                } else {
                     breakout = 1;
 
                 }
-            }
-            else if(action == 5){
-                if(timepassed == 1){
-                    timepassed2 = getRuntime();
-                    timepassed = 0;
-                }
-                robot.LI_S.setPower(.5);
-                robot.RI_S.setPower(-.5);
-                if(timepassed2 + 2 <= getRuntime()){
+            } else if (action == 5) {
+                robot.LI_S.setPower(0);
+                robot.RI_S.setPower(0);
+                extendSetpoint = 0;
+                if ((ExtendClass.extendModifiedEncoder <= 100)) {
                     action = 6;
-                    breakout =0;
-                    timepassed = 1;
+                    breakout = 0;
                 } else {
-                    breakout =1;
-
+                    breakout = 1;
+                    timepassed = 1;
                 }
-            }
-           /* //Moves to first power shot shooting position
-            thetaSetpoint = 0;
-            accelerationDistance = .04;
-            decelerationDistance = 8;
-            slowMoveSpeed = 3.85;
-            slowMovedDistance = 1;
-            thetaDeccelerationDegree = 2;
-            thetaTargetSpeed = .6;
-            VPivotSetpoint = .9;
-            VPivotSpeed = .3;
+
+
+                ///Moves to first power shot shooting position
+
                 //Exits once the robot is a certain distance and angle away
 
-                if (action == 1) {
+            } else if (action == 6) {
+                    thetaSetpoint = 0;
+                    accelerationDistance = .04;
+                    decelerationDistance = 8;
+                    slowMoveSpeed = 3.85;
+                    slowMovedDistance = 1;
+                    thetaDeccelerationDegree = 2;
+                    thetaTargetSpeed = 1;
+                    VPivotSetpoint = .9;
+                    VPivotSpeed = .3;
                     xSetpoint = 50;
                     ySetpoint = .8;
                     thetaSetpoint = 0;
-                    targetSpeed = 30;
+                    targetSpeed = 20;
+                    rotateSpeed = .4;
+                    rotateSetpoint = 0;
                     //Exits once the robot is a certain distance and angle away
-                    if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .5 && OdoClass.thetaInDegreesReturn() > -.5)) {
+                if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .5 && OdoClass.thetaInDegreesReturn() > -.5)) {
                         StopMotors();
-                        action = 2;
+                        action = 7;
                         startPointX = OdoClass.odoXReturn();
                         startPointY = OdoClass.odoYReturn();
                         breakout = 0;
@@ -175,7 +218,7 @@ public class BlueAuto extends LinearOpMode {
                         breakout = 1;
                     }
                 }
-           else if (action == 2) {
+           else if (action == 7) {
                 xSetpoint = 50;
                 ySetpoint = 25;
                 thetaSetpoint = 0;
@@ -183,7 +226,7 @@ public class BlueAuto extends LinearOpMode {
                 //Exits once the robot is a certain distance and angle away
                 if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .5 && OdoClass.thetaInDegreesReturn() > -.5)) {
                     StopMotors();
-                    action = 3;
+                    action = 8;
                     startPointX = OdoClass.odoXReturn();
                     startPointY = OdoClass.odoYReturn();
                     breakout = 0;
@@ -192,7 +235,7 @@ public class BlueAuto extends LinearOpMode {
                 }
             }
 
-             */
+
 
 
             /*else if (action == 2) {
@@ -212,21 +255,20 @@ public class BlueAuto extends LinearOpMode {
                 }
             }
             */
-                //If nothing else to do, stop the program
-                else {
-                    stopProgram = 1;
-                }
-                //Runs all of our equations each loop cycle
-                Movement(xSetpoint, ySetpoint, thetaSetpoint, targetSpeed, thetaTargetSpeed, thetaDeccelerationDegree, slowMoveSpeed, accelerationDistance, decelerationDistance, slowMovedDistance);
-                Rotate.RotateAutoMethod(rotateSetpoint, rotateSpeed, robot.TR_M.getCurrentPosition(), robot.TR_G.getState());
-                Extend.ExtendAutoMethod(extendSetpoint, extendSpeed, robot.TE_M.getCurrentPosition(), robot.TE_G.getState());
-                VPivot.VPivotAutoMethod(VPivotSetpoint, VPivotSpeed, robot.TP_P.getVoltage());
-                PowerSetting();
-                Telemetry();
+            //If nothing else to do, stop the program
+            else {
+                stopProgram = 1;
+                StopMotors();
             }
-            StopMotors();
-
+            //Runs all of our equations each loop cycle
+            Movement(xSetpoint, ySetpoint, thetaSetpoint, targetSpeed, thetaTargetSpeed, thetaDeccelerationDegree, slowMoveSpeed, accelerationDistance, decelerationDistance, slowMovedDistance);
+            RotateClass.RotateAutoMethod(rotateSetpoint, rotateSpeed, robot.TR_M.getCurrentPosition(), robot.TR_G.getState());
+            ExtendClass.ExtendAutoMethod(extendSetpoint, extendSpeed, robot.TE_M.getCurrentPosition(), robot.TE_G.getState());
+            VPivotClass.VPivotAutoMethod(VPivotSetpoint, VPivotSpeed, robot.TP_P.getVoltage());
+            PowerSetting();
+            Telemetry();
         }
+    }
 
 
     public void Telemetry() {
@@ -254,6 +296,8 @@ public class BlueAuto extends LinearOpMode {
         telemetry.addData("Motor Power Ratio", DirectionClass.motorPowerRatioReturn());
         telemetry.addData("Action", action);
         telemetry.addData("PT", robot.TP_P.getVoltage());
+        telemetry.addData("ExtendE", ExtendClass.extendModifiedEncoder);
+        telemetry.addData("RotateE", RotateClass.modifiedRotateCurrent());
         telemetry.update();
     }
 
@@ -267,13 +311,14 @@ public class BlueAuto extends LinearOpMode {
 
     public void PowerSetting() {
 
-        robot.TR_M.setPower(Rotate.rotateMotorPower);
-        robot.TE_M.setPower(Extend.ExtendMotorPower);
-       robot.TP_M.setPower(VPivot.FinalMotorPower);
+        robot.TR_M.setPower(RotateClass.rotateMotorPower);
+        robot.TE_M.setPower(ExtendClass.ExtendMotorPower);
+       robot.TP_M.setPower(VPivotClass.FinalMotorPower);
         robot.LF_M.setPower(DirectionClass.LF_M_DirectionReturn() * (SpeedClass.SpeedReturn()));
         robot.LB_M.setPower(DirectionClass.LB_M_DirectionReturn() * (SpeedClass.SpeedReturn() ));
        robot.RF_M.setPower(DirectionClass.RF_M_DirectionReturn() * (SpeedClass.SpeedReturn()));
        robot.RB_M.setPower(DirectionClass.RB_M_DirectionReturn() * (SpeedClass.SpeedReturn() ));
+
 
     }
 
