@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.TestHub;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.openftc.easyopencv.OpenCvCamera;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -13,7 +14,7 @@ import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
-
+@TeleOp
 public class OpenCVTest extends LinearOpMode {
 
     //creates the pipline call and webcam call
@@ -37,7 +38,7 @@ public class OpenCVTest extends LinearOpMode {
             @Override
             //starts the webcam and defines the pixels
             public void onOpened() {
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                webcam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -51,6 +52,9 @@ public class OpenCVTest extends LinearOpMode {
 
         while (opModeIsActive()) {
             telemetry.addData("Region 1", pipeline.region1Avg());
+
+
+
             telemetry.addData("Region 2", pipeline.region2Avg());
             telemetry.addData("Region 3", pipeline.region3Avg());
 
@@ -79,12 +83,12 @@ public class OpenCVTest extends LinearOpMode {
         static final Scalar CYAN = new Scalar(0, 139, 139);
 
         //sets the boxes where we will look
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(2, 70);
-        static final int REGION1_WIDTH = 105;
-        static final int REGION1_HEIGHT = 105;
-        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(111, 70);
-        static final int REGION2_WIDTH = 105;
-        static final int REGION2_HEIGHT = 105;
+        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(90, 120);
+        static final int REGION1_WIDTH = 70;
+        static final int REGION1_HEIGHT = 120;
+        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(300, 120);
+        static final int REGION2_WIDTH = 70;
+        static final int REGION2_HEIGHT = 120;
        //static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(214, 70);
         //static final int REGION3_WIDTH = 105;
         //static final int REGION3_HEIGHT = 105;
@@ -106,8 +110,10 @@ public class OpenCVTest extends LinearOpMode {
         //Point region4_pointB = new Point(REGION3_TOPLEFT_ANCHOR_POINT.x + REGION3_WIDTH, REGION2_TOPLEFT_ANCHOR_POINT.y + REGION3_HEIGHT);
 
         Mat region1_G, region2_G, region3_G, region4_G;
+        Mat RGBA = new Mat();
         Mat HLS = new Mat();
-        Mat L = new Mat();
+        Mat A = new Mat();
+        Mat H = new Mat();
         int avg1, avg2, avg3, avg4;
 
         /*
@@ -117,16 +123,16 @@ public class OpenCVTest extends LinearOpMode {
 
         //actual image processing
         void inputToG(Mat input) {
-            Imgproc.cvtColor(input, HLS, Imgproc.COLOR_RGB2BGR);
-            Core.extractChannel(HLS, L, 1);
+            Imgproc.cvtColor(input, RGBA, Imgproc.COLOR_RGB2RGBA);
+            Core.extractChannel(RGBA, A, 3);
         }
 
         @Override
         public void init(Mat firstFrame) {
             inputToG(firstFrame);
             //sets region to look in for color
-            region1_G = L.submat(new Rect(region1_pointA, region1_pointB));
-            region2_G = L.submat(new Rect(region2_pointA, region2_pointB));
+            region1_G = A.submat(new Rect(region1_pointA, region1_pointB));
+            region2_G = A.submat(new Rect(region2_pointA, region2_pointB));
             //region3_G = L.submat(new Rect(region3_pointA, region3_pointB));
             //region4_G = L.submat(new Rect(region4_pointA, region4_pointB));
         }
