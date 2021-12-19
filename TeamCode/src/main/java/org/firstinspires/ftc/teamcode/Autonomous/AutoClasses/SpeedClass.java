@@ -35,7 +35,6 @@ public class SpeedClass {
     double thetaSpeed;
 
     public void SpeedCalc(double odoX, double odoY, double odoTheta, double time, double speedsetpoint, double thetaspeedsetpoint) {
-
         //Finds the difference in the that the position from last loop cycle to the current loop cycle
         thetaError = Math.abs(odoTheta - lastTheta);
         //Set lastTheta for use in next loop cycle
