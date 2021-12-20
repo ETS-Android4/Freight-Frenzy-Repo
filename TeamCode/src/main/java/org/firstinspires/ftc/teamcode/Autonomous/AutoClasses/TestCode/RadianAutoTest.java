@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.TestHub.VPivotClass;
 public class RadianAutoTest extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     SpeedClass SpeedClass = new SpeedClass();
-    RadianDirectionCalcClass DirectionClass = new RadianDirectionCalcClass();
+    RadianDirectionCalcClass RadDirectionClass = new RadianDirectionCalcClass();
     TurnControl TurnControl = new TurnControl();
     Odometry OdoClass = new Odometry();
     ExtendClass ExtendClass = new ExtendClass();
@@ -63,39 +63,8 @@ public class RadianAutoTest extends LinearOpMode {
     public void runOpMode() {
         robot.init(hardwareMap);
         while (!opModeIsActive()) {
-            if (RotateClass.isHomedRotateReturn() == false) {
-                robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15, .5, robot.TP_P.getVoltage()));
-                if (robot.TP_P.getVoltage() > 1.1 && robot.TP_P.getVoltage() < 1.25) {
-                    robot.TE_M.setPower(ExtendClass.ExtendHoming(robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
-                    if (ExtendClass.isHomedExtendReturn() == true) {
-                        robot.TR_M.setPower(RotateClass.RotateHoming(robot.TR_G.getState(), robot.TR_M.getCurrentPosition()));
-                    }
-                }
-            } else {
-                telemetry.addData("homed", 0);
-                robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(10, .8, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
-                if (initPOsitionOrder == 1) {
-                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(800, .4, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
-                    if (RotateClass.modifiedRotateCurrent() > 750 && RotateClass.modifiedRotateCurrent() < 850) {
-                        initPOsitionOrder = 2;
-                    }
-                } else if (initPOsitionOrder == 2) {
-                    robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.725, .5, robot.TP_P.getVoltage()));
-                    if (robot.TP_P.getVoltage() < 2 && robot.TP_P.getVoltage() > 1.6) {
-                        initPOsitionOrder = 3;
-                    }
-                } else if (initPOsitionOrder == 3) {
-                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(625, .4, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
-                    robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.7, .5, robot.TP_P.getVoltage()));
-                }
 
 
-            }
-            telemetry.addData("Rotate homed boolean", RotateClass.isHomedRotateReturn());
-            telemetry.addData("initPosition order", initPOsitionOrder);
-            telemetry.addData("Vpiovot PT", robot.TP_P.getVoltage());
-            telemetry.addData("rotate modified", RotateClass.modifiedRotateCurrent());
-            telemetry.update();
         }
         waitForStart();
         //Shuts down Tensor Flow
@@ -112,20 +81,20 @@ public class RadianAutoTest extends LinearOpMode {
                 //Exits once the robot is a certain distance and angle away
                 if (action == 1) {
                     thetaSetpoint = 0;
-                    accelerationDistance = .04;
+                    accelerationDistance = .2;
                     decelerationDistance = 8;
                     slowMoveSpeed = 3.85;
                     slowMovedDistance = 1;
                     thetaDeccelerationDegree = 2;
                     thetaTargetSpeed = 1;
-                    xSetpoint = 50;
-                    ySetpoint = 0;
+                    xSetpoint = 40;
+                    ySetpoint = 40;
                     thetaSetpoint = 0;
-                    targetSpeed = 20;
+                    targetSpeed = 15;
                     //Exits once the robot is a certain distance and angle away
-                    if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .5 && OdoClass.thetaInDegreesReturn() > -.5)) {
+                    if (RadDirectionClass.distanceFromReturn() <= 1 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 1 && OdoClass.thetaInDegreesReturn() > -1)) {
                         StopMotors();
-                        action = 2;
+                        action =  1;
                         startPointX = OdoClass.odoXReturn();
                         startPointY = OdoClass.odoYReturn();
                         breakout = 0;
@@ -139,9 +108,9 @@ public class RadianAutoTest extends LinearOpMode {
                 }
                 //Runs all of our equations each loop cycle
                 Movement(xSetpoint, ySetpoint, thetaSetpoint, targetSpeed, thetaTargetSpeed, thetaDeccelerationDegree, slowMoveSpeed, accelerationDistance, decelerationDistance, slowMovedDistance);
-                RotateClass.RotateAutoMethod(rotateSetpoint, rotateSpeed, robot.TR_M.getCurrentPosition(), robot.TR_G.getState());
-                ExtendClass.ExtendAutoMethod(extendSetpoint, extendSpeed, robot.TE_M.getCurrentPosition(), robot.TE_G.getState());
-                VPivotClass.VPivotAutoMethod(VPivotSetpoint, VPivotSpeed, robot.TP_P.getVoltage());
+             //   RotateClass.RotateAutoMethod(rotateSetpoint, rotateSpeed, robot.TR_M.getCurrentPosition(), robot.TR_G.getState());
+               // ExtendClass.ExtendAutoMethod(extendSetpoint, extendSpeed, robot.TE_M.getCurrentPosition(), robot.TE_G.getState());
+                //VPivotClass.VPivotAutoMethod(VPivotSetpoint, VPivotSpeed, robot.TP_P.getVoltage());
                 PowerSetting();
                 Telemetry();
             }
@@ -155,25 +124,28 @@ public class RadianAutoTest extends LinearOpMode {
         telemetry.addData("Odo X", OdoClass.odoXReturn());
         telemetry.addData("Odo Y", OdoClass.odoYReturn());
         telemetry.addData("Theta Angle", OdoClass.thetaInDegreesReturn());
-        telemetry.addData("X", DirectionClass.XReturn());
-        telemetry.addData("Y", DirectionClass.YReturn());
+        telemetry.addData("X", RadDirectionClass.XReturn());
+        telemetry.addData("Y", RadDirectionClass.YReturn());
         telemetry.addData("Theta", TurnControl.theta);
         telemetry.addData("ThetaSpeedSetpoint", SpeedClass.thetaSpeedSetpoint());
         telemetry.addData("SlowMoveSpeed", slowMoveSpeed);
         telemetry.addData("slowMovedDistance", slowMovedDistance);
-        telemetry.addData("Distance", DirectionClass.distanceReturn());
-        telemetry.addData("Distance From", DirectionClass.distanceFromReturn());
+        telemetry.addData("Distance", RadDirectionClass.distanceReturn());
+        telemetry.addData("Distance From", RadDirectionClass.distanceFromReturn());
         telemetry.addData("Speed Setpoint", SpeedClass.speedSetpoint());
         telemetry.addData("Speed", SpeedClass.SpeedReturn());
         telemetry.addData("time", getRuntime());
         telemetry.addData("Distance Delta", SpeedClass.DistanceDelta());
-        telemetry.addData("XSetpoint", DirectionClass.XSetpointReturn());
-        telemetry.addData("YSetpoint", DirectionClass.YSetpointReturn());
+        telemetry.addData("XSetpoint", RadDirectionClass.XSetpointReturn());
+        telemetry.addData("YSetpoint", RadDirectionClass.YSetpointReturn());
         telemetry.addData("LF_Power", robot.LF_M.getPower());
         telemetry.addData("RF_Power", robot.RF_M.getPower());
-        telemetry.addData("LF_Direction", DirectionClass.LF_M_DirectionReturn());
-        telemetry.addData("Motor Power Ratio", DirectionClass.motorPowerRatioReturn());
+        telemetry.addData("LF_Direction", RadDirectionClass.LF_M_DirectionReturn());
+        telemetry.addData("Motor Power Ratio", RadDirectionClass.motorPowerRatioReturn());
         telemetry.addData("Action", action);
+        telemetry.addData("E1", robot.LF_M.getCurrentPosition());
+        telemetry.addData("E2", robot.LB_M.getCurrentPosition());
+        telemetry.addData("E3", robot.RF_M.getCurrentPosition());
         telemetry.addData("PT", robot.TP_P.getVoltage());
         telemetry.update();
     }
@@ -181,20 +153,20 @@ public class RadianAutoTest extends LinearOpMode {
     public void Movement(double endpointx, double endpointy, double thetasetpoint, double targetspeed, double thetaTargetSpeed, double thetaDeccelerationDegree, double slowMoveSpeed, double accelerationdistance, double deccelerationdistance, double slowMovedDistance) {
         OdoClass.RadiusOdometry(robot.LF_M.getCurrentPosition(), robot.LB_M.getCurrentPosition(), robot.RF_M.getCurrentPosition());
         TurnControl.turnControl(thetaSetpoint, OdoClass.thetaInDegreesReturn());
-        DirectionClass.DirectionCalc(startPointX, startPointY, endpointx, endpointy, OdoClass.odoXReturn(), OdoClass.odoYReturn(), TurnControl.theta, OdoClass.thetaINRadiansReturn());
-        SpeedClass.MotionProfile(targetspeed, accelerationdistance, deccelerationdistance, slowMovedDistance, DirectionClass.distanceReturn(), DirectionClass.distanceFromReturn(), slowMoveSpeed, thetaDeccelerationDegree, thetasetpoint, thetaTargetSpeed, OdoClass.thetaInDegreesReturn());
+        RadDirectionClass.DirectionCalc(startPointX, startPointY, endpointx, endpointy, OdoClass.odoXReturn(), OdoClass.odoYReturn(), TurnControl.theta, OdoClass.thetaINRadiansReturn());
+        SpeedClass.MotionProfile(targetspeed, accelerationdistance, deccelerationdistance, slowMovedDistance, RadDirectionClass.distanceReturn(), RadDirectionClass.distanceFromReturn(), slowMoveSpeed, thetaDeccelerationDegree, thetasetpoint, thetaTargetSpeed, OdoClass.thetaInDegreesReturn());
         SpeedClass.SpeedCalc(OdoClass.odoXReturn(), OdoClass.odoYReturn(), OdoClass.thetaInDegreesReturn(), getRuntime(), SpeedClass.speedSetpoint(), SpeedClass.thetaSpeedSetpoint());
     }
 
     public void PowerSetting() {
 
-        robot.TR_M.setPower(RotateClass.rotateMotorPower);
-        robot.TE_M.setPower(ExtendClass.ExtendMotorPower);
-       robot.TP_M.setPower(VPivotClass.FinalMotorPower);
-        robot.LF_M.setPower(DirectionClass.LF_M_DirectionReturn() * (SpeedClass.SpeedReturn()));
-        robot.LB_M.setPower(DirectionClass.LB_M_DirectionReturn() * (SpeedClass.SpeedReturn() ));
-       robot.RF_M.setPower(DirectionClass.RF_M_DirectionReturn() * (SpeedClass.SpeedReturn()));
-       robot.RB_M.setPower(DirectionClass.RB_M_DirectionReturn() * (SpeedClass.SpeedReturn() ));
+      //  robot.TR_M.setPower(RotateClass.rotateMotorPower);
+       // robot.TE_M.setPower(ExtendClass.ExtendMotorPower);
+      // robot.TP_M.setPower(VPivotClass.FinalMotorPower);
+        robot.LF_M.setPower(RadDirectionClass.LF_M_DirectionReturn() * (SpeedClass.SpeedReturn()));
+        robot.LB_M.setPower(RadDirectionClass.LB_M_DirectionReturn() * (SpeedClass.SpeedReturn() ));
+       robot.RF_M.setPower(RadDirectionClass.RF_M_DirectionReturn() * (SpeedClass.SpeedReturn()));
+      robot.RB_M.setPower(RadDirectionClass.RB_M_DirectionReturn() * (SpeedClass.SpeedReturn() ));
 
     }
 
