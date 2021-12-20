@@ -3,14 +3,13 @@ package org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.TestCode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.DirectionCalcClass;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.SpeedClass;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.TurnControl;
-import org.firstinspires.ftc.teamcode.RotateClass;
-import org.firstinspires.ftc.teamcode.TestHub.ExtendClass;
+import org.firstinspires.ftc.teamcode.TurretClasses.RotateClass;
+import org.firstinspires.ftc.teamcode.TurretClasses.ExtendClass;
 import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
-import org.firstinspires.ftc.teamcode.TestHub.VPivotClass;
+import org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass;
 
 @Autonomous
 

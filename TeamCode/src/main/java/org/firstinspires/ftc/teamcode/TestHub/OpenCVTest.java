@@ -39,6 +39,7 @@ public class OpenCVTest extends LinearOpMode {
             //starts the webcam and defines the pixels
             public void onOpened() {
                 webcam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
+
             }
 
             @Override
@@ -144,6 +145,7 @@ public class OpenCVTest extends LinearOpMode {
 
             avg1 = (int) Core.mean(region1_G).val[0];
             avg2 = (int) Core.mean(region2_G).val[0];
+
             //avg3 = (int) Core.mean(region3_G).val[0];
             //avg4 = (int) Core.mean(region4_G).val[0];
 

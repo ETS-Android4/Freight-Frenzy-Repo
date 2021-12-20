@@ -2,10 +2,8 @@ package org.firstinspires.ftc.teamcode.TestHub;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
-import org.firstinspires.ftc.teamcode.Test;
 @TeleOp
 public class ColorSensorTest extends LinearOpMode {
 

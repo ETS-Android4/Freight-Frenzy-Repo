@@ -1,16 +1,14 @@
-package org.firstinspires.ftc.teamcode.TestHub;
+package org.firstinspires.ftc.teamcode.TurretClasses;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.RotateClass;
+import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
 
 //@Autonomous
 public class HomingProgram extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
-    ExtendClass ExtendClass = new ExtendClass();
-    VPivotClass VPivotClass = new VPivotClass();
+    org.firstinspires.ftc.teamcode.TurretClasses.ExtendClass ExtendClass = new ExtendClass();
+    org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass VPivotClass = new VPivotClass();
     RotateClass RotateClass = new RotateClass();
     double initPOsitionOrder = 1;
 

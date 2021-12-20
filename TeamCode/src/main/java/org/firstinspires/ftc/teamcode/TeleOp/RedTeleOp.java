@@ -1,15 +1,18 @@
-package org.firstinspires.ftc.teamcode.TestHub;
+package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.RotateClass;
+import org.firstinspires.ftc.teamcode.TurretClasses.RotateClass;
+import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
+import org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass;
+import org.firstinspires.ftc.teamcode.TurretClasses.ExtendClass;
 
 @TeleOp
-public class BlueTeleOp extends LinearOpMode {
+public class RedTeleOp extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
-    ExtendClass ExtendClass = new ExtendClass();
-    VPivotClass VPivotClass = new VPivotClass();
+    org.firstinspires.ftc.teamcode.TurretClasses.ExtendClass ExtendClass = new ExtendClass();
+    org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass VPivotClass = new VPivotClass();
     RotateClass RotateClass = new RotateClass();
     double x, y, z;
     double Vpivotcontroller = 1.15;
@@ -115,7 +118,7 @@ public class BlueTeleOp extends LinearOpMode {
             }else if(gamepad2.dpad_right){
                 robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15,.9,robot.TP_P.getVoltage()));
                 Vpivotcontroller = VPivotClass.PivotSetReturn();
-                robot.TR_M.setPower(RotateClass.RotateAutoMethod(1400,.8, robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
+                robot.TR_M.setPower(RotateClass.RotateAutoMethod(-1400,.8, robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
                 robot.TE_M.setPower(ExtendClass.ExtendMethod((-gamepad2.left_stick_y), robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
             }else{
                     //else run TeleOp programs

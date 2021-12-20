@@ -1,31 +1,25 @@
-package org.firstinspires.ftc.teamcode.TestHub;
+package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.RotateClass;
-import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
+import org.firstinspires.ftc.teamcode.TurretClasses.RotateClass;
+import org.firstinspires.ftc.teamcode.TurretClasses.ExtendClass;
+import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
+import org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass;
+
 @TeleOp
-public class AngleTeleop extends LinearOpMode {
+public class NewBlueTeleOp extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
-    ExtendClass ExtendClass = new ExtendClass();
-    VPivotClass VPivotClass = new VPivotClass();
+    org.firstinspires.ftc.teamcode.TurretClasses.ExtendClass ExtendClass = new ExtendClass();
+    org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass VPivotClass = new VPivotClass();
     RotateClass RotateClass = new RotateClass();
-    Odometry OdoClass = new Odometry();
     double x, y, z;
     double Vpivotcontroller = 1.15;
     double initPOsitionOrder = 1;
-    double setpointAngle;
-    double finalX, finalY;
-    double LF_M_DIR, LB_M_DIR, RF_M_DIR, RB_M_DIR;
-    double motorPowerRatio;
-    double setpointAngleDeg;
-    double speed;
-    double finalAngle;
     public void runOpMode() {
         robot.init(hardwareMap);
-       /* while (!opModeIsActive()) {
+        while (!opModeIsActive()) {
             if (RotateClass.isHomedRotateReturn() == false) {
                 robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15, .5, robot.TP_P.getVoltage()));
                 if (robot.TP_P.getVoltage() > 1.1 && robot.TP_P.getVoltage() < 1.25) {
@@ -61,70 +55,27 @@ public class AngleTeleop extends LinearOpMode {
             telemetry.addData("rotate modified", RotateClass.modifiedRotateCurrent());
             telemetry.update();
         }
-
-        */
-        robot.LF_M.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.LF_M.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.LB_M.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.LB_M.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.RF_M.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.RF_M.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
         waitForStart();
         while (opModeIsActive()) {
-            z = gamepad1.right_stick_x;
 
-                //getting exponential joystick control for the drivetrain
-                OdoClass.RadiusOdometry(robot.LF_M.getCurrentPosition(), robot.LB_M.getCurrentPosition(), robot.RF_M.getCurrentPosition());
-                x = -gamepad1.left_stick_x;
-                y = -gamepad1.left_stick_y;
+            //getting exponential joystick control for the drivetrain
+            x = -(Math.copySign(gamepad1.left_stick_x, gamepad1.left_stick_x * gamepad1.left_stick_x * gamepad1.left_stick_x));
+            y = -(Math.copySign(gamepad1.left_stick_y, gamepad1.left_stick_y * gamepad1.left_stick_y * gamepad1.left_stick_y));
+            z = Math.copySign(gamepad1.right_stick_x, gamepad1.right_stick_x * gamepad1.right_stick_x * gamepad1.right_stick_x);
 
-                setpointAngle = Math.atan2(x, y);
-                setpointAngleDeg = Math.toDegrees(setpointAngle);
-            /*
-                setpointAngle = Math.atan2(y, x);
-            if(x != 0){
-                setpointAngle = Math.toDegrees(setpointAngle);
+            //setting the possiblity of a slow speed on the drivetrain
+            if(gamepad1.right_bumper){
+                robot.LF_M.setPower(.4*((y)-x+(z)));//LF
+                robot.LB_M.setPower(.4*((y)+x+(z)));//LB
+                robot.RF_M.setPower(.4*(-((y)+x-(z))));//RF
+                robot.RB_M.setPower(.4*(-((y)-x-(z))));//RB
+            }else{
+                robot.LF_M.setPower(.8*((y)-x+(.8*z)));//LF
+                robot.LB_M.setPower(.8*((y)+x+(.8*z)));//LB
+                robot.RF_M.setPower(.8*(-((y)+x-(.8*z))));//RF
+                robot.RB_M.setPower(.8*(-((y)-x-(.8*z))));//RB
             }
 
-            else if(y < 0){ //Joy stick up
-                setpointAngle = 180;
-            }
-            else{// Joy stick down
-                setpointAngle = 0;
-            }
-
-             */
-                finalAngle = setpointAngle + OdoClass.thetaINRadiansReturn();
-                finalX = Math.sin(finalAngle) * 1;
-                finalY = Math.cos(finalAngle) * 1;
-
-        if(Math.abs(gamepad1.left_stick_x) <= 0.05 && Math.abs(gamepad1.left_stick_y) <= .05) {
-            finalX = 0;
-            finalY = 0;
-        }
-                    //setting the possiblity of a slow speed on the drivetrain
-                LF_M_DIR = (.4*((finalY)-finalX+(z)));//LF
-                LB_M_DIR = (.4*((finalY)+finalX+(z)));//LB
-                RF_M_DIR = (.4*(-((finalY)+finalX-(z))));//RF
-                RB_M_DIR = (.4*(-((finalY)-finalX-(z))));//RB
-            motorPowerRatio = Math.max(Math.max(Math.abs(RF_M_DIR), Math.abs(RB_M_DIR)), Math.max(Math.abs(LF_M_DIR), Math.abs(LB_M_DIR)));
-
-            LF_M_DIR = LF_M_DIR/motorPowerRatio;
-            LB_M_DIR = LB_M_DIR/motorPowerRatio;
-            RF_M_DIR = RF_M_DIR/motorPowerRatio;
-            RB_M_DIR = RB_M_DIR/motorPowerRatio;
-            speed = Math.hypot(x, y) + Math.abs(z);
-            if(speed >= 1){
-                speed = 1;
-            }
-            robot.LF_M.setPower(LF_M_DIR*speed);
-            robot.LB_M.setPower(LB_M_DIR*speed);
-            robot.RF_M.setPower(RF_M_DIR*speed);
-            robot.RB_M.setPower(RB_M_DIR*speed);
-
-
-            /*
             if(gamepad1.a || gamepad2.a){
                 robot.RI_S.setPower(-1);
                 robot.LI_S.setPower(1);
@@ -182,8 +133,6 @@ public class AngleTeleop extends LinearOpMode {
                 robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(0, .5, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
 
             }else{
-
-
                     //else run TeleOp programs
                 Vpivotcontroller = Vpivotcontroller +(.03 * gamepad2.right_stick_y);
                 robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(Vpivotcontroller ,1,robot.TP_P.getVoltage()));
@@ -191,11 +140,12 @@ public class AngleTeleop extends LinearOpMode {
                 robot.TR_M.setPower(RotateClass.RotateMethod(gamepad2.right_trigger, gamepad2.left_trigger, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
 
                 robot.TE_M.setPower(ExtendClass.ExtendMethod((-gamepad2.left_stick_y), robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
-
-
             }
-                */
-            /*
+
+
+
+
+
             telemetry.addData("rotate motor power",robot.TR_M.getPower());
             telemetry.addData("rotate motor power", RotateClass.rotatemotorPowerReturn());
             telemetry.addData("extend motor power",robot.TE_M.getPower());
@@ -203,15 +153,6 @@ public class AngleTeleop extends LinearOpMode {
             telemetry.addData("vpivotset", VPivotClass.PivotSetReturn());
             telemetry.addData("pivot POT", robot.TP_P.getVoltage());
 
-             */
-            telemetry.addData("setpointAngle", setpointAngle);
-            telemetry.addData("speed", speed);
-            telemetry.addData("LF_M",robot.LF_M.getPower());
-            telemetry.addData("finalX", finalX);
-            telemetry.addData("finalY", finalY);
-            telemetry.addData("x", x);
-            telemetry.addData("y", y);
-            telemetry.addData("theata in degrees", OdoClass.thetaInDegreesReturn());
             telemetry.update();
         }
     }
