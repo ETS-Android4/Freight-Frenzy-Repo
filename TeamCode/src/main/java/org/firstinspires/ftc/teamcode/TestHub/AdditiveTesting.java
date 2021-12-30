@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
-//@TeleOp
+@TeleOp
 public class AdditiveTesting extends LinearOpMode {
 
     TestHubHardware robot = new TestHubHardware();

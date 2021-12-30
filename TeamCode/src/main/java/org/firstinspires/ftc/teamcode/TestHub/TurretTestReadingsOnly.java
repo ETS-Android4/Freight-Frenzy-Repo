@@ -16,6 +16,13 @@ import org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass;
 public class TurretTestReadingsOnly extends LinearOpMode {
     public static double ENCODER_EQUATION_MULT = .00045;
     public static double POT_SUB_AMT = 2.092;
+    public static double UPARMPM = .004;
+    public static double UPARMDM = .006;
+    public static double DNPM = .00005;
+    public static double DNDM = .00003;
+    public  static double SPEED = 16;
+    public static double MINSPEED = .2;
+    public static double SETPOINT = 1500;
     TurretTesting robot = new TurretTesting();
     VPivotClass VPivotClass = new VPivotClass();
 
@@ -30,38 +37,29 @@ public class TurretTestReadingsOnly extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()) {
 
-            VPivotClass.NEWVPivot(1,10, robot.TP_P.getVoltage(), robot.TP_M.getCurrentPosition(), getRuntime(), 16);
 
+            robot.TP_M.setPower( VPivotClass.NEWVPivot(SETPOINT ,SPEED , robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
+
+            telemetry.addData("speedSet", VPivotClass.speedSetPoint);
             telemetry.addData("POT", robot.TP_P.getVoltage());
-            telemetry.addData("neg degrees", (robot.TP_P.getVoltage() -2.38) / -.0105);
-
-
+            telemetry.addData("motor power", VPivotClass.FinalMotorPower);
+            telemetry.addData("setpt", VPivotClass.vPivotSet);
             telemetry.addData("DegreesTraveled", VPivotClass.DegreesTravelReturn());
             telemetry.addData("deltaEncoder", VPivotClass.deltaPivotEncoder);
             telemetry.addData("EncoderWithOffset", VPivotClass.encoderWithOffset);
             telemetry.addData("speed", VPivotClass.SpeedReturn());
             telemetry.addData("degrees Traveled", VPivotClass.DegreesTravelReturn());
-            telemetry.addData("last POT", VPivotClass.LastPOTreadingReturn());
-            telemetry.addData("time", getRuntime());
-            telemetry.addData("deltaPivot", VPivotClass.deltaPivot);
             telemetry.addData("pivot encoder", robot.TP_M.getCurrentPosition());
-            telemetry.addData("encoder equation", (robot.TP_P.getVoltage() - POT_SUB_AMT)/ENCODER_EQUATION_MULT);
 
+            dashboardTelemetry.addData("motor power", VPivotClass.FinalMotorPower);
             dashboardTelemetry.addData("speed", VPivotClass.SpeedReturn());
-
             dashboardTelemetry.addData("DegreesTraveled", VPivotClass.DegreesTravelReturn());
             dashboardTelemetry.addData("deltaEncoder", VPivotClass.deltaPivotEncoder);
+            dashboardTelemetry.addData("RATIOEncoderWithOffset", VPivotClass.encoderWithOffset/1000);
             dashboardTelemetry.addData("EncoderWithOffset", VPivotClass.encoderWithOffset);
             dashboardTelemetry.addData("Pivot Encoder", robot.TP_M.getCurrentPosition());
-            dashboardTelemetry.addData("time", getRuntime());
-            dashboardTelemetry.addData("POT", -robot.TP_P.getVoltage());
-            dashboardTelemetry.addData("last POT", VPivotClass.LastPOTreadingReturn());
-            dashboardTelemetry.addData("deltaPivot", VPivotClass.deltaPivot);
-
-            dashboardTelemetry.addData("encoder equation", (robot.TP_P.getVoltage() - POT_SUB_AMT)/ENCODER_EQUATION_MULT);
+            dashboardTelemetry.addData("POT", robot.TP_P.getVoltage());
             dashboardTelemetry.update();
-
-
 
             telemetry.update();
 

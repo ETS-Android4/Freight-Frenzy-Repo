@@ -47,6 +47,7 @@ public class TurretTesting {
         TP_M.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         TE_M.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+
         TR_M.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         TP_M.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         TE_M.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
