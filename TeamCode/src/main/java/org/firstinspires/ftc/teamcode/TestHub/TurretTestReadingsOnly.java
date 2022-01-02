@@ -14,13 +14,11 @@ import org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass;
 @Config
 @TeleOp
 public class TurretTestReadingsOnly extends LinearOpMode {
-    public static double ENCODER_EQUATION_MULT = .00045;
-    public static double POT_SUB_AMT = 2.092;
     public static double UPARMPM = .004;
     public static double UPARMDM = .006;
-    public static double DNPM = .00005;
-    public static double DNDM = .00003;
-    public  static double SPEED = 16;
+    public static double DNPM = .0005;
+    public static double DNDM = .0003;
+    public  static double SPEEDSET = 16;
     public static double MINSPEED = .2;
     public static double SETPOINT = 1500;
     TurretTesting robot = new TurretTesting();
@@ -38,7 +36,7 @@ public class TurretTestReadingsOnly extends LinearOpMode {
         while (opModeIsActive()) {
 
 
-            robot.TP_M.setPower( VPivotClass.NEWVPivot(SETPOINT ,SPEED , robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
+            robot.TP_M.setPower( VPivotClass.NEWVPivot(SETPOINT ,SPEEDSET , robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
 
             telemetry.addData("speedSet", VPivotClass.speedSetPoint);
             telemetry.addData("POT", robot.TP_P.getVoltage());

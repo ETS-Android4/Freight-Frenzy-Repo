@@ -8,9 +8,9 @@ public class VPivotClass {
     public double FinalMotorPower;
     double lastTime, lastPOT, speed, speedDifference, speedCorrection, speedPM, speedDM, lastSpeedDifference = 0, vPivotPOT1degree = .0105, vPivotEncoder1Degree = 23;//TODO correct this variable
     public double degreesTraveled, speedSetPoint;
-    public double vPivotCorrection = 0, encoderWithOffset = 0, deltaPivotEncoder, lastEncoder = 0, motionprofile = 0, lastSpeed = 0;
+    public double vPivotCorrection = 1, encoderWithOffset = 0, deltaPivotEncoder, lastEncoder = 0, motionprofile = 0, lastSpeed = 0;
      public boolean has1stloop = false;
-     public  double UPSpeedPM = .004, UPSpeedDM = .006, DNSpeedPM = .00005, DNSpeedDM = .00003, closeSpeedMult;
+     public  double UPSpeedPM = .004, UPSpeedDM = .006, DNSpeedPM = .0005, DNSpeedDM = .0003, closeSpeedMult;
 
 
     //Mew method for better control of the turret
@@ -48,13 +48,12 @@ public class VPivotClass {
 
         //Calculating Speed at tip of arm
         degreesTraveled = deltaPivotEncoder / vPivotEncoder1Degree;
-        speed = (((2 * extendlength) * Math.PI)*(degreesTraveled / 360)) / (time - lastTime);
-        speed = (speed + lastSpeed)/2;
+        speed = ((2 * extendlength) * Math.PI)*(degreesTraveled / 360) / (time - lastTime);
 
 
         //Motion Profile
-       if(Math.abs(SetPoint - encoderWithOffset) < 600){
-           speedSetPoint = SpeedSetPt * (Math.abs(SetPoint - encoderWithOffset))/600;
+       if(Math.abs(vPivotSet - encoderWithOffset) < 300){
+           speedSetPoint = SpeedSetPt * ((Math.abs(vPivotSet - encoderWithOffset))/300);
        }else {
            speedSetPoint = SpeedSetPt;
        }
@@ -70,23 +69,30 @@ public class VPivotClass {
         //Vertical Pivot direction setting
         //we look to see if we are lower or higher than the setpoint and set a positive or negative value to determine which way the arm has to pivot
         //we have 2 different Proportional and Derivative multipliers for different correction directions
-        if(vPivotSet < encoderWithOffset){
-            vPivotCorrection = -1;
-            speedPM = DNSpeedPM;
-            speedDM = DNSpeedDM;
-        }else if(vPivotSet > encoderWithOffset){
+        if(vPivotSet > encoderWithOffset){
             vPivotCorrection = 1;
-            speedPM = UPSpeedPM;
-            speedDM = UPSpeedDM;
+                speedPM = UPSpeedPM;
+                speedDM = UPSpeedDM;
+        }else if(vPivotSet < encoderWithOffset){
+            vPivotCorrection = -1;
+            if(speedSetPoint < speed){
+                speedPM = UPSpeedPM;
+                speedDM = UPSpeedDM;
+            }else{
+                speedPM = DNSpeedPM;
+                speedDM = DNSpeedDM;
+            }
         }
+
+        speedSetPoint = Math.copySign(speedSetPoint, vPivotCorrection);
 
         //Speed Proportional and derivative correction equations to make the arm move at a desired speed not motor power
         speedDifference = speedSetPoint - speed;
-        speedCorrection = speedCorrection + ((speedDifference * speedPM) + ((speedDifference - lastSpeedDifference) * speedDM) * closeSpeedMult);
+        speedCorrection = (speedDifference * speedPM) + ((speedDifference - lastSpeedDifference) * speedDM);
 
 
         //combining the speed correction and the direction pos/neg sign for the correct direction
-        FinalMotorPower = Math.copySign(speedCorrection, vPivotCorrection);
+        FinalMotorPower = FinalMotorPower + (speedCorrection * closeSpeedMult);
 
         //limiting the motor power to 1 which is the maximum the motor can go
         if(FinalMotorPower > 1){
