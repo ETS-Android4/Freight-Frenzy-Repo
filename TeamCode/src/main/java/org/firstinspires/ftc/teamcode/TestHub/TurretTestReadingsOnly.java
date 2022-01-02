@@ -14,14 +14,14 @@ import org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass;
 @Config
 @TeleOp
 public class TurretTestReadingsOnly extends LinearOpMode {
-    public static double UPARMPM = .004;
-    public static double UPARMDM = .006;
-    public static double DNPM = .0005;
-    public static double DNDM = .0003;
+    public static double UPARMPM = .009;
+    public static double UPARMDM = .008;
+    public static double DNPM = .008;
+    public static double DNDM = .005;
     public  static double SPEEDSET = 16;
     public static double MINSPEED = .2;
     public static double SETPOINT = 1500;
-    TurretTesting robot = new TurretTesting();
+    FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     VPivotClass VPivotClass = new VPivotClass();
 
 

@@ -65,9 +65,9 @@ public class RotateClass{
         // we do this to get the most accurate current position possible
         if(rotateMagnet == true && lastrotatemag == false){
             if(lastEncoder - rotateEncoder < 0){
-                modifiedCurrentPos = 20;
+                modifiedCurrentPos = 5;
             }else if(lastEncoder - rotateEncoder > 0){
-                modifiedCurrentPos = -20;
+                modifiedCurrentPos = -5;
             }
             lastrotatemag = true;
         }else if(rotateMagnet == true){

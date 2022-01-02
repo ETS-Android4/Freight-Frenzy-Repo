@@ -14,12 +14,13 @@ import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
 public class NEWHomingProgram extends LinearOpMode {
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
-    public static double UPARMPM = .004;
-    public static double UPARMDM = .006;
-    public static double DNPM = .0005;
-    public static double DNDM = .0003;
+    public static double UPARMPM = .009;
+    public static double UPARMDM = .008;
+    public static double DNPM = .008;
+    public static double DNDM = .005;
     public  static double SPEEDSET = 16;
     public static double MINSPEED = .2;
+    public static double SETPOINT = 1500;
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     VPivotClass VPivotClass = new VPivotClass();
     RotateClass RotateClass = new RotateClass();
@@ -47,13 +48,14 @@ public class NEWHomingProgram extends LinearOpMode {
                         initPOsitionOrder = 2;
                     }
                 }else if(initPOsitionOrder == 2){
-                    robot.TP_M.setPower(VPivotClass.NEWVPivot(1500, 5, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
-                    if(robot.TP_P.getVoltage() < 2 && robot.TP_P.getVoltage() > 1.6){
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(800,.8,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(500, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
+                    if(VPivotClass.encoderWithOffset < 550 && VPivotClass.encoderWithOffset > 450){
                         initPOsitionOrder = 3;
                     }
                 }else if(initPOsitionOrder == 3){
-                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(625,.4,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
-                    robot.TP_M.setPower(VPivotClass.NEWVPivot(1500, 5, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(650,.4,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(800, 5, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
 
                 }
 
