@@ -56,7 +56,7 @@ public class NewTurretTeleOp extends LinearOpMode{
                     }
                 }
             }else{
-                robot.TP_M.setPower(VPivotClass.NEWVPivot(3000, 5, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
+                robot.TP_M.setPower(VPivotClass.NEWVPivot(1500, 5, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
             }
 
         }else{
@@ -68,17 +68,7 @@ public class NewTurretTeleOp extends LinearOpMode{
                 if(RotateClass.modifiedRotateCurrent() > 750 && RotateClass.modifiedRotateCurrent() < 850){
                     initPOsitionOrder = 2;
                 }
-            }/*else if(initPOsitionOrder == 2){
-                robot.TR_M.setPower(RotateClass.RotateAutoMethod(800,.8,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
-                robot.TP_M.setPower(VPivotClass.NEWVPivot(500, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
-                if(VPivotClass.encoderWithOffset < 550 && VPivotClass.encoderWithOffset > 450){
-                    initPOsitionOrder = 3;
-                }
-            }else if(initPOsitionOrder == 3){
-                robot.TR_M.setPower(RotateClass.RotateAutoMethod(650,.4,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
-                robot.TP_M.setPower(VPivotClass.NEWVPivot(500, 5, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
-
-            }*/
+            }
 
 
 
@@ -98,20 +88,35 @@ public class NewTurretTeleOp extends LinearOpMode{
 
         while (opModeIsActive()){
 
+            if(gamepad2.dpad_down){
+                robot.TR_M.setPower(RotateClass.RotateAutoMethod(0, 1, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+                rotateSet = 0;
+                robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(400, 1, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
+                extendSetPoint = 400;
 
-            vPivotSetPoint = vPivotSetPoint - (gamepad2.left_stick_y * 30);
-            robot.TP_M.setPower(VPivotClass.NEWVPivot(vPivotSetPoint, SPEEDSET, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED));
+                if(RotateClass.modifiedRotateCurrent() < 50 && RotateClass.modifiedRotateCurrent() > -50 && ExtendClass.extendModifiedEncoder > 150 && ExtendClass.extendModifiedEncoder < 250){
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(500, SPEEDSET, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED));
+                    vPivotSetPoint = 500;
+                }
+            }else{
+                vPivotSetPoint = vPivotSetPoint - (gamepad2.left_stick_y * 30);
+                robot.TP_M.setPower(VPivotClass.NEWVPivot(vPivotSetPoint, SPEEDSET, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED));
 
-            extendSetPoint = extendSetPoint - (gamepad2.right_stick_y * 30);
-            robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(extendSetPoint, 1, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
+                if(gamepad2.right_trigger > .05){
+                    rotateSet = rotateSet + (gamepad2.right_trigger * 30);
+                }else if(gamepad2.left_trigger > .05){
+                    rotateSet = rotateSet - (gamepad2.left_trigger * 30);
+                }
+                robot.TR_M.setPower(RotateClass.RotateAutoMethod(rotateSet, 1, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
 
-            if(gamepad2.right_trigger > .05){
-                rotateSet = rotateSet + (gamepad2.right_trigger * 30);
-            }else if(gamepad2.left_trigger > .05){
-                rotateSet = rotateSet - (gamepad2.left_trigger * 30);
+                extendSetPoint = extendSetPoint - (gamepad2.right_stick_y * 30);
+                robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(extendSetPoint, 1, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
+
             }
 
-            robot.TR_M.setPower(RotateClass.RotateAutoMethod(rotateSet, 1, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+
+
+
 
             x = -(Math.copySign(gamepad1.left_stick_x, gamepad1.left_stick_x * gamepad1.left_stick_x * gamepad1.left_stick_x));
             y = -(Math.copySign(gamepad1.left_stick_y, gamepad1.left_stick_y * gamepad1.left_stick_y * gamepad1.left_stick_y));
