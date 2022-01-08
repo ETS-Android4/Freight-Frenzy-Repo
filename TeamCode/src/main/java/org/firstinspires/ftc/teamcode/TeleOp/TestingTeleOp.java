@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.TurretClasses.ExtendClass;
 import org.firstinspires.ftc.teamcode.TurretClasses.RotateClass;
 import org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass;
 
-@TeleOp
+//@TeleOp
 public class TestingTeleOp extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     org.firstinspires.ftc.teamcode.TurretClasses.ExtendClass ExtendClass = new ExtendClass();

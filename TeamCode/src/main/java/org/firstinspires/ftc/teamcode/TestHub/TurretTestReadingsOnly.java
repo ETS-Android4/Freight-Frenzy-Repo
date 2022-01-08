@@ -14,10 +14,10 @@ import org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass;
 @Config
 @TeleOp
 public class TurretTestReadingsOnly extends LinearOpMode {
-    public static double UPARMPM = .009;
-    public static double UPARMDM = .008;
-    public static double DNPM = .008;
-    public static double DNDM = .005;
+    public static double UPARMPM = .015;
+    public static double UPARMDM = .009;
+    public static double DNPM = .004;
+    public static double DNDM = .012;
     public  static double SPEEDSET = 16;
     public static double MINSPEED = .2;
     public static double SETPOINT = 1500;
@@ -26,17 +26,16 @@ public class TurretTestReadingsOnly extends LinearOpMode {
 
 
     @Override
-    public void runOpMode(){
+    public void runOpMode() {
         robot.init(hardwareMap);
         FtcDashboard dashboard = FtcDashboard.getInstance();
         Telemetry dashboardTelemetry = dashboard.getTelemetry();
-
 
         waitForStart();
         while (opModeIsActive()) {
 
 
-            robot.TP_M.setPower( VPivotClass.NEWVPivot(SETPOINT ,SPEEDSET , robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
+            robot.TP_M.setPower( VPivotClass.NEWVPivot(SETPOINT ,SPEEDSET , robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState() ,getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, .2));
 
             telemetry.addData("speedSet", VPivotClass.speedSetPoint);
             telemetry.addData("POT", robot.TP_P.getVoltage());
@@ -50,6 +49,7 @@ public class TurretTestReadingsOnly extends LinearOpMode {
             telemetry.addData("pivot encoder", robot.TP_M.getCurrentPosition());
 
             dashboardTelemetry.addData("motor power", VPivotClass.FinalMotorPower);
+            dashboardTelemetry.addData("encoder", robot.TP_M.getCurrentPosition());
             dashboardTelemetry.addData("speed", VPivotClass.SpeedReturn());
             dashboardTelemetry.addData("DegreesTraveled", VPivotClass.DegreesTravelReturn());
             dashboardTelemetry.addData("deltaEncoder", VPivotClass.deltaPivotEncoder);

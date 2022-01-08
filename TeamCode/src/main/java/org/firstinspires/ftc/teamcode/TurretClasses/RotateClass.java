@@ -63,7 +63,7 @@ public class RotateClass{
 
         //Uses a magnetic sensor on the turret to reset where the turret is
         // we do this to get the most accurate current position possible
-        if(rotateMagnet == true && lastrotatemag == false){
+      /*  if(rotateMagnet == true && lastrotatemag == false){
             if(lastEncoder - rotateEncoder < 0){
                 modifiedCurrentPos = 5;
             }else if(lastEncoder - rotateEncoder > 0){
@@ -74,7 +74,7 @@ public class RotateClass{
             lastrotatemag = true;
         }else if(rotateMagnet == false){
             lastrotatemag = false;
-        }
+        }*/
         deltaEncoder = rotateEncoder - lastEncoder;
 
         modifiedCurrentPos = modifiedCurrentPos + deltaEncoder;

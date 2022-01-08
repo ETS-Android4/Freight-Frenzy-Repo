@@ -21,6 +21,7 @@ public class FreightFrenzyHardwareMap {
     public AnalogInput TP_P;
     public DigitalChannel TR_G;
     public DigitalChannel TE_G;
+    public DigitalChannel TP_G;
 
 
     HardwareMap TestHubHardware;
@@ -40,6 +41,8 @@ public class FreightFrenzyHardwareMap {
         TP_P = TestHubHardware.get(AnalogInput.class, "TP_P");
         TR_G = TestHubHardware.get(DigitalChannel.class, "TR_G");
         TE_G = TestHubHardware.get(DigitalChannel.class, "TE_G");
+        TP_G = TestHubHardware.get(DigitalChannel.class, "TP_G");
+
 
         // ColorSensor1 = JustmotorhardwareMap.get(NormalizedColorSensor.class, "ColorSensor1");
 
@@ -74,6 +77,7 @@ public class FreightFrenzyHardwareMap {
 
         TR_G.setMode(DigitalChannel.Mode.INPUT);
         TE_G.setMode(DigitalChannel.Mode.INPUT);
+        TP_G.setMode(DigitalChannel.Mode.INPUT);
     }
 
 }

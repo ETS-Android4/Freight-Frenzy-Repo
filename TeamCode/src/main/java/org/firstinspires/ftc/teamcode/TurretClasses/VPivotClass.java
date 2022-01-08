@@ -10,13 +10,13 @@ public class VPivotClass {
     public double degreesTraveled, speedSetPoint;
     public double vPivotCorrection = 1, encoderWithOffset = 0, deltaPivotEncoder, lastEncoder = 0, motionprofile = 0, lastSpeed = 0;
      public boolean has1stloop = false;
-     public  double UPSpeedPM = .004, UPSpeedDM = .006, DNSpeedPM = .0005, DNSpeedDM = .0003, closeSpeedMult;
+     public  double UPSpeedPM = .015, UPSpeedDM = .009, DNSpeedPM = .004, DNSpeedDM = .012, closeSpeedMult;
 
 
     //Mew method for better control of the turret
-    public double NEWVPivot(double SetPoint, double SpeedSetPt ,double POTReading, double EncoderReading, double time, double extendlength, double UPPM, double UPDM, double DNPM, double DNDM, double MinSpeed){
+    public double NEWVPivot(double SetPoint, double SpeedSetPt ,double POTReading, double EncoderReading, boolean MAG , double time, double extendlength, double UPPM, double UPDM, double DNPM, double DNDM, double MinSpeed){
 
-        //for use of the FTC Dashboard ONLY
+        //for use of the FTC Dashboard ONLY,
         //TODO get rid of once done tuning
         UPSpeedPM = UPPM;
         UPSpeedDM = UPDM;
@@ -27,8 +27,8 @@ public class VPivotClass {
         //setting our encoder offset using a potentiometer for the starting number
         //so we get an accurate start pos because the encoder resets every time we start the program
 
-        if(has1stloop == false) {
-            encoderWithOffset = (POTReading - 3.42) / -.0007;//TODO can we put this in init?
+        if(MAG == false && has1stloop == false) {
+            encoderWithOffset = 2100;//TODO can we put this in init?
             has1stloop = true;
         }
 
@@ -59,7 +59,7 @@ public class VPivotClass {
        }
 
        //setting a deadzone to prevent small oscillations at the setpoint
-        if (Math.abs(SetPoint - encoderWithOffset) < 50){
+        if (Math.abs(vPivotSet - encoderWithOffset) < 50){
             closeSpeedMult = MinSpeed;//TODO set this as the dashboard #
             speedSetPoint = 0;
         }else{

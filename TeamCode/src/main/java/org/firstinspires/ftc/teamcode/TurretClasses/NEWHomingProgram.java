@@ -31,31 +31,36 @@ public class NEWHomingProgram extends LinearOpMode {
         robot.init(hardwareMap);
         while (!opModeIsActive()){
             if(RotateClass.isHomedRotateReturn() == false){
-                robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
-                if(VPivotClass.encoderWithOffset > 1900 && VPivotClass.encoderWithOffset < 2100){
-                    robot.TE_M.setPower(ExtendClass.ExtendHoming(robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
-                    if(ExtendClass.isHomedExtendReturn() == true){
-                        robot.TR_M.setPower(RotateClass.RotateHoming(robot.TR_G.getState(), robot.TR_M.getCurrentPosition()));
+                if(VPivotClass.has1stloop == true){
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
+                    if(VPivotClass.encoderWithOffset > 1900 && VPivotClass.encoderWithOffset < 2100){
+                        robot.TE_M.setPower(ExtendClass.ExtendHoming(robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
+                        if(ExtendClass.isHomedExtendReturn() == true){
+                            robot.TR_M.setPower(RotateClass.RotateHoming(robot.TR_G.getState(), robot.TR_M.getCurrentPosition()));
+                        }
                     }
+                }else{
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(3000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
                 }
+
             }else{
                 telemetry.addData("homed",0);
                 robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(10,.8,robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
                 if(initPOsitionOrder == 1){
-                    robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
                     robot.TR_M.setPower(RotateClass.RotateAutoMethod(800,.8,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
                     if(RotateClass.modifiedRotateCurrent() > 750 && RotateClass.modifiedRotateCurrent() < 850){
                         initPOsitionOrder = 2;
                     }
                 }else if(initPOsitionOrder == 2){
                     robot.TR_M.setPower(RotateClass.RotateAutoMethod(800,.8,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
-                    robot.TP_M.setPower(VPivotClass.NEWVPivot(500, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(500, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
                     if(VPivotClass.encoderWithOffset < 550 && VPivotClass.encoderWithOffset > 450){
                         initPOsitionOrder = 3;
                     }
                 }else if(initPOsitionOrder == 3){
                     robot.TR_M.setPower(RotateClass.RotateAutoMethod(650,.4,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
-                    robot.TP_M.setPower(VPivotClass.NEWVPivot(800, 5, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(500, 5, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
 
                 }
 
