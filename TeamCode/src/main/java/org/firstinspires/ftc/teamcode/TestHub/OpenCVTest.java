@@ -39,7 +39,6 @@ public class OpenCVTest extends LinearOpMode {
             //starts the webcam and defines the pixels
             public void onOpened() {
                 webcam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
-
             }
 
             @Override
@@ -53,9 +52,6 @@ public class OpenCVTest extends LinearOpMode {
 
         while (opModeIsActive()) {
             telemetry.addData("Region 1", pipeline.region1Avg());
-
-
-
             telemetry.addData("Region 2", pipeline.region2Avg());
             telemetry.addData("Region 3", pipeline.region3Avg());
 
@@ -80,19 +76,19 @@ public class OpenCVTest extends LinearOpMode {
         static final Scalar CRIMSON = new Scalar(220, 20, 60);
         static final Scalar AQUA = new Scalar(79, 195, 247);
         static final Scalar PARAKEET = new Scalar(3, 192, 74);
-        static final Scalar GOLD = new Scalar(255, 215, 0);
+        static final Scalar GOLD = new Scalar(255, 214, 0);
         static final Scalar CYAN = new Scalar(0, 139, 139);
 
         //sets the boxes where we will look
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(90, 120);
-        static final int REGION1_WIDTH = 70;
-        static final int REGION1_HEIGHT = 120;
-        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(300, 120);
-        static final int REGION2_WIDTH = 70;
-        static final int REGION2_HEIGHT = 120;
-       //static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(214, 70);
-        //static final int REGION3_WIDTH = 105;
-        //static final int REGION3_HEIGHT = 105;
+        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(155, 260);
+        static final int REGION1_WIDTH = 60;
+        static final int REGION1_HEIGHT = 85;
+        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(270, 260);
+        static final int REGION2_WIDTH = 60;
+        static final int REGION2_HEIGHT = 85;
+       static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(430, 260);
+        static final int REGION3_WIDTH = 60;
+        static final int REGION3_HEIGHT = 85;
         //static final Point REGION4_TOPLEFT_ANCHOR_POINT = new Point(100, 70);
         //static final int REGION4_WIDTH = 105;
        //static final int REGION4_HEIGHT = 105;
@@ -104,8 +100,8 @@ public class OpenCVTest extends LinearOpMode {
         Point region2_pointA = new Point(REGION2_TOPLEFT_ANCHOR_POINT.x, REGION2_TOPLEFT_ANCHOR_POINT.y);
         Point region2_pointB = new Point(REGION2_TOPLEFT_ANCHOR_POINT.x + REGION2_WIDTH, REGION2_TOPLEFT_ANCHOR_POINT.y + REGION2_HEIGHT);
 
-        //Point region3_pointA = new Point(REGION3_TOPLEFT_ANCHOR_POINT.x, REGION3_TOPLEFT_ANCHOR_POINT.y);
-        //Point region3_pointB = new Point(REGION3_TOPLEFT_ANCHOR_POINT.x + REGION3_WIDTH, REGION2_TOPLEFT_ANCHOR_POINT.y + REGION3_HEIGHT);
+        Point region3_pointA = new Point(REGION3_TOPLEFT_ANCHOR_POINT.x, REGION3_TOPLEFT_ANCHOR_POINT.y);
+        Point region3_pointB = new Point(REGION3_TOPLEFT_ANCHOR_POINT.x + REGION3_WIDTH, REGION2_TOPLEFT_ANCHOR_POINT.y + REGION3_HEIGHT);
 
         //Point region4_pointA = new Point(REGION3_TOPLEFT_ANCHOR_POINT.x, REGION3_TOPLEFT_ANCHOR_POINT.y);
         //Point region4_pointB = new Point(REGION3_TOPLEFT_ANCHOR_POINT.x + REGION3_WIDTH, REGION2_TOPLEFT_ANCHOR_POINT.y + REGION3_HEIGHT);
@@ -134,7 +130,7 @@ public class OpenCVTest extends LinearOpMode {
             //sets region to look in for color
             region1_G = A.submat(new Rect(region1_pointA, region1_pointB));
             region2_G = A.submat(new Rect(region2_pointA, region2_pointB));
-            //region3_G = L.submat(new Rect(region3_pointA, region3_pointB));
+            region3_G = A.submat(new Rect(region3_pointA, region3_pointB));
             //region4_G = L.submat(new Rect(region4_pointA, region4_pointB));
         }
 
@@ -145,13 +141,12 @@ public class OpenCVTest extends LinearOpMode {
 
             avg1 = (int) Core.mean(region1_G).val[0];
             avg2 = (int) Core.mean(region2_G).val[0];
-
-            //avg3 = (int) Core.mean(region3_G).val[0];
+            avg3 = (int) Core.mean(region3_G).val[0];
             //avg4 = (int) Core.mean(region4_G).val[0];
 
             Imgproc.rectangle(input, region1_pointA, region1_pointB, CRIMSON, 2);
             Imgproc.rectangle(input, region2_pointA, region2_pointB, AQUA, 2);
-            //Imgproc.rectangle(input, region3_pointA, region3_pointB, PARAKEET, 2);
+            Imgproc.rectangle(input, region3_pointA, region3_pointB, PARAKEET, 2);
             //Imgproc.rectangle(input, region4_pointA, region4_pointB, GOLD, 2);
 
             return input;

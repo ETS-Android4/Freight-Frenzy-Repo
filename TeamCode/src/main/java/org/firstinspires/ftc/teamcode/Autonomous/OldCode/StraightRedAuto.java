@@ -1,12 +1,12 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.Autonomous.OldCode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.DirectionCalcClass;
+import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.SpeedClass;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.TurnControl;
-import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
 import org.firstinspires.ftc.teamcode.TurretClasses.RotateClass;
 import org.firstinspires.ftc.teamcode.TurretClasses.ExtendClass;
 import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass;
 
 @Autonomous
 
-public class StraightBlueAuto extends LinearOpMode {
+public class StraightRedAuto extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     SpeedClass SpeedClass = new SpeedClass();
     DirectionCalcClass DirectionClass = new DirectionCalcClass();
@@ -85,7 +85,8 @@ public class StraightBlueAuto extends LinearOpMode {
                     }
                 } else if (initPOsitionOrder == 3) {
                     robot.TR_M.setPower(RotateClass.RotateAutoMethod(625, .4, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
-                   // robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.7, .5, robot.TP_P.getVoltage()));
+                  //  robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.7, .5, robot.TP_P.getVoltage()));
+
                 }
 
 
@@ -119,12 +120,12 @@ public class StraightBlueAuto extends LinearOpMode {
                     thetaTargetSpeed = 1;
                     VPivotSetpoint = .9;
                     VPivotSpeed = .3;
-                    xSetpoint = 50;
+                    xSetpoint = -50;
                     ySetpoint = .8;
                     thetaSetpoint = 0;
                     targetSpeed = 20;
-                    rotateSpeed = .4;
                     rotateSetpoint = 0;
+                    rotateSpeed = .4;
                     //Exits once the robot is a certain distance and angle away
                     if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .5 && OdoClass.thetaInDegreesReturn() > -.5)) {
                         StopMotors();
@@ -137,12 +138,12 @@ public class StraightBlueAuto extends LinearOpMode {
                     }
                 }
            else if (action == 2) {
-                xSetpoint = 50;
+                xSetpoint = -50;
                 ySetpoint = 25;
                 thetaSetpoint = 0;
-                targetSpeed = 20;
+                targetSpeed = 12.5;
                 //Exits once the robot is a certain distance and angle away
-                if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .3 && OdoClass.thetaInDegreesReturn() > -.3)) {
+                if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .5 && OdoClass.thetaInDegreesReturn() > -.5)) {
                     StopMotors();
                     action = 3;
                     startPointX = OdoClass.odoXReturn();
@@ -225,7 +226,7 @@ public class StraightBlueAuto extends LinearOpMode {
                 Movement(xSetpoint, ySetpoint, thetaSetpoint, targetSpeed, thetaTargetSpeed, thetaDeccelerationDegree, slowMoveSpeed, accelerationDistance, decelerationDistance, slowMovedDistance);
                 RotateClass.RotateAutoMethod(rotateSetpoint, rotateSpeed, robot.TR_M.getCurrentPosition(), robot.TR_G.getState());
                 ExtendClass.ExtendAutoMethod(extendSetpoint, extendSpeed, robot.TE_M.getCurrentPosition(), robot.TE_G.getState());
-              //  VPivotClass.VPivotAutoMethod(VPivotSetpoint, VPivotSpeed, robot.TP_P.getVoltage());
+               // VPivotClass.VPivotAutoMethod(VPivotSetpoint, VPivotSpeed, robot.TP_P.getVoltage());
                 PowerSetting();
                 Telemetry();
             }

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.Autonomous.OldCode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass;
 
 @Autonomous
 
-public class RedDropAuto extends LinearOpMode {
+public class BlueDropAuto extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     SpeedClass SpeedClass = new SpeedClass();
     DirectionCalcClass DirectionClass = new DirectionCalcClass();
@@ -67,7 +67,7 @@ public class RedDropAuto extends LinearOpMode {
         //Enters our 1 loop system, will exit once all actions are done
         while (!opModeIsActive()) {
             if (RotateClass.isHomedRotateReturn() == false) {
-                //robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15, .5, robot.TP_P.getVoltage()));
+               // robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15, .5, robot.TP_P.getVoltage()));
                 if (robot.TP_P.getVoltage() > 1.1 && robot.TP_P.getVoltage() < 1.25) {
                     robot.TE_M.setPower(ExtendClass.ExtendHoming(robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
                     if (ExtendClass.isHomedExtendReturn() == true) {
@@ -83,14 +83,13 @@ public class RedDropAuto extends LinearOpMode {
                         initPOsitionOrder = 2;
                     }
                 } else if (initPOsitionOrder == 2) {
-                   // robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.725, .5, robot.TP_P.getVoltage()));
+                    //robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.725, .5, robot.TP_P.getVoltage()));
                     if (robot.TP_P.getVoltage() < 2 && robot.TP_P.getVoltage() > 1.6) {
                         initPOsitionOrder = 3;
                     }
                 } else if (initPOsitionOrder == 3) {
                     robot.TR_M.setPower(RotateClass.RotateAutoMethod(625, .4, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
                    // robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.7, .5, robot.TP_P.getVoltage()));
-
                 }
 
 
@@ -142,8 +141,8 @@ public class RedDropAuto extends LinearOpMode {
                     breakout = 1;
                 }
             } else if (action == 2) {
-                rotateSetpoint = 1400;
-                if (RotateClass.modifiedRotateCurrent() <= 1450 && RotateClass.modifiedRotateCurrent() >= 1350) {
+                rotateSetpoint = 1550;
+                if (RotateClass.modifiedRotateCurrent() <= 1600 && RotateClass.modifiedRotateCurrent() >= 1500) {
                     action = 3;
                     breakout = 0;
                 } else {
@@ -191,6 +190,7 @@ public class RedDropAuto extends LinearOpMode {
                 ///Moves to first power shot shooting position
 
                 //Exits once the robot is a certain distance and angle away
+
             } else if (action == 6) {
                     thetaSetpoint = 0;
                     accelerationDistance = .04;
@@ -201,10 +201,11 @@ public class RedDropAuto extends LinearOpMode {
                     thetaTargetSpeed = 1;
                     VPivotSetpoint = .9;
                     VPivotSpeed = .3;
-                    xSetpoint = -50;
+                    xSetpoint = 50;
                     ySetpoint = .8;
                     thetaSetpoint = 0;
                     targetSpeed = 20;
+                    rotateSpeed = .4;
                     rotateSetpoint = 0;
                     //Exits once the robot is a certain distance and angle away
                 if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .5 && OdoClass.thetaInDegreesReturn() > -.5)) {
@@ -218,7 +219,7 @@ public class RedDropAuto extends LinearOpMode {
                     }
                 }
            else if (action == 7) {
-                xSetpoint = -50;
+                xSetpoint = 50;
                 ySetpoint = 25;
                 thetaSetpoint = 0;
                 targetSpeed = 15;
@@ -263,7 +264,7 @@ public class RedDropAuto extends LinearOpMode {
             Movement(xSetpoint, ySetpoint, thetaSetpoint, targetSpeed, thetaTargetSpeed, thetaDeccelerationDegree, slowMoveSpeed, accelerationDistance, decelerationDistance, slowMovedDistance);
             RotateClass.RotateAutoMethod(rotateSetpoint, rotateSpeed, robot.TR_M.getCurrentPosition(), robot.TR_G.getState());
             ExtendClass.ExtendAutoMethod(extendSetpoint, extendSpeed, robot.TE_M.getCurrentPosition(), robot.TE_G.getState());
-           //VPivotClass.VPivotAutoMethod(VPivotSetpoint, VPivotSpeed, robot.TP_P.getVoltage());
+            //VPivotClass.VPivotAutoMethod(VPivotSetpoint, VPivotSpeed, robot.TP_P.getVoltage());
             PowerSetting();
             Telemetry();
         }

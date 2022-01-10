@@ -4,18 +4,30 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.DirectionCalcClass;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.SpeedClass;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.TurnControl;
-import org.firstinspires.ftc.teamcode.TurretClasses.RotateClass;
-import org.firstinspires.ftc.teamcode.TurretClasses.ExtendClass;
 import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
+import org.firstinspires.ftc.teamcode.TestHub.OpenCVTest;
+import org.firstinspires.ftc.teamcode.TurretClasses.ExtendClass;
+import org.firstinspires.ftc.teamcode.TurretClasses.RotateClass;
 import org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvPipeline;
 
 @Autonomous
 
-public class BlueDropAuto extends LinearOpMode {
+public class BlueWarehouseAuto extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     SpeedClass SpeedClass = new SpeedClass();
     DirectionCalcClass DirectionClass = new DirectionCalcClass();
@@ -54,52 +66,103 @@ public class BlueDropAuto extends LinearOpMode {
     double extendSpeed;
     double VPivotSetpoint;
     double VPivotSpeed;
+    double TSEPos;
     double timepassed2;
+    public static double UPARMPM = .009;
+    public static double UPARMDM = .008;
+    public static double DNPM = .008;
+    public static double DNDM = .005;
+    public  static double SPEEDSET = 16;
+    public static double MINSPEED = .2;
+    public static double SETPOINT = 1500;
 
     double action;
     double initPOsitionOrder = 1;
+    OpenCvCamera webcam;
+    static OpenCVTest.TestPipeline pipeline;
     @Override
 
     public void runOpMode() {
         robot.init(hardwareMap);
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
 
+        //allows to call pipline
+        pipeline = new OpenCVTest.TestPipeline();
+        //sets the webcam to the pipeline
+        webcam.setPipeline(pipeline);
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+            @Override
+            //starts the webcam and defines the pixels
+            public void onOpened() {
+                webcam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
+            }
+
+            @Override
+            public void onError(int errorCode) {
+                /*
+                 * This will be called if the camera could not be opened
+                 */
+            }
+        });
+        telemetry.update();
         //Depending on the ring stack we change our intake to diffrent heights to be able to reach the top of the stack
         //Enters our 1 loop system, will exit once all actions are done
-        while (!opModeIsActive()) {
-            if (RotateClass.isHomedRotateReturn() == false) {
-               // robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15, .5, robot.TP_P.getVoltage()));
-                if (robot.TP_P.getVoltage() > 1.1 && robot.TP_P.getVoltage() < 1.25) {
-                    robot.TE_M.setPower(ExtendClass.ExtendHoming(robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
-                    if (ExtendClass.isHomedExtendReturn() == true) {
-                        robot.TR_M.setPower(RotateClass.RotateHoming(robot.TR_G.getState(), robot.TR_M.getCurrentPosition()));
+        while (!opModeIsActive()){
+            if(RotateClass.isHomedRotateReturn() == false){
+                if(VPivotClass.has1stloop == true){
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
+                    if(VPivotClass.encoderWithOffset > 1900 && VPivotClass.encoderWithOffset < 2100){
+                        robot.TE_M.setPower(ExtendClass.ExtendHoming(robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
+                        if(ExtendClass.isHomedExtendReturn() == true){
+                            robot.TR_M.setPower(RotateClass.RotateHoming(robot.TR_G.getState(), robot.TR_M.getCurrentPosition()));
+                        }
                     }
+                }else{
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(3000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
                 }
-            } else {
-                telemetry.addData("homed", 0);
-                robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(10, .8, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
-                if (initPOsitionOrder == 1) {
-                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(800, .4, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
-                    if (RotateClass.modifiedRotateCurrent() > 750 && RotateClass.modifiedRotateCurrent() < 850) {
+
+            }else{
+                telemetry.addData("homed",0);
+                robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(10,.8,robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
+                if(initPOsitionOrder == 1){
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(800,.8,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
+                    if(RotateClass.modifiedRotateCurrent() > 750 && RotateClass.modifiedRotateCurrent() < 850){
                         initPOsitionOrder = 2;
                     }
-                } else if (initPOsitionOrder == 2) {
-                    //robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.725, .5, robot.TP_P.getVoltage()));
-                    if (robot.TP_P.getVoltage() < 2 && robot.TP_P.getVoltage() > 1.6) {
+                }else if(initPOsitionOrder == 2){
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(800,.8,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(500, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
+                    if(VPivotClass.encoderWithOffset < 550 && VPivotClass.encoderWithOffset > 450){
                         initPOsitionOrder = 3;
                     }
-                } else if (initPOsitionOrder == 3) {
-                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(625, .4, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
-                   // robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.7, .5, robot.TP_P.getVoltage()));
+                }else if(initPOsitionOrder == 3){
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(650,.4,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(500, 5, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
+
                 }
+
 
 
             }
-            telemetry.addData("Rotate homed boolean", RotateClass.isHomedRotateReturn());
-            telemetry.addData("initPosition order", initPOsitionOrder);
-            telemetry.addData("Vpiovot PT", robot.TP_P.getVoltage());
-            telemetry.addData("rotate modified", RotateClass.modifiedRotateCurrent());
+            if(pipeline.region1Avg() <= 125){
+             TSEPos = 2;
+             telemetry.addData("TSE", 2);
+            }
+            else if(pipeline.region2Avg() <= 125){
+                TSEPos = 3;
+                telemetry.addData("TSE", 3);
+            }
+            else{
+                TSEPos = 1;
+                telemetry.addData("TSE", 1);
+            }
             telemetry.update();
         }
+
+
+
         waitForStart();
         robot.LF_M.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.LF_M.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -327,5 +390,92 @@ public class BlueDropAuto extends LinearOpMode {
         robot.LB_M.setPower(0);
         robot.RF_M.setPower(0);
         robot.RB_M.setPower(0);
+    }
+   public static class testPipeline extends OpenCvPipeline {
+
+        //sets colors for the boxes that we will look in
+       static final Scalar CRIMSON = new Scalar(220, 20, 60);
+       static final Scalar AQUA = new Scalar(79, 195, 247);
+      // static final Scalar PARAKEET = new Scalar(3, 192, 74);
+
+        //sets the boxes where we will look
+        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(270, 260);
+        static int REGION1_WIDTH = 60;
+        static int REGION1_HEIGHT = 85;
+        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(430, 260);
+        static final int REGION2_WIDTH = 60;
+        static final int REGION2_HEIGHT = 85;
+        //static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(430, 260);
+        //static final int REGION3_WIDTH = 60;
+        //static final int REGION3_HEIGHT = 85;
+        //static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(155, 260);
+       //static int REGION1_WIDTH = 60;
+       //static int REGION1_HEIGHT = 85;
+
+        //uses the boxes setpoints and makes the ctual box
+        Point region1_pointA = new Point(REGION1_TOPLEFT_ANCHOR_POINT.x, REGION1_TOPLEFT_ANCHOR_POINT.y);
+        Point region1_pointB = new Point(REGION1_TOPLEFT_ANCHOR_POINT.x + REGION1_WIDTH, REGION1_TOPLEFT_ANCHOR_POINT.y + REGION1_HEIGHT);
+
+        Point region2_pointA = new Point(REGION2_TOPLEFT_ANCHOR_POINT.x, REGION2_TOPLEFT_ANCHOR_POINT.y);
+        Point region2_pointB = new Point(REGION2_TOPLEFT_ANCHOR_POINT.x + REGION2_WIDTH, REGION2_TOPLEFT_ANCHOR_POINT.y + REGION2_HEIGHT);
+
+       // Point region3_pointA = new Point(REGION3_TOPLEFT_ANCHOR_POINT.x, REGION3_TOPLEFT_ANCHOR_POINT.y);
+        //Point region3_pointB = new Point(REGION3_TOPLEFT_ANCHOR_POINT.x + REGION3_WIDTH, REGION2_TOPLEFT_ANCHOR_POINT.y + REGION3_HEIGHT);
+
+
+        Mat region1_G, region2_G, region3_G, region4_G;
+        Mat RGBA = new Mat();
+        Mat HLS = new Mat();
+        Mat A = new Mat();
+        Mat H = new Mat();
+        int avg1, avg2, avg3, avg4;
+
+
+        //actual image processing
+        void inputToG(Mat input) {
+            Imgproc.cvtColor(input, RGBA, Imgproc.COLOR_RGB2RGBA);
+            Core.extractChannel(RGBA, A, 1);
+        }
+
+        @Override
+        public void init(Mat firstFrame) {
+            inputToG(firstFrame);
+            //sets region to look in for color
+            region1_G = A.submat(new Rect(region1_pointA, region1_pointB));
+            region2_G = A.submat(new Rect(region2_pointA, region2_pointB));
+            //region3_G = A.submat(new Rect(region3_pointA, region3_pointB));
+            //region4_G = L.submat(new Rect(region4_pointA, region4_pointB));
+        }
+
+        @Override
+        public Mat processFrame(Mat input) {
+
+            inputToG(input);
+
+            avg1 = (int) Core.mean(region1_G).val[0];
+            avg2 = (int) Core.mean(region2_G).val[0];
+            //avg3 = (int) Core.mean(region3_G).val[0];
+            //avg4 = (int) Core.mean(region4_G).val[0];
+
+            Imgproc.rectangle(input, region1_pointA, region1_pointB, CRIMSON, 2);
+            Imgproc.rectangle(input, region2_pointA, region2_pointB, AQUA, 2);
+           // Imgproc.rectangle(input, region3_pointA, region3_pointB, PARAKEET, 2);
+            //Imgproc.rectangle(input, region4_pointA, region4_pointB, GOLD, 2);
+
+            return input;
+        }
+
+        public int region1Avg() {
+            return avg1;
+        }
+
+        public int region2Avg() {
+            return avg2;
+        }
+
+        //public int region3Avg() { return avg3; }
+
+
+
     }
 }
