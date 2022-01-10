@@ -14,7 +14,8 @@ public class VPivotClass {
 
 
     //Mew method for better control of the turret
-    public double NEWVPivot(double SetPoint, double SpeedSetPt ,double POTReading, double EncoderReading, boolean MAG , double time, double extendlength, double UPPM, double UPDM, double DNPM, double DNDM, double MinSpeed){
+    public double NEWVPivot(double SetPoint, double SpeedSetPt ,double POTReading, double EncoderReading, boolean MAG , double time,
+                            double extendlength, double UPPM, double UPDM, double DNPM, double DNDM, double MinSpeed){
 
         //for use of the FTC Dashboard ONLY,
         //TODO get rid of once done tuning

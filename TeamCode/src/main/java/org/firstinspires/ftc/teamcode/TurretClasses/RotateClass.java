@@ -61,20 +61,6 @@ public class RotateClass{
     public double RotateAutoMethod(double desiredset, double speed, double rotateEncoder, boolean rotateMagnet){
         rotateSet = desiredset;//using the input to the method to set a universal set point variable
 
-        //Uses a magnetic sensor on the turret to reset where the turret is
-        // we do this to get the most accurate current position possible
-      /*  if(rotateMagnet == true && lastrotatemag == false){
-            if(lastEncoder - rotateEncoder < 0){
-                modifiedCurrentPos = 5;
-            }else if(lastEncoder - rotateEncoder > 0){
-                modifiedCurrentPos = -5;
-            }
-            lastrotatemag = true;
-        }else if(rotateMagnet == true){
-            lastrotatemag = true;
-        }else if(rotateMagnet == false){
-            lastrotatemag = false;
-        }*/
         deltaEncoder = rotateEncoder - lastEncoder;
 
         modifiedCurrentPos = modifiedCurrentPos + deltaEncoder;
