@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass;
 import java.util.Timer;
 
 
-//@Config
+@Config
 @TeleOp
 public class NewTurretTeleOp extends LinearOpMode{
 
@@ -49,14 +49,14 @@ public class NewTurretTeleOp extends LinearOpMode{
         if(RotateClass.isHomedRotateReturn() == false){
             if(VPivotClass.has1stloop == true){
                 robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
-                if(VPivotClass.encoderWithOffset > 1900 && VPivotClass.encoderWithOffset < 2100){
+                if(VPivotClass.encoderWithOffset > 1900){
                     robot.TE_M.setPower(ExtendClass.ExtendHoming(robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
                     if(ExtendClass.isHomedExtendReturn() == true){
                         robot.TR_M.setPower(RotateClass.RotateHoming(robot.TR_G.getState(), robot.TR_M.getCurrentPosition()));
                     }
                 }
             }else{
-                robot.TP_M.setPower(VPivotClass.NEWVPivot(1500, 5, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
+                robot.TP_M.setPower(VPivotClass.NEWVPivot(3000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
             }
 
         }else{
@@ -94,7 +94,7 @@ public class NewTurretTeleOp extends LinearOpMode{
                 robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(400, 1, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
                 extendSetPoint = 400;
 
-                if(RotateClass.modifiedRotateCurrent() < 50 && RotateClass.modifiedRotateCurrent() > -50 && ExtendClass.extendModifiedEncoder > 150 && ExtendClass.extendModifiedEncoder < 250){
+                if(RotateClass.modifiedRotateCurrent() < 50 && RotateClass.modifiedRotateCurrent() > -50 && ExtendClass.extendModifiedEncoder > 350 && ExtendClass.extendModifiedEncoder < 450){
                     robot.TP_M.setPower(VPivotClass.NEWVPivot(500, SPEEDSET, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED));
                     vPivotSetPoint = 500;
                 }
@@ -162,7 +162,7 @@ public class NewTurretTeleOp extends LinearOpMode{
         telemetry.addData("degrees Traveled", VPivotClass.DegreesTravelReturn());
         telemetry.addData("pivot encoder", robot.TP_M.getCurrentPosition());
 
-     /*   dashboardTelemetry.addData("motor power", VPivotClass.FinalMotorPower);
+        dashboardTelemetry.addData("motor power", VPivotClass.FinalMotorPower);
         dashboardTelemetry.addData("speed", VPivotClass.SpeedReturn());
         dashboardTelemetry.addData("DegreesTraveled", VPivotClass.DegreesTravelReturn());
         dashboardTelemetry.addData("deltaEncoder", VPivotClass.deltaPivotEncoder);
@@ -170,7 +170,7 @@ public class NewTurretTeleOp extends LinearOpMode{
         dashboardTelemetry.addData("EncoderWithOffset", VPivotClass.encoderWithOffset);
         dashboardTelemetry.addData("Pivot Encoder", robot.TP_M.getCurrentPosition());
         dashboardTelemetry.addData("POT", robot.TP_P.getVoltage());
-        dashboardTelemetry.update();*/
+        dashboardTelemetry.update();
         telemetry.update();
     }
 

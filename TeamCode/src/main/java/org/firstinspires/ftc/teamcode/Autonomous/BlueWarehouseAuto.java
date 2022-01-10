@@ -79,16 +79,16 @@ public class BlueWarehouseAuto extends LinearOpMode {
     double action;
     double initPOsitionOrder = 1;
     OpenCvCamera webcam;
-    static OpenCVTest.TestPipeline pipeline;
+    static OpenCVPipeline pipeline;
     @Override
 
     public void runOpMode() {
         robot.init(hardwareMap);
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 2"), cameraMonitorViewId);
 
         //allows to call pipline
-        pipeline = new OpenCVTest.TestPipeline();
+        pipeline = new OpenCVPipeline();
         //sets the webcam to the pipeline
         webcam.setPipeline(pipeline);
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -108,53 +108,51 @@ public class BlueWarehouseAuto extends LinearOpMode {
         telemetry.update();
         //Depending on the ring stack we change our intake to diffrent heights to be able to reach the top of the stack
         //Enters our 1 loop system, will exit once all actions are done
-        while (!opModeIsActive()){
-            if(RotateClass.isHomedRotateReturn() == false){
-                if(VPivotClass.has1stloop == true){
-                    robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
-                    if(VPivotClass.encoderWithOffset > 1900 && VPivotClass.encoderWithOffset < 2100){
+        while (!opModeIsActive()) {
+            if (RotateClass.isHomedRotateReturn() == false) {
+                if (VPivotClass.has1stloop == true) {
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
+                    if (VPivotClass.encoderWithOffset > 1900 && VPivotClass.encoderWithOffset < 2100) {
                         robot.TE_M.setPower(ExtendClass.ExtendHoming(robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
-                        if(ExtendClass.isHomedExtendReturn() == true){
+                        if (ExtendClass.isHomedExtendReturn() == true) {
                             robot.TR_M.setPower(RotateClass.RotateHoming(robot.TR_G.getState(), robot.TR_M.getCurrentPosition()));
                         }
                     }
-                }else{
-                    robot.TP_M.setPower(VPivotClass.NEWVPivot(3000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
+                } else {
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(3000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
                 }
 
-            }else{
-                telemetry.addData("homed",0);
-                robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(10,.8,robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
-                if(initPOsitionOrder == 1){
-                    robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
-                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(800,.8,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
-                    if(RotateClass.modifiedRotateCurrent() > 750 && RotateClass.modifiedRotateCurrent() < 850){
+            } else {
+                telemetry.addData("homed", 0);
+                robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(10, .8, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
+                if (initPOsitionOrder == 1) {
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(800, .8, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+                    if (RotateClass.modifiedRotateCurrent() > 750 && RotateClass.modifiedRotateCurrent() < 850) {
                         initPOsitionOrder = 2;
                     }
-                }else if(initPOsitionOrder == 2){
-                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(800,.8,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
-                    robot.TP_M.setPower(VPivotClass.NEWVPivot(500, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
-                    if(VPivotClass.encoderWithOffset < 550 && VPivotClass.encoderWithOffset > 450){
+                } else if (initPOsitionOrder == 2) {
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(800, .8, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(500, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
+                    if (VPivotClass.encoderWithOffset < 550 && VPivotClass.encoderWithOffset > 450) {
                         initPOsitionOrder = 3;
                     }
-                }else if(initPOsitionOrder == 3){
-                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(650,.4,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
-                    robot.TP_M.setPower(VPivotClass.NEWVPivot(500, 5, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
+                } else if (initPOsitionOrder == 3) {
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(650, .4, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(500, 5, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
 
                 }
 
 
+            }
 
-            }
-            if(pipeline.region1Avg() <= 125){
-             TSEPos = 2;
-             telemetry.addData("TSE", 2);
-            }
-            else if(pipeline.region2Avg() <= 125){
+            if (pipeline.region1Avg() <= 100) {
+                TSEPos = 2;
+                telemetry.addData("TSE", 2);
+            } else if (pipeline.region2Avg() <= 100) {
                 TSEPos = 3;
                 telemetry.addData("TSE", 3);
-            }
-            else{
+            } else {
                 TSEPos = 1;
                 telemetry.addData("TSE", 1);
             }
@@ -193,7 +191,9 @@ public class BlueWarehouseAuto extends LinearOpMode {
         extendSetpoint = 0;
         VPivotSetpoint = 1.2;
         while (opModeIsActive() && stopProgram == 0) {
+            if(TSEPos == 1 && action == 1){
 
+            }
             if (action == 1) {
                 if ((robot.TP_P.getVoltage() >= 1.15) && (robot.TP_P.getVoltage() <= 1.25)) {
                     StopMotors();
@@ -327,7 +327,7 @@ public class BlueWarehouseAuto extends LinearOpMode {
             Movement(xSetpoint, ySetpoint, thetaSetpoint, targetSpeed, thetaTargetSpeed, thetaDeccelerationDegree, slowMoveSpeed, accelerationDistance, decelerationDistance, slowMovedDistance);
             RotateClass.RotateAutoMethod(rotateSetpoint, rotateSpeed, robot.TR_M.getCurrentPosition(), robot.TR_G.getState());
             ExtendClass.ExtendAutoMethod(extendSetpoint, extendSpeed, robot.TE_M.getCurrentPosition(), robot.TE_G.getState());
-            //VPivotClass.VPivotAutoMethod(VPivotSetpoint, VPivotSpeed, robot.TP_P.getVoltage());
+            VPivotClass.NEWVPivot(VPivotSetpoint, VPivotSpeed, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED);
             PowerSetting();
             Telemetry();
         }
@@ -391,7 +391,7 @@ public class BlueWarehouseAuto extends LinearOpMode {
         robot.RF_M.setPower(0);
         robot.RB_M.setPower(0);
     }
-   public static class testPipeline extends OpenCvPipeline {
+   public static class OpenCVPipeline extends OpenCvPipeline {
 
         //sets colors for the boxes that we will look in
        static final Scalar CRIMSON = new Scalar(220, 20, 60);
@@ -402,7 +402,7 @@ public class BlueWarehouseAuto extends LinearOpMode {
         static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(270, 260);
         static int REGION1_WIDTH = 60;
         static int REGION1_HEIGHT = 85;
-        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(430, 260);
+        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(420, 260);
         static final int REGION2_WIDTH = 60;
         static final int REGION2_HEIGHT = 85;
         //static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(430, 260);
