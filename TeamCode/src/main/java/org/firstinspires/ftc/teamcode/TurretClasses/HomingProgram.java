@@ -16,7 +16,7 @@ public class HomingProgram extends LinearOpMode {
         robot.init(hardwareMap);
         while (!opModeIsActive()){
             if(RotateClass.isHomedRotateReturn() == false){
-             //   robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15,.5, robot.TP_P.getVoltage()));
+            //    robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15,.5, robot.TP_P.getVoltage()));
                 if(robot.TP_P.getVoltage() > 1.1 && robot.TP_P.getVoltage() < 1.25){
                     robot.TE_M.setPower(ExtendClass.ExtendHoming(robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
                     if(ExtendClass.isHomedExtendReturn() == true){
@@ -32,13 +32,13 @@ public class HomingProgram extends LinearOpMode {
                         initPOsitionOrder = 2;
                     }
                 }else if(initPOsitionOrder == 2){
-              //      robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.8,1, robot.TP_P.getVoltage()));
+                 //   robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.8,1, robot.TP_P.getVoltage()));
                     if(robot.TP_P.getVoltage() < 2 && robot.TP_P.getVoltage() > 1.6){
                         initPOsitionOrder = 3;
                     }
                 }else if(initPOsitionOrder == 3){
                     robot.TR_M.setPower(RotateClass.RotateAutoMethod(625,.4,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
-              //      robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.72,1, robot.TP_P.getVoltage()));
+                  //  robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.72,1, robot.TP_P.getVoltage()));
 
                 }
 

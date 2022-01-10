@@ -63,7 +63,7 @@ public class StraightRedAuto extends LinearOpMode {
         robot.init(hardwareMap);
         while (!opModeIsActive()) {
             if (RotateClass.isHomedRotateReturn() == false) {
-              //  robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15, .5, robot.TP_P.getVoltage()));
+                //robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15, .5, robot.TP_P.getVoltage()));
                 if (robot.TP_P.getVoltage() > 1.1 && robot.TP_P.getVoltage() < 1.25) {
                     robot.TE_M.setPower(ExtendClass.ExtendHoming(robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
                     if (ExtendClass.isHomedExtendReturn() == true) {
@@ -79,7 +79,7 @@ public class StraightRedAuto extends LinearOpMode {
                         initPOsitionOrder = 2;
                     }
                 } else if (initPOsitionOrder == 2) {
-                //    robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.725, .5, robot.TP_P.getVoltage()));
+                 //   robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.725, .5, robot.TP_P.getVoltage()));
                     if (robot.TP_P.getVoltage() < 2 && robot.TP_P.getVoltage() > 1.6) {
                         initPOsitionOrder = 3;
                     }
@@ -226,7 +226,7 @@ public class StraightRedAuto extends LinearOpMode {
                 Movement(xSetpoint, ySetpoint, thetaSetpoint, targetSpeed, thetaTargetSpeed, thetaDeccelerationDegree, slowMoveSpeed, accelerationDistance, decelerationDistance, slowMovedDistance);
                 RotateClass.RotateAutoMethod(rotateSetpoint, rotateSpeed, robot.TR_M.getCurrentPosition(), robot.TR_G.getState());
                 ExtendClass.ExtendAutoMethod(extendSetpoint, extendSpeed, robot.TE_M.getCurrentPosition(), robot.TE_G.getState());
-             //   VPivotClass.VPivotAutoMethod(VPivotSetpoint, VPivotSpeed, robot.TP_P.getVoltage());
+               // VPivotClass.VPivotAutoMethod(VPivotSetpoint, VPivotSpeed, robot.TP_P.getVoltage());
                 PowerSetting();
                 Telemetry();
             }

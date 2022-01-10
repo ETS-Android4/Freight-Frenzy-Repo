@@ -37,13 +37,13 @@ public class NewRedTeleOp extends LinearOpMode {
                         initPOsitionOrder = 2;
                     }
                 } else if (initPOsitionOrder == 2) {
-              //      robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15, .5, robot.TP_P.getVoltage()));
+                    //robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15, .5, robot.TP_P.getVoltage()));
                     if (robot.TP_P.getVoltage() < 1.25 && robot.TP_P.getVoltage() > 1) {
                         initPOsitionOrder = 3;
                     }
                 } else if (initPOsitionOrder == 3) {
                     robot.TR_M.setPower(RotateClass.RotateAutoMethod(0, .4, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
-               //     robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15, .5, robot.TP_P.getVoltage()));
+                   // robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15, .5, robot.TP_P.getVoltage()));
 
                 }
 
@@ -98,7 +98,7 @@ public class NewRedTeleOp extends LinearOpMode {
                 //look to see if previous task is completed
                 if(ExtendClass.extendModifiedEncoder > 380 && ExtendClass.extendModifiedEncoder < 420 && RotateClass.modifiedRotateCurrent() < 50 && RotateClass.modifiedRotateCurrent() > -50){
                         //pivot arm down to intaking position
-               //     robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.75,.6,robot.TP_P.getVoltage()));
+                  //  robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.75,.6,robot.TP_P.getVoltage()));
                         //hold rotate position at "home"
                     robot.TR_M.setPower(RotateClass.RotateAutoMethod(0,.8, robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
                         //Hold extend at 300 encoder ticks
@@ -106,27 +106,27 @@ public class NewRedTeleOp extends LinearOpMode {
                     Vpivotcontroller = VPivotClass.PivotSetReturn();
                 }else{
                     //pivot to cleared height
-            //        robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15,.8,robot.TP_P.getVoltage()));
+                  //  robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15,.8,robot.TP_P.getVoltage()));
                 }
 
             }else if(gamepad2.dpad_up){
-         //      robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.32,.7,robot.TP_P.getVoltage()));
+               // robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.32,.7,robot.TP_P.getVoltage()));
                 robot.TR_M.setPower(RotateClass.RotateMethod(gamepad2.right_trigger, gamepad2.left_trigger, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
                 robot.TE_M.setPower(ExtendClass.ExtendMethod((-gamepad2.left_stick_y), robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
                 Vpivotcontroller = VPivotClass.PivotSetReturn();
 
             }else if(gamepad2.dpad_right){
-         //       robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15,.9,robot.TP_P.getVoltage()));
+              //  robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15,.9,robot.TP_P.getVoltage()));
                 Vpivotcontroller = VPivotClass.PivotSetReturn();
                 robot.TR_M.setPower(RotateClass.RotateAutoMethod(-1400,.8, robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
                 robot.TE_M.setPower(ExtendClass.ExtendMethod((-gamepad2.left_stick_y), robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
             }else if(gamepad2.dpad_left){
 
                 if(RotateClass.modifiedRotateCurrent() < 1450 && RotateClass.modifiedRotateCurrent() > 1350){
-        //           robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.6,.9,robot.TP_P.getVoltage()));
+                  //  robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.6,.9,robot.TP_P.getVoltage()));
                     Vpivotcontroller = VPivotClass.PivotSetReturn();
                 }else{
-          //          robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.35,.9,robot.TP_P.getVoltage()));
+                   // robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.35,.9,robot.TP_P.getVoltage()));
                     Vpivotcontroller = VPivotClass.PivotSetReturn();
                 }
                 robot.TR_M.setPower(RotateClass.RotateAutoMethod(1400,.8, robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
@@ -134,7 +134,7 @@ public class NewRedTeleOp extends LinearOpMode {
             }else{
                     //else run TeleOp programs
                 Vpivotcontroller = Vpivotcontroller +(.03 * gamepad2.right_stick_y);
-             //   robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(Vpivotcontroller ,1,robot.TP_P.getVoltage()));
+               // robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(Vpivotcontroller ,1,robot.TP_P.getVoltage()));
                 // robot.TP_M.setPower(VPivotClass.VPivotMethod(gamepad2.right_stick_y, robot.TP_P.getVoltage()));
                 robot.TR_M.setPower(RotateClass.RotateMethod(gamepad2.right_trigger, gamepad2.left_trigger, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
 

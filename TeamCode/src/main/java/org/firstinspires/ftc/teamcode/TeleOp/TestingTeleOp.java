@@ -56,7 +56,7 @@ public class TestingTeleOp extends LinearOpMode {
 
 
                 Vpivotcontroller = Vpivotcontroller +(.03 * gamepad2.right_stick_y);
-               // robot.TP_M.setPower(VPivotClass.VPivotMethod(Vpivotcontroller ,robot.TP_P.getVoltage()));
+                //robot.TP_M.setPower(VPivotClass.VPivotMethod(Vpivotcontroller ,robot.TP_P.getVoltage()));
                 // robot.TP_M.setPower(VPivotClass.VPivotMethod(gamepad2.right_stick_y, robot.TP_P.getVoltage()));
                 robot.TR_M.setPower(RotateClass.RotateMethod(gamepad2.right_trigger, gamepad2.left_trigger, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
 

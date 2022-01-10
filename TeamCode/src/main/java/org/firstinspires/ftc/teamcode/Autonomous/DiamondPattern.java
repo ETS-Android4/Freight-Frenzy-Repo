@@ -6,13 +6,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.DirectionCalcClass;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.SpeedClass;
+import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.TestCode.Just_DrivetrainHardware;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.TurnControl;
 import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
 
 @Autonomous
 
 public class DiamondPattern extends LinearOpMode {
-    FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
+    Just_DrivetrainHardware robot = new Just_DrivetrainHardware();
     SpeedClass SpeedClass = new SpeedClass();
     DirectionCalcClass DirectionClass = new DirectionCalcClass();
     TurnControl TurnControl = new TurnControl();
