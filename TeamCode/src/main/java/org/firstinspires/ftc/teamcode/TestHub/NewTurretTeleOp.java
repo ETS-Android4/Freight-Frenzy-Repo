@@ -98,7 +98,17 @@ public class NewTurretTeleOp extends LinearOpMode{
                     robot.TP_M.setPower(VPivotClass.NEWVPivot(500, SPEEDSET, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED));
                     vPivotSetPoint = 500;
                 }
-            }else{
+            }else if(gamepad2.dpad_right){
+                robot.TP_M.setPower(VPivotClass.NEWVPivot(1500, SPEEDSET, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED));
+                vPivotSetPoint = 1500;
+                if(VPivotClass.encoderWithOffset > 1450){
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(1500, 1, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+                    rotateSet = 1500;
+                    robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(600, 1, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
+                    extendSetPoint = 600;
+                }
+
+            } else{
                 vPivotSetPoint = vPivotSetPoint - (gamepad2.left_stick_y * 30);
                 robot.TP_M.setPower(VPivotClass.NEWVPivot(vPivotSetPoint, SPEEDSET, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED));
 
