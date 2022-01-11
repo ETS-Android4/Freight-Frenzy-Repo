@@ -11,6 +11,7 @@ public class VPivotClass {
     public double vPivotCorrection = 1, encoderWithOffset = 0, deltaPivotEncoder, lastEncoder = 0, motionprofile = 0, lastSpeed = 0;
      public boolean has1stloop = false;
      public  double UPSpeedPM = .015, UPSpeedDM = .009, DNSpeedPM = .004, DNSpeedDM = .012, closeSpeedMult;
+     double StartSlowSpeed = .25;
 
 
     //Mew method for better control of the turret
@@ -31,6 +32,8 @@ public class VPivotClass {
         if(MAG == false && has1stloop == false) {
             encoderWithOffset = 2100;//TODO can we put this in init?
             has1stloop = true;
+            StartSlowSpeed = 1;
+
         }
 
         //setting set point limits on the arm to prevent the arm from over rotating
@@ -93,7 +96,7 @@ public class VPivotClass {
 
 
         //combining the speed correction and the direction pos/neg sign for the correct direction
-        FinalMotorPower = FinalMotorPower + (speedCorrection * closeSpeedMult);
+        FinalMotorPower = FinalMotorPower + (speedCorrection * closeSpeedMult * StartSlowSpeed);
 
         //limiting the motor power to 1 which is the maximum the motor can go
         if(FinalMotorPower > 1){
