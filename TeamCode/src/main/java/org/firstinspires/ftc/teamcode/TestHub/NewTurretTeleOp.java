@@ -56,7 +56,7 @@ public class NewTurretTeleOp extends LinearOpMode{
                     }
                 }
             }else{
-                robot.TP_M.setPower(VPivotClass.NEWVPivot(3000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
+                robot.TP_M.setPower(VPivotClass.NEWVPivot(3000, 5, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
             }
 
         }else{
@@ -95,8 +95,8 @@ public class NewTurretTeleOp extends LinearOpMode{
                 extendSetPoint = 400;
 
                 if(RotateClass.modifiedRotateCurrent() < 50 && RotateClass.modifiedRotateCurrent() > -50 && ExtendClass.extendModifiedEncoder > 350 && ExtendClass.extendModifiedEncoder < 450){
-                    robot.TP_M.setPower(VPivotClass.NEWVPivot(500, SPEEDSET, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED));
-                    vPivotSetPoint = 500;
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(450, SPEEDSET, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED));
+                    vPivotSetPoint = 450;
                 }
             }else if(gamepad2.dpad_right){
                 robot.TP_M.setPower(VPivotClass.NEWVPivot(1500, SPEEDSET, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED));

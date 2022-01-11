@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.DirectionCalcClass;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.SpeedClass;
@@ -68,10 +69,10 @@ public class BlueWarehouseAuto extends LinearOpMode {
     double VPivotSpeed;
     double TSEPos;
     double timepassed2;
-    public static double UPARMPM = .009;
-    public static double UPARMDM = .008;
-    public static double DNPM = .008;
-    public static double DNDM = .005;
+    public static double UPARMPM = .015;
+    public static double UPARMDM = .009;
+    public static double DNPM = .004;
+    public static double DNDM = .012;
     public  static double SPEEDSET = 16;
     public static double MINSPEED = .2;
     public static double SETPOINT = 1500;
@@ -127,12 +128,12 @@ public class BlueWarehouseAuto extends LinearOpMode {
                 robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(10, .8, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
                 if (initPOsitionOrder == 1) {
                     robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
-                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(800, .8, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(800, .5, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
                     if (RotateClass.modifiedRotateCurrent() > 750 && RotateClass.modifiedRotateCurrent() < 850) {
                         initPOsitionOrder = 2;
                     }
                 } else if (initPOsitionOrder == 2) {
-                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(800, .8, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(800, .5, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
                     robot.TP_M.setPower(VPivotClass.NEWVPivot(500, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
                     if (VPivotClass.encoderWithOffset < 550 && VPivotClass.encoderWithOffset > 450) {
                         initPOsitionOrder = 3;
@@ -177,23 +178,128 @@ public class BlueWarehouseAuto extends LinearOpMode {
         xSetpoint = 0;
         ySetpoint = 0;
         thetaSetpoint = 0;
-        targetSpeed = 3;
+        targetSpeed = 1;
         accelerationDistance = 0;
-        decelerationDistance = 2;
-        slowMoveSpeed = 3.85;
+        decelerationDistance = 1;
+        slowMoveSpeed = 1;
         slowMovedDistance = 1;
         thetaDeccelerationDegree = 1;
         thetaTargetSpeed = .4;
-        rotateSpeed = .325;
-        extendSpeed = .4;
-        VPivotSpeed = .25;
-        rotateSetpoint = 1550;
-        extendSetpoint = 0;
-        VPivotSetpoint = 1.2;
-        while (opModeIsActive() && stopProgram == 0) {
-            if(TSEPos == 1 && action == 1){
+        rotateSpeed = .55;
+        extendSpeed = .8;
+        VPivotSpeed = 12;
 
+        while (opModeIsActive() && stopProgram == 0) {
+            if(action == 1) {
+                if (TSEPos == 1 && action == 1) {
+                    rotateSetpoint = 2050;
+                    extendSetpoint = 0;
+                    VPivotSetpoint = 955;
+                    if (DirectionClass.distanceFromReturn() <= .4) {
+                        StopMotors();
+                    }
+                    if ((VPivotClass.encoderWithOffset >= 875) && (robot.TP_P.getVoltage() <= 950)) {
+                        extendSetpoint = 1475;
+                        if (ExtendClass.extendModifiedEncoder <= 1525 && ExtendClass.extendModifiedEncoder >= 1450) {
+                            robot.LI_S.setPower(-1);
+                            robot.RI_S.setPower(1);
+                            if (robot.I_DS.getDistance(DistanceUnit.INCH) >= 4.5) {
+                                StopMotors();
+                                action = 2;
+                                startPointY = OdoClass.odoYReturn();
+                                robot.LI_S.setPower(0);
+                                robot.RI_S.setPower(0);
+                                breakout = 0;
+                            } else {
+                                breakout = 1;
+                            }
+                        }
+                    }
+                }
+                if (TSEPos == 2 && action == 1) {
+                    rotateSetpoint = 2050;
+                    extendSetpoint = 0;
+                    VPivotSetpoint = 1275;
+                    if (DirectionClass.distanceFromReturn() <= .4) {
+                        StopMotors();
+                    }
+                    if (VPivotClass.encoderWithOffset >= 875) {
+                        extendSetpoint = 1525;
+                        if (ExtendClass.extendModifiedEncoder <= 1550 && ExtendClass.extendModifiedEncoder >= 1500) {
+                            robot.LI_S.setPower(-1);
+                            robot.RI_S.setPower(1);
+                            if (robot.I_DS.getDistance(DistanceUnit.INCH) >= 4.5) {
+                                StopMotors();
+                                action = 2;
+                                startPointY = OdoClass.odoYReturn();
+                                robot.LI_S.setPower(0);
+                                robot.RI_S.setPower(0);
+                                breakout = 0;
+                            } else {
+                                breakout = 1;
+                            }
+                        }
+                    }
+                }
+                if (TSEPos == 3 && action == 1) {
+                    rotateSetpoint = 2100;
+                    extendSetpoint = 0;
+                    VPivotSetpoint = 1425;
+                    if (DirectionClass.distanceFromReturn() <= .4) {
+                        StopMotors();
+                    }
+                    if (VPivotClass.encoderWithOffset >= 875) {
+                        extendSetpoint = 1425;
+                        if (ExtendClass.extendModifiedEncoder <= 1525 && ExtendClass.extendModifiedEncoder >= 1410) {
+                            robot.LI_S.setPower(-1);
+                            robot.RI_S.setPower(1);
+                            if (robot.I_DS.getDistance(DistanceUnit.INCH) >= 4.5) {
+                                StopMotors();
+                                action = 2;
+                                startPointY = OdoClass.odoYReturn();
+                                robot.LI_S.setPower(0);
+                                robot.RI_S.setPower(0);
+                                breakout = 0;
+                            } else {
+                                breakout = 1;
+                            }
+                        }
+                    }
+                }
             }
+            else if(action == 2){
+                extendSetpoint = 0;
+                extendSpeed = .7;
+                thetaSetpoint = 0;
+                accelerationDistance = .04;
+                decelerationDistance = 8;
+                slowMoveSpeed = 3.85;
+                slowMovedDistance = 1;
+                thetaDeccelerationDegree = 2;
+                thetaTargetSpeed = 1;
+                VPivotSetpoint = .9;
+                VPivotSpeed = .3;
+                xSetpoint = 31;
+                ySetpoint = 1.5;
+                thetaSetpoint = 0;
+                targetSpeed = 15;
+                rotateSpeed = .5;
+                rotateSetpoint = 0;
+                VPivotSetpoint = 1500;
+                //Exits once the robot is a certain distance and angle away
+                if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 2 && OdoClass.thetaInDegreesReturn() > -2)) {
+                    StopMotors();
+                    action = 7;
+                    startPointX = OdoClass.odoXReturn();
+                    startPointY = OdoClass.odoYReturn();
+                    breakout = 0;
+                } else {
+                    breakout = 1;
+                }
+            }
+
+
+            /*
             if (action == 1) {
                 if ((robot.TP_P.getVoltage() >= 1.15) && (robot.TP_P.getVoltage() <= 1.25)) {
                     StopMotors();
@@ -317,7 +423,9 @@ public class BlueWarehouseAuto extends LinearOpMode {
                     breakout = 1;
                 }
             }
-            */
+
+             */
+
             //If nothing else to do, stop the program
             else {
                 stopProgram = 1;
