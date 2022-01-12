@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
 
 //@Autonomous
 @Config
-@Autonomous
+//@Autonomous
 public class NEWHomingProgram extends LinearOpMode {
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();

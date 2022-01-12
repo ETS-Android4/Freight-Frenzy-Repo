@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.TestHub;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
-@TeleOp
+@Autonomous
 public class ColorSensorTestRobot extends LinearOpMode {
 
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();

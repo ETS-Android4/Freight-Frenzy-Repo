@@ -6,13 +6,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
-import org.firstinspires.ftc.teamcode.TestHub.TurretTesting;
 import org.firstinspires.ftc.teamcode.TurretClasses.ExtendClass;
 import org.firstinspires.ftc.teamcode.TurretClasses.RotateClass;
 import org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass;
-
-import java.util.Timer;
 
 
 @Config
@@ -26,6 +22,9 @@ public class NewTurretTeleOp extends LinearOpMode{
     public  static double SPEEDSET = 16;
     public static double MINSPEED = .2;
     public static double SETPOINT = 1500;
+    public static double ROTATESPEED = 1;
+    public static double VPIVOTSPEED = 16;
+    public static double EXTENDSPEED = 1;
 
 
     public double vPivotSetPoint = 1500, extendSetPoint = 0, rotateSet = 0;
@@ -41,44 +40,44 @@ public class NewTurretTeleOp extends LinearOpMode{
 
 
 
-@Override
+    @Override
     public void runOpMode(){
         robot.init(hardwareMap);
 
-    while (!opModeIsActive()){
-        if(RotateClass.isHomedRotateReturn() == false){
-            if(VPivotClass.has1stloop == true){
-                robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
-                if(VPivotClass.encoderWithOffset > 1900){
-                    robot.TE_M.setPower(ExtendClass.ExtendHoming(robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
-                    if(ExtendClass.isHomedExtendReturn() == true){
-                        robot.TR_M.setPower(RotateClass.RotateHoming(robot.TR_G.getState(), robot.TR_M.getCurrentPosition()));
+        while (!opModeIsActive()){
+            if(RotateClass.isHomedRotateReturn() == false){
+                if(VPivotClass.has1stloop == true){
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
+                    if(VPivotClass.encoderWithOffset > 1900){
+                        robot.TE_M.setPower(ExtendClass.ExtendHoming(robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
+                        if(ExtendClass.isHomedExtendReturn() == true){
+                            robot.TR_M.setPower(RotateClass.RotateHoming(robot.TR_G.getState(), robot.TR_M.getCurrentPosition()));
+                        }
+                    }
+                }else{
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(3000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
+                }
+
+            }else{
+                telemetry.addData("homed",0);
+                robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(10,.8,robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
+                if(initPOsitionOrder == 1){
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(0,.8,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
+                    if(RotateClass.modifiedRotateCurrent() > 750 && RotateClass.modifiedRotateCurrent() < 850){
+                        initPOsitionOrder = 2;
                     }
                 }
-            }else{
-                robot.TP_M.setPower(VPivotClass.NEWVPivot(3000, 5, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
+
+
+
             }
-
-        }else{
-            telemetry.addData("homed",0);
-            robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(10,.8,robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
-            if(initPOsitionOrder == 1){
-                robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
-                robot.TR_M.setPower(RotateClass.RotateAutoMethod(0,.8,robot.TR_M.getCurrentPosition(),robot.TR_G.getState()));
-                if(RotateClass.modifiedRotateCurrent() > 750 && RotateClass.modifiedRotateCurrent() < 850){
-                    initPOsitionOrder = 2;
-                }
-            }
-
-
-
+            telemetry.addData("Rotate homed boolean", RotateClass.isHomedRotateReturn());
+            telemetry.addData("initPosition order", initPOsitionOrder);
+            telemetry.addData("Vpiovot PT", robot.TP_P.getVoltage());
+            telemetry.addData("rotate modified", RotateClass.modifiedRotateCurrent());
+            telemetry.update();
         }
-        telemetry.addData("Rotate homed boolean", RotateClass.isHomedRotateReturn());
-        telemetry.addData("initPosition order", initPOsitionOrder);
-        telemetry.addData("Vpiovot PT", robot.TP_P.getVoltage());
-        telemetry.addData("rotate modified", RotateClass.modifiedRotateCurrent());
-        telemetry.update();
-    }
 
 
 
@@ -88,24 +87,52 @@ public class NewTurretTeleOp extends LinearOpMode{
 
         while (opModeIsActive()){
 
+            /*
             if(gamepad2.dpad_down){
-                robot.TR_M.setPower(RotateClass.RotateAutoMethod(0, 1, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
-                rotateSet = 0;
-                robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(400, 1, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
-                extendSetPoint = 400;
+                if(VPivotClass.encoderWithOffset < 500){
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(0, .7, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+                    rotateSet = 0;
+                    robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(400, .7, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
+                    extendSetPoint = 400;
 
-                if(RotateClass.modifiedRotateCurrent() < 50 && RotateClass.modifiedRotateCurrent() > -50 && ExtendClass.extendModifiedEncoder > 350 && ExtendClass.extendModifiedEncoder < 450){
-                    robot.TP_M.setPower(VPivotClass.NEWVPivot(450, SPEEDSET, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED));
-                    vPivotSetPoint = 450;
+                    if(RotateClass.modifiedRotateCurrent() < 50 && RotateClass.modifiedRotateCurrent() > -50 && ExtendClass.extendModifiedEncoder > 350 && ExtendClass.extendModifiedEncoder < 450){
+                        robot.TP_M.setPower(VPivotClass.NEWVPivot(450, SPEEDSET, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED));
+                        vPivotSetPoint = 450;
+                    }
+                }else{
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(550, SPEEDSET, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED));
+                    vPivotSetPoint = 550;
                 }
+
             }else if(gamepad2.dpad_right){
                 robot.TP_M.setPower(VPivotClass.NEWVPivot(1500, SPEEDSET, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED));
                 vPivotSetPoint = 1500;
                 if(VPivotClass.encoderWithOffset > 1450){
-                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(1500, 1, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(1500, .7, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
                     rotateSet = 1500;
-                    robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(600, 1, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
-                    extendSetPoint = 600;
+                    robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(500, .7, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
+                    extendSetPoint = 500;
+                }
+
+            }else if(gamepad2.dpad_up){
+                robot.TP_M.setPower(VPivotClass.NEWVPivot(1000, SPEEDSET, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED));
+                vPivotSetPoint = 1000;
+                if(VPivotClass.encoderWithOffset > 1450){
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(0, .7, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+                    rotateSet = 0;
+                    robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(50, .7, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
+                    extendSetPoint = 50;
+                }
+
+
+            }else if(gamepad2.dpad_left){
+                robot.TP_M.setPower(VPivotClass.NEWVPivot(800, SPEEDSET, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED));
+                vPivotSetPoint = 800;
+                if(VPivotClass.encoderWithOffset > 750){
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(-1500, .7, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+                    rotateSet = -1500;
+                    robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(50, .7, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
+                    extendSetPoint = 50;
                 }
 
             } else{
@@ -122,7 +149,78 @@ public class NewTurretTeleOp extends LinearOpMode{
                 extendSetPoint = extendSetPoint - (gamepad2.right_stick_y * 30);
                 robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(extendSetPoint, 1, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
 
+            }*/
+
+
+
+
+            if(gamepad2.dpad_down){
+                if(VPivotClass.encoderWithOffset < 500){
+
+                    rotateSet = 0;
+                    ROTATESPEED = 1;
+
+                    extendSetPoint = 400;
+                    EXTENDSPEED = 1;
+
+                    if(RotateClass.modifiedRotateCurrent() < 50 && RotateClass.modifiedRotateCurrent() > -50 && ExtendClass.extendModifiedEncoder > 350 && ExtendClass.extendModifiedEncoder < 450){
+                        vPivotSetPoint = 450;
+                        VPIVOTSPEED = 16;
+                    }
+                }else{
+                    vPivotSetPoint = 550;
+                    VPIVOTSPEED = 16;
+                }
+
+            }else if(gamepad2.dpad_right){
+                vPivotSetPoint = 1500;
+                VPIVOTSPEED = 16;
+                if(VPivotClass.encoderWithOffset > 1450){
+                    ROTATESPEED = 1;
+                    rotateSet = 1500;
+                    EXTENDSPEED = 1;
+                    extendSetPoint = 500;
+                }
+
+            }else if(gamepad2.dpad_up){
+                vPivotSetPoint = 1000;
+                VPIVOTSPEED = 16;
+                if(VPivotClass.encoderWithOffset > 1450){
+                    ROTATESPEED = 1;
+                    rotateSet = 0;
+                    EXTENDSPEED = 1;
+                    extendSetPoint = 50;
+                }
+
+
+            }else if(gamepad2.dpad_left){
+                vPivotSetPoint = 800;
+                VPIVOTSPEED = 16;
+                if(VPivotClass.encoderWithOffset > 750){
+                    ROTATESPEED = 16;
+                    rotateSet = -1500;
+                    EXTENDSPEED = 1;
+                    extendSetPoint = 50;
+                }
+
+            } else{
+                vPivotSetPoint = vPivotSetPoint - (gamepad2.left_stick_y * 30);
+                VPIVOTSPEED = 16;
+
+                if(gamepad2.right_trigger > .05){
+                    rotateSet = rotateSet + (gamepad2.right_trigger * 30);
+                }else if(gamepad2.left_trigger > .05){
+                    rotateSet = rotateSet - (gamepad2.left_trigger * 30);
+                }
+                ROTATESPEED = 1;
+
+                extendSetPoint = extendSetPoint - (gamepad2.right_stick_y * 30);
+                EXTENDSPEED = 1;
+
             }
+            robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(extendSetPoint, EXTENDSPEED, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
+            robot.TR_M.setPower(RotateClass.RotateAutoMethod(rotateSet, ROTATESPEED, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+            robot.TP_M.setPower(VPivotClass.NEWVPivot(vPivotSetPoint, VPIVOTSPEED, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED));
 
 
 

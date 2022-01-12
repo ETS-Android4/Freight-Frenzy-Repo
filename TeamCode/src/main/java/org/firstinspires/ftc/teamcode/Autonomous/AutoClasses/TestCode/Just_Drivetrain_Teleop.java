@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.TestHub.TestHubHardware;
 
-@TeleOp
+//@TeleOp
 public class Just_Drivetrain_Teleop extends LinearOpMode {
 
 
