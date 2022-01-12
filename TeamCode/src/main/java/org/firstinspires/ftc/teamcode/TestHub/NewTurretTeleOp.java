@@ -155,22 +155,22 @@ public class NewTurretTeleOp extends LinearOpMode{
 
 
             if(gamepad2.dpad_down){
-                if(VPivotClass.encoderWithOffset < 500){
 
-                    rotateSet = 0;
-                    ROTATESPEED = 1;
+                rotateSet = 0;
+                ROTATESPEED = 1;
 
-                    extendSetPoint = 400;
-                    EXTENDSPEED = 1;
-
-                    if(RotateClass.modifiedRotateCurrent() < 50 && RotateClass.modifiedRotateCurrent() > -50 && ExtendClass.extendModifiedEncoder > 350 && ExtendClass.extendModifiedEncoder < 450){
-                        vPivotSetPoint = 450;
-                        VPIVOTSPEED = 16;
-                    }
+                extendSetPoint = 400;
+                EXTENDSPEED = 1;
+                if( 50 > Math.abs(RotateClass.modifiedRotateCurrent()) && ExtendClass.extendModifiedEncoder < 450 && ExtendClass.extendModifiedEncoder > 350){
+                    vPivotSetPoint = 350;
+                    VPIVOTSPEED = 16;
                 }else{
-                    vPivotSetPoint = 550;
+                    vPivotSetPoint = 750;
                     VPIVOTSPEED = 16;
                 }
+
+
+
 
             }else if(gamepad2.dpad_right){
                 vPivotSetPoint = 1700;
