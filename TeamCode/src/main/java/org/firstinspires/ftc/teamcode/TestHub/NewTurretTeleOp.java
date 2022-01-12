@@ -173,8 +173,8 @@ public class NewTurretTeleOp extends LinearOpMode{
                 }
 
             }else if(gamepad2.dpad_right){
-                vPivotSetPoint = 1500;
-                VPIVOTSPEED = 16;
+                vPivotSetPoint = 1700;
+                VPIVOTSPEED = 20;
                 if(VPivotClass.encoderWithOffset > 1450){
                     ROTATESPEED = 1;
                     rotateSet = 1500;
@@ -183,8 +183,8 @@ public class NewTurretTeleOp extends LinearOpMode{
                 }
 
             }else if(gamepad2.dpad_up){
-                vPivotSetPoint = 1000;
-                VPIVOTSPEED = 16;
+                vPivotSetPoint = 1200;
+                VPIVOTSPEED = 20;
                 if(VPivotClass.encoderWithOffset > 1450){
                     ROTATESPEED = 1;
                     rotateSet = 0;

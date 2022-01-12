@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.DirectionCalcClass;
@@ -26,7 +27,6 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-@Autonomous
 
 public class BlueWarehouseAuto extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
@@ -37,6 +37,8 @@ public class BlueWarehouseAuto extends LinearOpMode {
     ExtendClass ExtendClass = new ExtendClass();
     VPivotClass VPivotClass = new VPivotClass();
     RotateClass RotateClass = new RotateClass();
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    Telemetry dashboardTelemetry = dashboard.getTelemetry();
     //Uses Vuforia Developer Code
     //Declares Varibles
     double breakout;
@@ -147,10 +149,10 @@ public class BlueWarehouseAuto extends LinearOpMode {
 
             }
 
-            if (pipeline.region1Avg() <= 100) {
+            if (pipeline.region1Avg() <= 110) {
                 TSEPos = 2;
                 telemetry.addData("TSE", 2);
-            } else if (pipeline.region2Avg() <= 100) {
+            } else if (pipeline.region2Avg() <= 110) {
                 TSEPos = 3;
                 telemetry.addData("TSE", 3);
             } else {
@@ -178,112 +180,118 @@ public class BlueWarehouseAuto extends LinearOpMode {
         xSetpoint = 0;
         ySetpoint = 0;
         thetaSetpoint = 0;
-        targetSpeed = 1;
+        targetSpeed = .25;
         accelerationDistance = 0;
         decelerationDistance = 1;
-        slowMoveSpeed = 1;
+        slowMoveSpeed = .25;
         slowMovedDistance = 1;
         thetaDeccelerationDegree = 1;
         thetaTargetSpeed = .4;
-        rotateSpeed = .55;
-        extendSpeed = .65;
+        rotateSpeed = .6;
+        extendSpeed = .8;
         VPivotSpeed = 12;
-
+        loopcount = 0;
+        timepassed = 0;
         while (opModeIsActive() && stopProgram == 0) {
             if(action == 1) {
                 if (TSEPos == 1 && action == 1) {
-                    rotateSetpoint = 2050;
+                    rotateSetpoint = 1800;
                     extendSetpoint = 0;
-                    VPivotSetpoint = 955;
-                    if (DirectionClass.distanceFromReturn() <= .4) {
+                    VPivotSetpoint = 900;
+                    if (DirectionClass.distanceFromReturn() <= .7) {
                         StopMotors();
                     }
-                    if ((VPivotClass.encoderWithOffset >= 875) && (robot.TP_P.getVoltage() <= 950)) {
-                        extendSetpoint = 1435;
-                        if (ExtendClass.extendModifiedEncoder <= 1525 && ExtendClass.extendModifiedEncoder >= 1450) {
+                    if ((VPivotClass.encoderWithOffset >= 875) && (VPivotClass.encoderWithOffset <= 950)) {
+                        extendSetpoint = 1240;
+                        if (ExtendClass.extendModifiedEncoder <= 1400 && ExtendClass.extendModifiedEncoder >= 1220) {
+                            if (loopcount == 0) {
+                                loopcount = 1;
+                                timepassed = getRuntime() + 4;
+                            }
                             robot.LI_S.setPower(-1);
                             robot.RI_S.setPower(1);
-                            if (robot.I_DS.getDistance(DistanceUnit.INCH) >= 4.5) {
+                            if (robot.I_DS.getDistance(DistanceUnit.INCH) >= 2.5 || timepassed <= getRuntime()) {
                                 StopMotors();
                                 action = 2;
                                 startPointY = OdoClass.odoYReturn();
+                                startPointX = OdoClass.odoXReturn();
                                 robot.LI_S.setPower(0);
                                 robot.RI_S.setPower(0);
-                                breakout = 0;
-                            } else {
-                                breakout = 1;
                             }
                         }
                     }
                 }
                 if (TSEPos == 2 && action == 1) {
-                    rotateSetpoint = 2050;
+                    rotateSetpoint = 1800;
                     extendSetpoint = 0;
-                    VPivotSetpoint = 1275;
-                    if (DirectionClass.distanceFromReturn() <= .4) {
+                    VPivotSetpoint = 1190;
+                    if (DirectionClass.distanceFromReturn() <= .7) {
                         StopMotors();
                     }
                     if (VPivotClass.encoderWithOffset >= 875) {
-                        extendSetpoint = 1425;
-                        if (ExtendClass.extendModifiedEncoder <= 1550 && ExtendClass.extendModifiedEncoder >= 1500) {
+                        extendSetpoint = 1300;
+                        if (ExtendClass.extendModifiedEncoder <= 1450 && ExtendClass.extendModifiedEncoder >= 1280) {
+                            if(loopcount == 0){
+                                loopcount = 1;
+                                timepassed = getRuntime() + 4;
+                            }
                             robot.LI_S.setPower(-1);
                             robot.RI_S.setPower(1);
-                            if (robot.I_DS.getDistance(DistanceUnit.INCH) >= 4.5) {
+                            if (robot.I_DS.getDistance(DistanceUnit.INCH) >= 2.5 || timepassed <= getRuntime()) {
                                 StopMotors();
                                 action = 2;
                                 startPointY = OdoClass.odoYReturn();
                                 robot.LI_S.setPower(0);
                                 robot.RI_S.setPower(0);
-                                breakout = 0;
-                            } else {
-                                breakout = 1;
                             }
                         }
                     }
                 }
                 if (TSEPos == 3 && action == 1) {
-                    rotateSetpoint = 2100;
+                    rotateSetpoint = 1800;
                     extendSetpoint = 0;
-                    VPivotSetpoint = 1425;
-                    if (DirectionClass.distanceFromReturn() <= .4) {
+                    VPivotSetpoint = 1500;
+                    if (DirectionClass.distanceFromReturn() <= .7) {
                         StopMotors();
                     }
                     if (VPivotClass.encoderWithOffset >= 875) {
-                        extendSetpoint = 1415;
-                        if (ExtendClass.extendModifiedEncoder <= 1525 && ExtendClass.extendModifiedEncoder >= 1410) {
+                        extendSetpoint = 1455;
+                        if (ExtendClass.extendModifiedEncoder <= 1480 && ExtendClass.extendModifiedEncoder >= 1375) {
+                            if(loopcount == 0){
+                                loopcount = 1;
+                                timepassed = getRuntime() + 4;
+                            }
                             robot.LI_S.setPower(-1);
                             robot.RI_S.setPower(1);
-                            if (robot.I_DS.getDistance(DistanceUnit.INCH) >= 4.5) {
+                            if (robot.I_DS.getDistance(DistanceUnit.INCH) >= 2.5 || timepassed <= getRuntime()) {
                                 StopMotors();
                                 action = 2;
                                 startPointY = OdoClass.odoYReturn();
                                 robot.LI_S.setPower(0);
                                 robot.RI_S.setPower(0);
                                 breakout = 0;
-                            } else {
-                                breakout = 1;
                             }
                         }
                     }
                 }
             }
             else if(action == 2){
-                extendSetpoint = 0;
-                extendSpeed = .7;
+                extendSetpoint = 100;
+                extendSpeed = .8;
                 thetaSetpoint = 0;
-                accelerationDistance = .04;
-                decelerationDistance = 8;
-                slowMoveSpeed = 3.85;
-                slowMovedDistance = 1;
+                accelerationDistance = .25;
+                decelerationDistance = 7.5;
+                slowMoveSpeed = 1;
+                slowMovedDistance = 2;
                 thetaDeccelerationDegree = 2;
                 thetaTargetSpeed = 1;
                 VPivotSetpoint = .9;
                 VPivotSpeed = .3;
-                xSetpoint = 31;
-                ySetpoint = 1.5;
+                xSetpoint = 41;
+                ySetpoint = .6;
                 thetaSetpoint = 0;
-                targetSpeed = 15;
-                rotateSpeed = .5;
+                targetSpeed = 25;
+                rotateSpeed = .65;
                 rotateSetpoint = 0;
                 VPivotSetpoint = 1500;
                 //Exits once the robot is a certain distance and angle away
@@ -293,138 +301,12 @@ public class BlueWarehouseAuto extends LinearOpMode {
                     startPointX = OdoClass.odoXReturn();
                     startPointY = OdoClass.odoYReturn();
                     breakout = 0;
-                } else {
-                    breakout = 1;
-                }
-            }
-
-
-            /*
-            if (action == 1) {
-                if ((robot.TP_P.getVoltage() >= 1.15) && (robot.TP_P.getVoltage() <= 1.25)) {
-                    StopMotors();
-                    action = 2;
-                    startPointY = OdoClass.odoYReturn();
-                    breakout = 0;
-                } else {
-                    breakout = 1;
-                }
-            } else if (action == 2) {
-                rotateSetpoint = 1550;
-                if (RotateClass.modifiedRotateCurrent() <= 1600 && RotateClass.modifiedRotateCurrent() >= 1500) {
-                    action = 3;
-                    breakout = 0;
-                } else {
-                    breakout = 1;
-                    timepassed = 1;
-                }
-            } else if (action == 3) {
-                extendSetpoint = 1450;
-                if ((ExtendClass.extendModifiedEncoder <= 1500 && ExtendClass.extendModifiedEncoder >= 1400)) {
-                    action = 4;
-                    breakout = 0;
-                } else {
-                    breakout = 1;
-                    timepassed = 1;
-                }
-
-            } else if (action == 4) {
-                robot.LI_S.setPower(-.7);
-                robot.RI_S.setPower(.7);
-                if (timepassed == 1) {
-                    timepassed2 = getRuntime();
-                    timepassed = 0;
-                }
-                if (timepassed2 + 3.5 <= getRuntime()) {
-                    action = 5;
-                    breakout = 0;
-                    timepassed = 1;
-                } else {
-                    breakout = 1;
-
-                }
-            } else if (action == 5) {
-                robot.LI_S.setPower(0);
-                robot.RI_S.setPower(0);
-                extendSetpoint = 0;
-                if ((ExtendClass.extendModifiedEncoder <= 100)) {
-                    action = 6;
-                    breakout = 0;
-                } else {
-                    breakout = 1;
-                    timepassed = 1;
-                }
-
-
-                ///Moves to first power shot shooting position
-
-                //Exits once the robot is a certain distance and angle away
-
-            } else if (action == 6) {
-                    thetaSetpoint = 0;
-                    accelerationDistance = .04;
-                    decelerationDistance = 8;
-                    slowMoveSpeed = 3.85;
-                    slowMovedDistance = 1;
-                    thetaDeccelerationDegree = 2;
-                    thetaTargetSpeed = 1;
-                    VPivotSetpoint = .9;
-                    VPivotSpeed = .3;
-                    xSetpoint = 50;
-                    ySetpoint = .8;
-                    thetaSetpoint = 0;
-                    targetSpeed = 20;
-                    rotateSpeed = .4;
-                    rotateSetpoint = 0;
-                    //Exits once the robot is a certain distance and angle away
-                if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .5 && OdoClass.thetaInDegreesReturn() > -.5)) {
-                        StopMotors();
-                        action = 7;
-                        startPointX = OdoClass.odoXReturn();
-                        startPointY = OdoClass.odoYReturn();
-                        breakout = 0;
-                    } else {
-                        breakout = 1;
-                    }
-                }
-           else if (action == 7) {
-                xSetpoint = 50;
-                ySetpoint = 25;
-                thetaSetpoint = 0;
-                targetSpeed = 15;
-                //Exits once the robot is a certain distance and angle away
-                if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .5 && OdoClass.thetaInDegreesReturn() > -.5)) {
-                    StopMotors();
-                    action = 8;
-                    startPointX = OdoClass.odoXReturn();
-                    startPointY = OdoClass.odoYReturn();
-                    breakout = 0;
-                } else {
-                    breakout = 1;
                 }
             }
 
 
 
 
-            /*else if (action == 2) {
-                xSetpoint = 30;
-                ySetpoint = 0;
-                thetaSetpoint = 0;
-                targetSpeed = 40;
-                //Exits once the robot is a certain distance and angle away
-                if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < .5 && OdoClass.thetaInDegreesReturn() > -.5)) {
-                    StopMotors();
-                    action = 3;
-                    startPointX = OdoClass.odoXReturn();
-                    startPointY = OdoClass.odoYReturn();
-                    breakout = 0;
-                } else {
-                    breakout = 1;
-                }
-            }
-
-             */
 
             //If nothing else to do, stop the program
             else {
@@ -469,6 +351,7 @@ public class BlueWarehouseAuto extends LinearOpMode {
         telemetry.addData("PT", robot.TP_P.getVoltage());
         telemetry.addData("ExtendE", ExtendClass.extendModifiedEncoder);
         telemetry.addData("RotateE", RotateClass.modifiedRotateCurrent());
+        telemetry.addData("Distance Sensor", robot.I_DS.getDistance(DistanceUnit.INCH));
         telemetry.update();
     }
 
@@ -507,12 +390,12 @@ public class BlueWarehouseAuto extends LinearOpMode {
       // static final Scalar PARAKEET = new Scalar(3, 192, 74);
 
         //sets the boxes where we will look
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(155, 260);
+        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(135, 305);
         static int REGION1_WIDTH = 60;
-        static int REGION1_HEIGHT = 85;
-        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(270, 260);
+        static int REGION1_HEIGHT = 40;
+        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(263, 305);
         static final int REGION2_WIDTH = 60;
-        static final int REGION2_HEIGHT = 85;
+        static final int REGION2_HEIGHT = 40;
         //static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(430, 260);
         //static final int REGION3_WIDTH = 60;
         //static final int REGION3_HEIGHT = 85;
