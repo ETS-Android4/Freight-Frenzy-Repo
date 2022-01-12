@@ -186,7 +186,7 @@ public class BlueWarehouseAuto extends LinearOpMode {
         thetaDeccelerationDegree = 1;
         thetaTargetSpeed = .4;
         rotateSpeed = .55;
-        extendSpeed = .8;
+        extendSpeed = .65;
         VPivotSpeed = 12;
 
         while (opModeIsActive() && stopProgram == 0) {
@@ -199,7 +199,7 @@ public class BlueWarehouseAuto extends LinearOpMode {
                         StopMotors();
                     }
                     if ((VPivotClass.encoderWithOffset >= 875) && (robot.TP_P.getVoltage() <= 950)) {
-                        extendSetpoint = 1475;
+                        extendSetpoint = 1435;
                         if (ExtendClass.extendModifiedEncoder <= 1525 && ExtendClass.extendModifiedEncoder >= 1450) {
                             robot.LI_S.setPower(-1);
                             robot.RI_S.setPower(1);
@@ -224,7 +224,7 @@ public class BlueWarehouseAuto extends LinearOpMode {
                         StopMotors();
                     }
                     if (VPivotClass.encoderWithOffset >= 875) {
-                        extendSetpoint = 1525;
+                        extendSetpoint = 1425;
                         if (ExtendClass.extendModifiedEncoder <= 1550 && ExtendClass.extendModifiedEncoder >= 1500) {
                             robot.LI_S.setPower(-1);
                             robot.RI_S.setPower(1);
@@ -249,7 +249,7 @@ public class BlueWarehouseAuto extends LinearOpMode {
                         StopMotors();
                     }
                     if (VPivotClass.encoderWithOffset >= 875) {
-                        extendSetpoint = 1425;
+                        extendSetpoint = 1415;
                         if (ExtendClass.extendModifiedEncoder <= 1525 && ExtendClass.extendModifiedEncoder >= 1410) {
                             robot.LI_S.setPower(-1);
                             robot.RI_S.setPower(1);
@@ -507,10 +507,10 @@ public class BlueWarehouseAuto extends LinearOpMode {
       // static final Scalar PARAKEET = new Scalar(3, 192, 74);
 
         //sets the boxes where we will look
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(270, 260);
+        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(155, 260);
         static int REGION1_WIDTH = 60;
         static int REGION1_HEIGHT = 85;
-        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(420, 260);
+        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(270, 260);
         static final int REGION2_WIDTH = 60;
         static final int REGION2_HEIGHT = 85;
         //static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(430, 260);
