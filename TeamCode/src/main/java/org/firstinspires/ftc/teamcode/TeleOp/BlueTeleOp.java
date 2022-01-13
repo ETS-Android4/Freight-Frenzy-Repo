@@ -163,7 +163,7 @@ public class BlueTeleOp extends LinearOpMode{
                 extendSetPoint = 400;
                 EXTENDSPEED = 1;
                 if( 50 > Math.abs(RotateClass.modifiedRotateCurrent()) && ExtendClass.extendModifiedEncoder < 450 && ExtendClass.extendModifiedEncoder > 350){
-                    vPivotSetPoint = 350;
+                    vPivotSetPoint = 400;
                     VPIVOTSPEED = 16;
                 }else{
                     vPivotSetPoint = 750;

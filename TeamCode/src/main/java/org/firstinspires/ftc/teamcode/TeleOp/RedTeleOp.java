@@ -98,7 +98,7 @@ public class RedTeleOp extends LinearOpMode{
                 extendSetPoint = 400;
                 EXTENDSPEED = 1;
                 if( 50 > Math.abs(RotateClass.modifiedRotateCurrent()) && ExtendClass.extendModifiedEncoder < 450 && ExtendClass.extendModifiedEncoder > 350){
-                    vPivotSetPoint = 350;
+                    vPivotSetPoint = 400;
                     VPIVOTSPEED = 16;
                 }else{
                     vPivotSetPoint = 750;
@@ -109,7 +109,7 @@ public class RedTeleOp extends LinearOpMode{
 
 
             }else if(gamepad2.dpad_right){
-                vPivotSetPoint = 800;
+                vPivotSetPoint = 1700;
                 VPIVOTSPEED = 20;
                 if(VPivotClass.encoderWithOffset > 1450){
                     ROTATESPEED = 1;
@@ -130,7 +130,7 @@ public class RedTeleOp extends LinearOpMode{
 
 
             }else if(gamepad2.dpad_left){
-                vPivotSetPoint = 1700;
+                vPivotSetPoint = -800;
                 VPIVOTSPEED = 20;
                 if(VPivotClass.encoderWithOffset > 750){
                     ROTATESPEED = 16;

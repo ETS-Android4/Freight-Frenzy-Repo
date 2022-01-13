@@ -5,7 +5,7 @@ package org.firstinspires.ftc.teamcode.TurretClasses;
 public class ExtendClass {
     //setting variables for later use in the code
     double extendMin = -2000, extendMax = 1500, extendSet = 0;
-    double extendDifference = 0, extendMultipliedP = 0, extendP = -.0103, extendD = -0.0075, extendMultipliedD = 0;
+    double extendDifference = 0, extendMultipliedP = 0, extendP = -.01, extendD = -0.0088, extendMultipliedD = 0;
     double homingnextset; boolean HasExtended = false; double homingMin = 0; boolean isHomed = false, lastmagnetic = false;
     public double ExtendMotorPower = 0, lastError = 0, HomingMotorpower = 0, extendModifiedEncoder = 0, deltaEncoder = 0, lastencoder = 0;
 

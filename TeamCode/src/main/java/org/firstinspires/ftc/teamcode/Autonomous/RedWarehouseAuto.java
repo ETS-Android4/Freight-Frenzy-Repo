@@ -13,7 +13,6 @@ import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.SpeedClass;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.TurnControl;
 import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
-import org.firstinspires.ftc.teamcode.TestHub.OpenCVTest;
 import org.firstinspires.ftc.teamcode.TurretClasses.ExtendClass;
 import org.firstinspires.ftc.teamcode.TurretClasses.RotateClass;
 import org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass;
@@ -29,7 +28,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 @Autonomous
-public class BlueWarehouseAuto extends LinearOpMode {
+public class RedWarehouseAuto extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     SpeedClass SpeedClass = new SpeedClass();
     DirectionCalcClass DirectionClass = new DirectionCalcClass();
@@ -89,7 +88,7 @@ public class BlueWarehouseAuto extends LinearOpMode {
     public void runOpMode() {
         robot.init(hardwareMap);
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 2"), cameraMonitorViewId);
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
 
         //allows to call pipline
         pipeline = new OpenCVPipeline();
@@ -131,18 +130,18 @@ public class BlueWarehouseAuto extends LinearOpMode {
                 robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(10, .8, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
                 if (initPOsitionOrder == 1) {
                     robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
-                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(800, .5, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
-                    if (RotateClass.modifiedRotateCurrent() > 750 && RotateClass.modifiedRotateCurrent() < 850) {
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(-800, .5, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+                    if (RotateClass.modifiedRotateCurrent() < -750 && RotateClass.modifiedRotateCurrent() > -850) {
                         initPOsitionOrder = 2;
                     }
                 } else if (initPOsitionOrder == 2) {
-                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(800, .5, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(-800, .5, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
                     robot.TP_M.setPower(VPivotClass.NEWVPivot(500, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
                     if (VPivotClass.encoderWithOffset < 550 && VPivotClass.encoderWithOffset > 450) {
                         initPOsitionOrder = 3;
                     }
                 } else if (initPOsitionOrder == 3) {
-                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(650, .4, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(-700, .4, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
                     robot.TP_M.setPower(VPivotClass.NEWVPivot(500, 5, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
 
                 }
@@ -196,7 +195,7 @@ public class BlueWarehouseAuto extends LinearOpMode {
         while (opModeIsActive() && stopProgram == 0) {
             if(action == 1) {
                 if (TSEPos == 1 && action == 1) {
-                    rotateSetpoint = 1800;
+                    rotateSetpoint = -1800;
                     extendSetpoint = 0;
                     VPivotSetpoint = 900;
                     if (DirectionClass.distanceFromReturn() <= .7) {
@@ -223,7 +222,7 @@ public class BlueWarehouseAuto extends LinearOpMode {
                     }
                 }
                 if (TSEPos == 2 && action == 1) {
-                    rotateSetpoint = 1800;
+                    rotateSetpoint = -1800;
                     extendSetpoint = 0;
                     VPivotSetpoint = 1190;
                     if (DirectionClass.distanceFromReturn() <= .7) {
@@ -249,7 +248,7 @@ public class BlueWarehouseAuto extends LinearOpMode {
                     }
                 }
                 if (TSEPos == 3 && action == 1) {
-                    rotateSetpoint = 1800;
+                    rotateSetpoint = -1800;
                     extendSetpoint = 0;
                     VPivotSetpoint = 1500;
                     if (DirectionClass.distanceFromReturn() <= .7) {
@@ -391,10 +390,10 @@ public class BlueWarehouseAuto extends LinearOpMode {
       // static final Scalar PARAKEET = new Scalar(3, 192, 74);
 
         //sets the boxes where we will look
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(135, 305);
+        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(535, 270);
         static int REGION1_WIDTH = 60;
         static int REGION1_HEIGHT = 40;
-        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(263, 305);
+        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(385, 260);
         static final int REGION2_WIDTH = 60;
         static final int REGION2_HEIGHT = 40;
         //static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(430, 260);
