@@ -142,18 +142,18 @@ public class BlueWarehouseAuto extends LinearOpMode {
                         initPOsitionOrder = 3;
                     }
                 } else if (initPOsitionOrder == 3) {
-                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(650, .4, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
-                    robot.TP_M.setPower(VPivotClass.NEWVPivot(500, 5, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(600, .4, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(475, 5, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
 
                 }
 
 
             }
 
-            if (pipeline.region1Avg() <= 110) {
+            if (pipeline.region1Avg() <= 160) {
                 TSEPos = 2;
                 telemetry.addData("TSE", 2);
-            } else if (pipeline.region2Avg() <= 110) {
+            } else if (pipeline.region2Avg() <= 160) {
                 TSEPos = 3;
                 telemetry.addData("TSE", 3);
             } else {
@@ -281,27 +281,29 @@ public class BlueWarehouseAuto extends LinearOpMode {
                 extendSpeed = .8;
                 thetaSetpoint = 0;
                 accelerationDistance = .25;
-                decelerationDistance = 6.5;
-                slowMoveSpeed = 2;
+                decelerationDistance = 7.5;
+                slowMoveSpeed = 1;
                 slowMovedDistance = 2;
                 thetaDeccelerationDegree = 2;
                 thetaTargetSpeed = 1;
                 VPivotSetpoint = .9;
-                VPivotSpeed = .6;
+                VPivotSpeed = 5;
                 xSetpoint = 41;
-                ySetpoint = .6;
+                ySetpoint = 1;
                 thetaSetpoint = 0;
-                targetSpeed = 25;
+                targetSpeed = 18;
                 rotateSpeed = .65;
                 rotateSetpoint = 0;
                 VPivotSetpoint = 1500;
                 //Exits once the robot is a certain distance and angle away
-                if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 2 && OdoClass.thetaInDegreesReturn() > -2)) {
+                if (DirectionClass.distanceFromReturn() <= 1.3 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 7 && OdoClass.thetaInDegreesReturn() > -7)) {
                     StopMotors();
-                    action = 7;
+                    breakout = 0;
+                    action = 3;
                     startPointX = OdoClass.odoXReturn();
                     startPointY = OdoClass.odoYReturn();
-                    breakout = 0;
+                }else {
+                    breakout = 1;
                 }
             }
 
@@ -391,11 +393,11 @@ public class BlueWarehouseAuto extends LinearOpMode {
       // static final Scalar PARAKEET = new Scalar(3, 192, 74);
 
         //sets the boxes where we will look
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(135, 305);
-        static int REGION1_WIDTH = 60;
+        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(115, 300);
+        static int REGION1_WIDTH = 80;
         static int REGION1_HEIGHT = 40;
-        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(263, 305);
-        static final int REGION2_WIDTH = 60;
+        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(253, 305);
+        static final int REGION2_WIDTH = 80;
         static final int REGION2_HEIGHT = 40;
         //static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(430, 260);
         //static final int REGION3_WIDTH = 60;
