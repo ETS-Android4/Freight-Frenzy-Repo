@@ -20,14 +20,18 @@ public class NewTurretProgrammingTeleOP extends LinearOpMode{
     public static double UPARMDM = .009;
     public static double DNPM = .004;
     public static double DNDM = .012;
-    public static double EXTENDSPEED = 1;
-    public static double EXTENDP = 1;
-    public static double EXTENDD = 1;
-    public static double EXTENDI = 1;
-    public static double EXTENDSET = 100;
+    public static double EXTENDSPEED = 5;
+    public static double EXTENDP = .02;
+    public static double EXTENDD = 0.01;
+    public static double EXTENDI = 0;
+    public static double ROTATEP = .02;
+    public static double ROTATED = 0.01;
+    public static double ROTATEI = 0;
+    public static double EXTENDSET = 200;
     public static double VPIVOTSPEEDSET = 16;
     public static double VPIVOTSETPOINT = 1500;
     public static double ROTATESPEED = 1;
+    public static double ROTATESET = 10;
 
 
     public double vPivotSetPoint = 1500, extendSetPoint = 0, rotateSet = 0;
@@ -96,16 +100,23 @@ public class NewTurretProgrammingTeleOP extends LinearOpMode{
             VPivotClass.DNSpeedPM = DNPM;
             VPivotClass.DNSpeedDM = DNDM;
 
+            ExtendClass.extendP = EXTENDP;
+            ExtendClass.extendD = EXTENDD;
+            ExtendClass.extendI = EXTENDI;
 
-            //ExtendClass.ExtendSpeedMethod(200, 10, robot.TE_M.getCurrentPosition(), robot.TE_G.getState(), getRuntime());
-            //RotateClass.RotateSpeedMethod(500, 10, robot.TR_M.getCurrentPosition(), robot.TR_G.getState(), getRuntime());
-            //VPivotClass.VPivot(1000, 16, robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16);
+            RotateClass.rotateP = ROTATEP;
+            RotateClass.rotateD = ROTATED;
+            RotateClass.rotateI = ROTATEI;
+
+            robot.TE_M.setPower(ExtendClass.ExtendSpeedMethod(EXTENDSET, EXTENDSPEED, robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
+            robot.TR_M.setPower(RotateClass.RotateSpeedMethod(ROTATESET, ROTATESPEED, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+            VPivotClass.VPivot(VPIVOTSETPOINT, VPIVOTSPEEDSET, robot.TP_M.getCurrentPosition(), robot.TP_G.getState());
 
 
             x = -(Math.copySign(gamepad1.left_stick_x, gamepad1.left_stick_x * gamepad1.left_stick_x * gamepad1.left_stick_x));
             y = -(Math.copySign(gamepad1.left_stick_y, gamepad1.left_stick_y * gamepad1.left_stick_y * gamepad1.left_stick_y));
             z = Math.copySign(gamepad1.right_stick_x, gamepad1.right_stick_x * gamepad1.right_stick_x * gamepad1.right_stick_x);
-
+/*
             //setting the possiblity of a slow speed on the drivetrain
             if(gamepad1.right_bumper){
                 robot.LF_M.setPower(.4*((y)-x+(z)));//LF
@@ -130,7 +141,7 @@ public class NewTurretProgrammingTeleOP extends LinearOpMode{
                 robot.LI_S.setPower(0);
             }
 
-            Telemetry();
+           */ Telemetry();
         }
 
     }
@@ -146,17 +157,23 @@ public class NewTurretProgrammingTeleOP extends LinearOpMode{
         telemetry.addData("degrees Traveled", VPivotClass.DegreesTravelReturn());
         telemetry.addData("pivot encoder", robot.TP_M.getCurrentPosition());
 
-        dashboardTelemetry.addData("motor power", VPivotClass.FinalMotorPower);
-        dashboardTelemetry.addData("speed", VPivotClass.SpeedReturn());
-        dashboardTelemetry.addData("DegreesTraveled", VPivotClass.DegreesTravelReturn());
-        dashboardTelemetry.addData("deltaEncoder", VPivotClass.deltaPivotEncoder);
-        dashboardTelemetry.addData("RATIOEncoderWithOffset", VPivotClass.encoderWithOffset/1000);
-        dashboardTelemetry.addData("EncoderWithOffset", VPivotClass.encoderWithOffset);
-        dashboardTelemetry.addData("Pivot Encoder", robot.TP_M.getCurrentPosition());
-        dashboardTelemetry.addData("POT", robot.TP_P.getVoltage());
-        dashboardTelemetry.addData("geRunTime", getRuntime());
-        dashboardTelemetry.addData("Timer", System.nanoTime());
-        dashboardTelemetry.addData("nanatimerin seconds", System.nanoTime()/1000000000);
+        dashboardTelemetry.addData("Extend Encoder", robot.TE_M.getCurrentPosition());
+        dashboardTelemetry.addData("Extend Modified Encoder", ExtendClass.extendModifiedEncoder);
+        dashboardTelemetry.addData("Extend Motor Power", ExtendClass.ExtendMotorPower);
+        dashboardTelemetry.addData("Extend Speed", ExtendClass.extendCurrentSpeed);
+        dashboardTelemetry.addData("Extend Intregal Sum", ExtendClass.extendIntegralsum);
+        dashboardTelemetry.addData("Extend Speed SET", ExtendClass.extendSpeedSet);
+        /*
+        dashboardTelemetry.addData("VPivot Modified Encoder",VPivotClass.encoderWithOffset);
+        dashboardTelemetry.addData("VPivot Speed", VPivotClass.speed);
+        dashboardTelemetry.addData("VPivot Motor Power", VPivotClass.FinalMotorPower);
+        */
+        dashboardTelemetry.addData("Rotate Modfiied Encoder", RotateClass.modifiedCurrentPos);
+        dashboardTelemetry.addData("Rotate speed", RotateClass.currentSpeed);
+        dashboardTelemetry.addData("Rotate motorPower", RotateClass.rotateMotorPower);
+
+        dashboardTelemetry.addData("nanotimerin seconds", System.nanoTime()/1000000000);
+        dashboardTelemetry.addData("elapsed Time", robot.TimerCustom());
         dashboardTelemetry.update();
         telemetry.update();
     }

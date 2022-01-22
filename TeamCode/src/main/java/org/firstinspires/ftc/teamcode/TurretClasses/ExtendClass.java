@@ -1,19 +1,23 @@
 package org.firstinspires.ftc.teamcode.TurretClasses;
 
 
+import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
 
 public class ExtendClass {
     //setting variables for later use in the code
-    double extendMin = -2000, extendMax = 1500, extendSet = 0;
-    double extendDifference = 0, extendMultipliedP = 0, extendP = -.0085, extendD = -0.0095, extendI = 0, extendMultipliedD = 0, encoderTickPerInch = 20;
+    double extendMin = -2000, extendMax = 1700, extendSet = 0;
+    public double extendDifference = 0, extendMultipliedP = 0, extendP = .02, extendD = 0.01, extendI = 0, extendMultipliedD = 0, encoderTickPerInch = 70;
     double homingnextset; boolean HasExtended = false; double homingMin = 0; boolean isHomed = false, lastmagnetic = false;
     public double ExtendMotorPower = 0, lastError = 0, HomingMotorpower = 0, extendModifiedEncoder = 0, deltaEncoder = 0, lastencoder = 0, extendSpeedSet, extendCurrentSpeed = 0;
     public double extendSpeedDifference = 0, extendSpeedCorrection, lastextendSpeedDifference = 0, extendIntegralsum = 0, extendIntegralMax, lastDesiredSet = 0;
 
-    double Direction;
+    double Direction, timeInSec = 0, lastTimeInSec = 0;
 
+FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
 
-    public double ExtendSpeedMethod(double desiredset, double SpeedSet, double extendEncoder, boolean MagneticExtend, double time) {
+    public double ExtendSpeedMethod(double desiredset, double SpeedSet, boolean Mag, double Encoder) {
+
+        timeInSec = robot.TimerCustom();
 
         //setting the desired setpoint and capping the setpoint
         extendSet = desiredset;
@@ -25,20 +29,20 @@ public class ExtendClass {
         }
 
         //reseting the encoder minimum at the magnetic sensor so we stop at the sensor and not overrun
-        if (MagneticExtend == false && lastmagnetic == true) {
+      /*  if (Mag == false && lastmagnetic == true) {
             extendMin = 0;
             extendModifiedEncoder = 0;
             extendMax = extendMin + 1525;
             lastmagnetic = false;
-        }else if(MagneticExtend == false){
+        }else if(Mag == false){
             lastmagnetic = false;
         }
         else{
             lastmagnetic = true;
-        }
+        }*/
 
         //Finding how much our encoder changed in between loop cycles and setting our modified encoder value
-        deltaEncoder = extendEncoder - lastencoder;
+        deltaEncoder = Encoder - lastencoder;
         extendModifiedEncoder = extendModifiedEncoder + deltaEncoder;
 
         //setting what direction the arm needs to extend
@@ -51,12 +55,12 @@ public class ExtendClass {
         //setting our speed setpoint positive or negative depending on what direction it needs to go
         extendSpeedSet = Math.copySign(SpeedSet, Direction);
 
-        if(Math.abs(desiredset - extendModifiedEncoder) < 100){
-            extendSpeedSet = extendSpeedSet * (Math.abs(desiredset - extendModifiedEncoder));
+        if(Math.abs(desiredset - extendModifiedEncoder) < 300){
+            extendSpeedSet = extendSpeedSet * (Math.abs(desiredset - extendModifiedEncoder)/300);
         }
 
         //calculating the current speed of the arm
-        extendCurrentSpeed = (deltaEncoder/encoderTickPerInch)/time;
+        extendCurrentSpeed = (deltaEncoder/encoderTickPerInch)/(timeInSec - lastTimeInSec);
 
         //Calculating how far away the robot are from our speed setpoint
         extendSpeedDifference = extendSpeedSet - extendCurrentSpeed;
@@ -67,7 +71,7 @@ public class ExtendClass {
         }
 
         //calculating and limiting our intigral
-        extendIntegralsum = extendIntegralsum + (extendSpeedDifference * time);
+        extendIntegralsum = extendIntegralsum + (extendSpeedDifference * (timeInSec - lastTimeInSec));
 
         if(extendIntegralsum > extendIntegralMax){
             extendIntegralsum = extendIntegralMax;
@@ -76,11 +80,12 @@ public class ExtendClass {
         }
 
 
-        ExtendMotorPower = (extendSpeedDifference * extendP) + (extendIntegralsum * extendI) + ((extendSpeedDifference - lastextendSpeedDifference) * extendP);
+        ExtendMotorPower = ExtendMotorPower + (extendSpeedDifference * extendP) + (extendIntegralsum * extendI) + ((extendSpeedDifference - lastextendSpeedDifference) * extendP);
 
 
 
-        lastencoder = extendEncoder;
+        lastencoder = Encoder;
+        lastTimeInSec = timeInSec;
         lastDesiredSet = desiredset;
         lastextendSpeedDifference = extendSpeedDifference;
         //returning the motor power for use
@@ -119,8 +124,8 @@ public class ExtendClass {
 
         //finding difference so we can use it for the proportional and derivative multipliers
         extendDifference = extendModifiedEncoder - extendSet;
-        extendMultipliedP = extendDifference * extendP;//Proportional multiplying
-        extendMultipliedD = (extendDifference - lastError) * extendD;//derivative multiplying
+        extendMultipliedP = extendDifference * -.0085;//Proportional multiplying
+        extendMultipliedD = (extendDifference - lastError) * -0.0095;//derivative multiplying
         ExtendMotorPower = extendMultipliedP + extendMultipliedD;//adding them together to give 1 motor power
 
         lastError = extendDifference;// setting last error for use in derivative

@@ -4,20 +4,20 @@ package org.firstinspires.ftc.teamcode.TurretClasses;
 import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
 
 public class VPivotClass extends FreightFrenzyHardwareMap{
-
+    FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     //setting variables for use in later code
     public double vPivotSet = 1.15;
     public double FinalMotorPower;
-    double lastTime, lastPOT, speed, speedDifference, speedCorrection, speedPM, speedDM, lastSpeedDifference = 0, vPivotPOT1degree = .0105, vPivotEncoder1Degree = 23;//TODO correct this variable
+    public double lastTime, lastPOT, speed, speedDifference, speedCorrection, speedPM, speedDM, lastSpeedDifference = 0, vPivotPOT1degree = .0105, vPivotEncoder1Degree = 23;//TODO correct this variable
     public double degreesTraveled, speedSetPoint;
     public double vPivotCorrection = 1, encoderWithOffset = 0, deltaPivotEncoder, lastEncoder = 0, motionprofile = 0, lastSpeed = 0;
     public boolean has1stloop = false;
     public  double UPSpeedPM = .015, UPSpeedDM = .009, DNSpeedPM = .004, DNSpeedDM = .012, closeSpeedMult;
-    double StartSlowSpeed = .25;
-    FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
+    double StartSlowSpeed = .25, time = robot.TimerCustom();
 
 
-    public double VPivot(double SetPoint, double SpeedSetPt , double EncoderReading, boolean MAG , double time, double extendlength){
+
+    public double VPivot(double SetPoint, double SpeedSetPt , double EncoderReading, boolean MAG){
 
 
 
@@ -47,7 +47,7 @@ public class VPivotClass extends FreightFrenzyHardwareMap{
 
         //Calculating Speed at tip of arm
         degreesTraveled = deltaPivotEncoder / vPivotEncoder1Degree;
-        speed = ((2 * extendlength) * Math.PI)*(degreesTraveled / 360) / (time - lastTime);
+        speed = ((2 * 16) * Math.PI)*(degreesTraveled / 360) / (time - lastTime);
 
 
         //Motion Profile

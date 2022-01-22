@@ -1,21 +1,27 @@
 package org.firstinspires.ftc.teamcode.TurretClasses;
 
 
+import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
+
 public class RotateClass{
     //setting variables for use later in code
+    FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     double rotateMin = -4500, rotateMax = 4500, rotateSet = 0;
-    double rotateDifference = 0, MultipliedP = 0, rotateP = -.01, rotateD = 0, rotateI = 0; double lastError = 0; double MultipliedD = 0; public double rotateMotorPower;
-    boolean lastrotatemag = false; double lastEncoder = 0; double modifiedCurrentPos;
+    public double rotateDifference = 0, MultipliedP = 0, rotateP = -.01, rotateD = 0, rotateI = 0; double lastError = 0; double MultipliedD = 0; public double rotateMotorPower;
+    boolean lastrotatemag = false;
+    public double lastEncoder = 0, modifiedCurrentPos;
 
     boolean hasMagPrev = false, isRotateHomed = false;
     double homingNextSet = 0, homingFinal = 0, homingmotorpower = 0, deltaEncoder = 0;
 
-    public double currentSpeed = 0, tickperdegreeRotate = 20, rotateDirection, rotateSpeedSet, speedDifference;
+    public double currentSpeed = 0, rotateDirection, rotateSpeedSet, speedDifference, time = 0, lastTime = 0;
     double integralSum, integralMax = 10, lastSpeedDifference;
 
 
-    public double RotateSpeedMethod(double desiredset, double speed, double rotateEncoder, boolean rotateMagnet, double time){
+    public double RotateSpeedMethod(double desiredset, double speed, double rotateEncoder, boolean rotateMagnet){
         rotateSet = desiredset;//using the input to the method to set a universal set point variable
+
+        time = robot.TimerCustom();
 
         rotateSpeedSet = speed;
 
@@ -30,7 +36,7 @@ public class RotateClass{
 
         modifiedCurrentPos = modifiedCurrentPos + deltaEncoder;
 
-        currentSpeed = (deltaEncoder/tickperdegreeRotate)/time;
+        currentSpeed = (deltaEncoder)/(time - lastTime);
 
         if(rotateSet < modifiedCurrentPos){
             rotateDirection = -1;
@@ -40,8 +46,8 @@ public class RotateClass{
 
         rotateSpeedSet = Math.copySign(rotateSpeedSet, rotateDirection);
 
-        if((modifiedCurrentPos/tickperdegreeRotate) < 15){
-            rotateSpeedSet = rotateSpeedSet * ((modifiedCurrentPos/tickperdegreeRotate)/15);
+        if(Math.abs(rotateSet - modifiedCurrentPos) < 50){
+            rotateSpeedSet = rotateSpeedSet * ((rotateSet - modifiedCurrentPos)/50);
         }
 
         speedDifference = rotateSpeedSet - currentSpeed;
@@ -54,9 +60,10 @@ public class RotateClass{
             integralSum = -integralMax;
         }
 
-        rotateMotorPower = (speedDifference * rotateP) + (integralSum * rotateI) + ((speedDifference - lastSpeedDifference) * rotateD);
+            rotateMotorPower =  rotateMotorPower + (speedDifference * rotateP) + (integralSum * rotateI) + ((speedDifference - lastSpeedDifference) * rotateD);
 
         lastEncoder = rotateEncoder;
+        lastTime = time;
         lastSpeedDifference = speedDifference;
 
         return rotateMotorPower;

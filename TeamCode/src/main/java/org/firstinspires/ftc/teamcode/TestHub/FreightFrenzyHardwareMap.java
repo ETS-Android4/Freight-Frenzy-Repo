@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.SensorColor;
 
@@ -92,6 +93,14 @@ public class FreightFrenzyHardwareMap {
         TR_G.setMode(DigitalChannel.Mode.INPUT);
         TE_G.setMode(DigitalChannel.Mode.INPUT);
         TP_G.setMode(DigitalChannel.Mode.INPUT);
+
+        RobotInitTimer.startTime();
+    }
+    ElapsedTime RobotInitTimer = new ElapsedTime();
+
+    public double TimerCustom(){
+
+        return RobotInitTimer.seconds();
     }
 
 }
