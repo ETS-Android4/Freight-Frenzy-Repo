@@ -7,20 +7,21 @@ public class VPivotClass extends FreightFrenzyHardwareMap{
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     //setting variables for use in later code
     public double vPivotSet = 1.15;
-    public double FinalMotorPower;
+    public double FinalMotorPower = 0;
     public double lastTime, lastPOT, speed, speedDifference, speedCorrection, speedPM, speedDM, lastSpeedDifference = 0, vPivotPOT1degree = .0105, vPivotEncoder1Degree = 23;//TODO correct this variable
     public double degreesTraveled, speedSetPoint;
-    public double vPivotCorrection = 1, encoderWithOffset = 0, deltaPivotEncoder, lastEncoder = 0, motionprofile = 0, lastSpeed = 0;
+    public double vPivotCorrection = 1, encoderWithOffset = 0, deltaPivotEncoder, lastEncoder = 0, motionprofile = 0, lastSpeed = 0, encoderTickArmHorizontal = 1200, currentDegree;
     public boolean has1stloop = false;
-    public  double UPSpeedPM = .015, UPSpeedDM = .009, DNSpeedPM = .004, DNSpeedDM = .012, closeSpeedMult;
+    public  double UPSpeedPM = .015, UPSpeedDM = .009, DNSpeedPM = .004, DNSpeedDM = .012, closeSpeedMult, EncoderReading, CosMult = 1;
     double StartSlowSpeed = .25, time = robot.TimerCustom();
 
 
 
-    public double VPivot(double SetPoint, double SpeedSetPt , double EncoderReading, boolean MAG){
+    public double VPivot(double SetPoint, double SpeedSetPt , double Encoderreading, boolean MAG){
 
+        EncoderReading = -Encoderreading;
 
-
+        time = robot.TimerCustom();
         //setting our encoder offset using a potentiometer for the starting number
         //so we get an accurate start pos because the encoder resets every time we start the program
 
@@ -44,6 +45,10 @@ public class VPivotClass extends FreightFrenzyHardwareMap{
         deltaPivotEncoder = (EncoderReading) - lastEncoder;
         encoderWithOffset = encoderWithOffset + deltaPivotEncoder;
 
+        //finds where our arm is in degrees
+        currentDegree = (encoderWithOffset - encoderTickArmHorizontal)/vPivotEncoder1Degree;
+        CosMult = Math.cos(Math.toRadians(currentDegree));
+
 
         //Calculating Speed at tip of arm
         degreesTraveled = deltaPivotEncoder / vPivotEncoder1Degree;
@@ -58,7 +63,7 @@ public class VPivotClass extends FreightFrenzyHardwareMap{
         }
 
         //setting a deadzone to prevent small oscillations at the setpoint
-        if (Math.abs(vPivotSet - encoderWithOffset) < 50){
+        if (Math.abs(vPivotSet - encoderWithOffset) < 5){
             closeSpeedMult = .2;
             speedSetPoint = 0;
         }else{
@@ -74,13 +79,10 @@ public class VPivotClass extends FreightFrenzyHardwareMap{
             speedDM = UPSpeedDM;
         }else if(vPivotSet < encoderWithOffset){
             vPivotCorrection = -1;
-            if(speedSetPoint < speed){
-                speedPM = UPSpeedPM;
-                speedDM = UPSpeedDM;
-            }else{
+
                 speedPM = DNSpeedPM;
                 speedDM = DNSpeedDM;
-            }
+
         }
 
         speedSetPoint = Math.copySign(speedSetPoint, vPivotCorrection);
@@ -91,7 +93,7 @@ public class VPivotClass extends FreightFrenzyHardwareMap{
 
 
         //combining the speed correction and the direction pos/neg sign for the correct direction
-        FinalMotorPower = FinalMotorPower + (speedCorrection * closeSpeedMult * StartSlowSpeed);
+        FinalMotorPower = FinalMotorPower + ((speedCorrection * closeSpeedMult * CosMult));
 
         //limiting the motor power to 1 which is the maximum the motor can go
         if(FinalMotorPower > 1){

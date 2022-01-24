@@ -6,10 +6,10 @@ import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
 public class ExtendClass {
     //setting variables for later use in the code
     double extendMin = -2000, extendMax = 1700, extendSet = 0;
-    public double extendDifference = 0, extendMultipliedP = 0, extendP = .02, extendD = 0.01, extendI = 0, extendMultipliedD = 0, encoderTickPerInch = 70;
+    public double extendDifference = 0, extendMultipliedP = 0, extendP = .035, extendD = 0.01, extendI = 0, extendMultipliedD = 0, encoderTickPerInch = 70;
     double homingnextset; boolean HasExtended = false; double homingMin = 0; boolean isHomed = false, lastmagnetic = false;
     public double ExtendMotorPower = 0, lastError = 0, HomingMotorpower = 0, extendModifiedEncoder = 0, deltaEncoder = 0, lastencoder = 0, extendSpeedSet, extendCurrentSpeed = 0;
-    public double extendSpeedDifference = 0, extendSpeedCorrection, lastextendSpeedDifference = 0, extendIntegralsum = 0, extendIntegralMax, lastDesiredSet = 0;
+    public double extendSpeedDifference = 0, extendSpeedCorrection, lastextendSpeedDifference = 0, lastDesiredSet = 0;
 
     double Direction, timeInSec = 0, lastTimeInSec = 0;
 
@@ -53,10 +53,10 @@ FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
         }
 
         //setting our speed setpoint positive or negative depending on what direction it needs to go
-        extendSpeedSet = Math.copySign(SpeedSet, Direction);
+        extendSpeedSet = Math.copySign(SpeedSet, Direction);//Max speed is 35 in/second
 
-        if(Math.abs(desiredset - extendModifiedEncoder) < 300){
-            extendSpeedSet = extendSpeedSet * (Math.abs(desiredset - extendModifiedEncoder)/300);
+        if(Math.abs(desiredset - extendModifiedEncoder) < Math.abs(SpeedSet * 13)){
+            extendSpeedSet = extendSpeedSet * (Math.abs(desiredset - extendModifiedEncoder)/Math.abs(SpeedSet * 13));
         }
 
         //calculating the current speed of the arm
@@ -65,24 +65,14 @@ FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
         //Calculating how far away the robot are from our speed setpoint
         extendSpeedDifference = extendSpeedSet - extendCurrentSpeed;
 
-        //If the setpoint changed rest the integral windup
-        if(desiredset != lastDesiredSet){
-            extendIntegralsum = 0;
+
+        ExtendMotorPower = ExtendMotorPower + (extendSpeedDifference * extendP) + ((extendSpeedDifference - lastextendSpeedDifference) * extendP);
+
+        if(ExtendMotorPower > 1){
+            ExtendMotorPower = 1;
+        }else if (ExtendMotorPower < -1){
+            ExtendMotorPower = -1;
         }
-
-        //calculating and limiting our intigral
-        extendIntegralsum = extendIntegralsum + (extendSpeedDifference * (timeInSec - lastTimeInSec));
-
-        if(extendIntegralsum > extendIntegralMax){
-            extendIntegralsum = extendIntegralMax;
-        }else if(extendIntegralsum < -extendIntegralMax){
-            extendIntegralsum = -extendIntegralMax;
-        }
-
-
-        ExtendMotorPower = ExtendMotorPower + (extendSpeedDifference * extendP) + (extendIntegralsum * extendI) + ((extendSpeedDifference - lastextendSpeedDifference) * extendP);
-
-
 
         lastencoder = Encoder;
         lastTimeInSec = timeInSec;

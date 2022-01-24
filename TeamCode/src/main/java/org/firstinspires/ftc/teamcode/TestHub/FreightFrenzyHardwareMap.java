@@ -85,9 +85,9 @@ public class FreightFrenzyHardwareMap {
         LB_M.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RF_M.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RB_M.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        TR_M.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        TP_M.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        TE_M.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        TR_M.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        TP_M.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        TE_M.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
 
         TR_G.setMode(DigitalChannel.Mode.INPUT);

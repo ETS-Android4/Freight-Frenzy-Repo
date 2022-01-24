@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode.TurretClasses;
 
 
+import org.checkerframework.checker.units.qual.Speed;
 import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
 
 public class RotateClass{
     //setting variables for use later in code
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     double rotateMin = -4500, rotateMax = 4500, rotateSet = 0;
-    public double rotateDifference = 0, MultipliedP = 0, rotateP = -.01, rotateD = 0, rotateI = 0; double lastError = 0; double MultipliedD = 0; public double rotateMotorPower;
+    public double rotateDifference = 0, MultipliedP = 0, rotateP = .0005, rotateD = 0.0003; double lastError = 0; double MultipliedD = 0; public double rotateMotorPower;
     boolean lastrotatemag = false;
     public double lastEncoder = 0, modifiedCurrentPos;
 
@@ -15,7 +16,7 @@ public class RotateClass{
     double homingNextSet = 0, homingFinal = 0, homingmotorpower = 0, deltaEncoder = 0;
 
     public double currentSpeed = 0, rotateDirection, rotateSpeedSet, speedDifference, time = 0, lastTime = 0;
-    double integralSum, integralMax = 10, lastSpeedDifference;
+    double lastSpeedDifference;
 
 
     public double RotateSpeedMethod(double desiredset, double speed, double rotateEncoder, boolean rotateMagnet){
@@ -23,7 +24,7 @@ public class RotateClass{
 
         time = robot.TimerCustom();
 
-        rotateSpeedSet = speed;
+        rotateSpeedSet = speed;//max speed is 2000 ticks/second
 
         if(rotateSet > rotateMax){
             rotateSet = rotateMax;
@@ -46,21 +47,21 @@ public class RotateClass{
 
         rotateSpeedSet = Math.copySign(rotateSpeedSet, rotateDirection);
 
-        if(Math.abs(rotateSet - modifiedCurrentPos) < 50){
-            rotateSpeedSet = rotateSpeedSet * ((rotateSet - modifiedCurrentPos)/50);
+        if(Math.abs(rotateSet - modifiedCurrentPos) < Math.abs(speed/5)){
+            rotateSpeedSet = rotateSpeedSet * Math.abs((rotateSet - modifiedCurrentPos)/Math.abs(speed/5));
+        }else if( Math.abs(rotateSet - modifiedCurrentPos) < 20){
+            rotateSpeedSet = 0;
         }
 
         speedDifference = rotateSpeedSet - currentSpeed;
 
-        integralSum = integralSum + (speedDifference * time);
+        rotateMotorPower =  rotateMotorPower + (speedDifference * rotateP) + ((speedDifference - lastSpeedDifference) * rotateD);
 
-        if (integralSum > integralMax){
-            integralSum = integralMax;
-        }else if (integralSum < -integralMax){
-            integralSum = -integralMax;
+        if( rotateMotorPower > 1){
+            rotateMotorPower = 1;
+        }else if (rotateMotorPower < -1){
+            rotateMotorPower = -1;
         }
-
-            rotateMotorPower =  rotateMotorPower + (speedDifference * rotateP) + (integralSum * rotateI) + ((speedDifference - lastSpeedDifference) * rotateD);
 
         lastEncoder = rotateEncoder;
         lastTime = time;
@@ -88,8 +89,8 @@ public class RotateClass{
 
         //PD cycle to control the position of the turret
         rotateDifference = modifiedCurrentPos - rotateSet;
-        MultipliedP = rotateDifference * rotateP;
-        MultipliedD = (rotateDifference - lastError) * rotateD;
+        MultipliedP = rotateDifference * -.01;
+        MultipliedD = (rotateDifference - lastError) * 0;
         rotateMotorPower = MultipliedP + MultipliedD;
 
 
