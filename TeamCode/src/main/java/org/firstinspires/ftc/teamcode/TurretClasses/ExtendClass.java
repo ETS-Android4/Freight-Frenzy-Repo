@@ -66,7 +66,7 @@ FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
         extendSpeedDifference = extendSpeedSet - extendCurrentSpeed;
 
 
-        ExtendMotorPower = ExtendMotorPower + (extendSpeedDifference * extendP) + ((extendSpeedDifference - lastextendSpeedDifference) * extendP);
+        ExtendMotorPower = ExtendMotorPower + (extendSpeedDifference * extendP) + ((extendSpeedDifference - lastextendSpeedDifference) * extendD);
 
         if(ExtendMotorPower > 1){
             ExtendMotorPower = 1;

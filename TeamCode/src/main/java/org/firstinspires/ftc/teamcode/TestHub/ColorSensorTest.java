@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
-//@TeleOp
+@TeleOp
 public class ColorSensorTest extends LinearOpMode {
 
     TestHubHardware robot = new TestHubHardware();
@@ -19,6 +19,12 @@ public class ColorSensorTest extends LinearOpMode {
             telemetry.addData("color1", ColorSensor.red);
             telemetry.addData("color1", ColorSensor.blue);
             telemetry.addData("color1", ColorSensor.green);
+
+            if(gamepad1.a){
+                robot.LED1.setState(true);
+            }else{
+                robot.LED1.setState(false);
+            }
 
 
 

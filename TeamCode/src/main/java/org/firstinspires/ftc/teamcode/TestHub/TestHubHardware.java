@@ -18,6 +18,7 @@ public class TestHubHardware {
     public CRServo CRServo2;
     public AnalogInput PivotPT;
     public NormalizedColorSensor ColorSensor;
+    public DigitalChannel LED1;
    // DigitalChannel MagneticExtend;
    // DigitalChannel MagneticRotate;
 
@@ -34,6 +35,7 @@ public class TestHubHardware {
         CRServo1 = TestHubHardware.get(CRServo.class, "CRServo1");
         CRServo2 = TestHubHardware.get(CRServo.class, "CRServo2");
         PivotPT = TestHubHardware.get(AnalogInput.class, "PivotPT");
+        LED1 = TestHubHardware.get(DigitalChannel.class, "LED1");
      //   MagneticExtend = TestHubHardware.get(DigitalChannel.class, "MagneticTest");
      //   MagneticRotate = TestHubHardware.get(DigitalChannel.class, "MagneticRotate");
 
@@ -60,7 +62,7 @@ public class TestHubHardware {
         Motor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
-
+        LED1.setMode(DigitalChannel.Mode.OUTPUT);
      //   MagneticRotate.setMode(DigitalChannel.Mode.INPUT);
        // MagneticExtend.setMode(DigitalChannel.Mode.INPUT);
     }
