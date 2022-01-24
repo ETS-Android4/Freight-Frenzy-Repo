@@ -10,21 +10,22 @@ import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
 import org.firstinspires.ftc.teamcode.TestHub.Smoothing;
 import org.firstinspires.ftc.teamcode.TurretClasses.ExtendClass;
 import org.firstinspires.ftc.teamcode.TurretClasses.RotateClass;
+import org.firstinspires.ftc.teamcode.TurretClasses.TurretCombined;
 import org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass;
 
 
 @Config
 @TeleOp
-public class NewTurretProgrammingTeleOP extends LinearOpMode{
+public class CombinedTurretMethod extends LinearOpMode{
 
     public static double UPARMPM = .01;
     public static double UPARMDM = .006;
     public static double DNPM = .005;
     public static double DNDM = .003;
-    public static double EXTENDSPEED = 5;
-    public static double EXTENDP = .035;
-    public static double EXTENDD = 0.02;
-    public static double ROTATEP = 0.0004;
+    public static double EXTENDSPEED = 20;
+    public static double EXTENDP = .015;
+    public static double EXTENDD = 0.012;
+    public static double ROTATEP = 0.0003;
     public static double ROTATED = 0.0003;
     public static double EXTENDSET = 200;
     public static double VPIVOTSPEEDSET = 16;
@@ -38,6 +39,7 @@ public class NewTurretProgrammingTeleOP extends LinearOpMode{
 
 
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
+    TurretCombined CombinedTurret = new TurretCombined();
     VPivotClass VPivotClass = new VPivotClass();
     ExtendClass ExtendClass = new ExtendClass();
     RotateClass RotateClass = new RotateClass();
@@ -71,21 +73,22 @@ public class NewTurretProgrammingTeleOP extends LinearOpMode{
 
         while (opModeIsActive()){
 
-            VPivotClass.UPSpeedPM = UPARMPM;
-            VPivotClass.UPSpeedDM = UPARMDM;
-            VPivotClass.DNSpeedPM = DNPM;
-            VPivotClass.DNSpeedDM = DNDM;
+            CombinedTurret.vPivotUpPm = UPARMPM;
+            CombinedTurret.vPivotUpDM = UPARMDM;
+            CombinedTurret.vPivotDnPM = DNPM;
+            CombinedTurret.vPivotDnDM = DNDM;
 
-            ExtendClass.extendP = EXTENDP;
-            ExtendClass.extendD = EXTENDD;
+            CombinedTurret.extendPM = EXTENDP;
+            CombinedTurret.extendDM = EXTENDD;
 
-            RotateClass.rotateP = ROTATEP;
-            RotateClass.rotateD = ROTATED;
+            CombinedTurret.rotatePM = ROTATEP;
+            CombinedTurret.extendDM = ROTATED;
 
-            robot.TE_M.setPower(ExtendClass.ExtendSpeedMethod(EXTENDSET, EXTENDSPEED, robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
-            robot.TR_M.setPower(RotateClass.RotateSpeedMethod(ROTATESET, ROTATESPEED, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
-            robot.TP_M.setPower(VPivotClass.VPivot(VPIVOTSETPOINT, VPIVOTSPEEDSET, robot.TP_M.getCurrentPosition(), robot.TP_G.getState()));
+            CombinedTurret.TurretCombinedMethod(EXTENDSET,EXTENDSPEED,ROTATESET,ROTATESPEED, VPIVOTSETPOINT,VPIVOTSPEEDSET, robot.TE_M.getCurrentPosition(), robot.TE_G.getState(), robot.TR_M.getCurrentPosition(), robot.TR_G.getState(), robot.TP_M.getCurrentPosition(), robot.TP_G.getState());
 
+            robot.TE_M.setPower(CombinedTurret.extendFinalMotorPower);
+            robot.TR_M.setPower(CombinedTurret.rotateFinalMotorPower);
+            robot.TP_M.setPower(CombinedTurret.vPivotFinalMotorPower);
 
             x = -(Math.copySign(gamepad1.left_stick_x, gamepad1.left_stick_x * gamepad1.left_stick_x * gamepad1.left_stick_x));
             xOriginal = -(Math.copySign(gamepad1.left_stick_y, gamepad1.left_stick_y * gamepad1.left_stick_y * gamepad1.left_stick_y));
@@ -95,7 +98,7 @@ public class NewTurretProgrammingTeleOP extends LinearOpMode{
 
 
 
-            //setting the possibility of a slow speed on the drivetrain
+            //setting the possiblity of a slow speed on the drivetrain
             if(gamepad1.right_bumper){
                 robot.LF_M.setPower(.4*((y)-x+(z)));//LF
                 robot.LB_M.setPower(.4*((y)+x+(z)));//LB
@@ -124,38 +127,13 @@ public class NewTurretProgrammingTeleOP extends LinearOpMode{
 
     }
     public void Telemetry(){
-        telemetry.addData("speedSet", VPivotClass.speedSetPoint);
-        telemetry.addData("POT", robot.TP_P.getVoltage());
-        telemetry.addData("motor power", VPivotClass.FinalMotorPower);
-        telemetry.addData("setpt", VPivotClass.vPivotSet);
-        telemetry.addData("DegreesTraveled", VPivotClass.DegreesTravelReturn());
-        telemetry.addData("deltaEncoder", VPivotClass.deltaPivotEncoder);
-        telemetry.addData("EncoderWithOffset", VPivotClass.encoderWithOffset);
-        telemetry.addData("speed", VPivotClass.SpeedReturn());
-        telemetry.addData("degrees Traveled", VPivotClass.DegreesTravelReturn());
-        telemetry.addData("pivot encoder", robot.TP_M.getCurrentPosition());
 
-        dashboardTelemetry.addData("Extend Encoder", robot.TE_M.getCurrentPosition());
-        dashboardTelemetry.addData("Extend Modified Encoder", ExtendClass.extendModifiedEncoder);
-        dashboardTelemetry.addData("Extend Motor Power", ExtendClass.ExtendMotorPower);
-        dashboardTelemetry.addData("Extend Speed", ExtendClass.extendCurrentSpeed);
-        dashboardTelemetry.addData("Extend Speed SET", ExtendClass.extendSpeedSet);
-        dashboardTelemetry.addData("VPivot current Degree", VPivotClass.currentDegree);
-        dashboardTelemetry.addData("CosMult", VPivotClass.CosMult);
-        dashboardTelemetry.addData("cosMultRAD", Math.cos(Math.toRadians(VPivotClass.currentDegree)));
+        dashboardTelemetry.addData("vPivotMotor Power", CombinedTurret.vPivotFinalMotorPower);
+        dashboardTelemetry.addData("vPivot Modified Encoder", CombinedTurret.vPivotModifiedEncoder);
 
+        dashboardTelemetry.addData("extend Motor Power", CombinedTurret.extendFinalMotorPower);
+        dashboardTelemetry.addData("extend speed", CombinedTurret.extendSpeed);
 
-        dashboardTelemetry.addData("VPivot Modified Encoder",VPivotClass.encoderWithOffset);
-        dashboardTelemetry.addData("VPivot Speed", VPivotClass.speed);
-        dashboardTelemetry.addData("VPivot Motor Power", VPivotClass.FinalMotorPower);
-        dashboardTelemetry.addData("VPivot Raw Encoder", robot.TP_M.getCurrentPosition());
-
-        dashboardTelemetry.addData("Rotate Modfiied Encoder", RotateClass.modifiedCurrentPos);
-        dashboardTelemetry.addData("Rotate speed", RotateClass.currentSpeed);
-        dashboardTelemetry.addData("Rotate motorPower", RotateClass.rotateMotorPower);
-
-        dashboardTelemetry.addData("nanotimerin seconds", System.nanoTime()/1000000000);
-        dashboardTelemetry.addData("elapsed Time", robot.TimerCustom());
         dashboardTelemetry.update();
         telemetry.update();
     }

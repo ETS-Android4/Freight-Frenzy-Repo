@@ -22,12 +22,12 @@ public class Smoothing {
 
     double TestTotal;
     int TestArrayNum = 0, TestfirstLoop = 0;
-    double TestArray[] = new double[10];
+    double TestArray[] = new double[5];
 
     public double SmoothTest(double input){
         if(TestfirstLoop == 0) {
             TestfirstLoop = 1;
-            for (int arrayInitialSet = 0; arrayInitialSet < 10; arrayInitialSet++) {
+            for (int arrayInitialSet = 0; arrayInitialSet < 5; arrayInitialSet++) {
                 TestArray[arrayInitialSet] = 0;
             }
         }
@@ -39,11 +39,17 @@ public class Smoothing {
 
 
         TestArrayNum = TestArrayNum + 1;
-        if(TestArrayNum >= 10){
+        if(TestArrayNum >= 5){
             TestArrayNum = 0;
         }
 
-        return TestTotal/10;
+        if(Math.abs(input) < .08){
+            for (int arrayInitialSet = 0; arrayInitialSet < 5; arrayInitialSet++) {
+                TestArray[arrayInitialSet] = 0;
+            }
+        }
+
+        return TestTotal/5;
 
     }
 }

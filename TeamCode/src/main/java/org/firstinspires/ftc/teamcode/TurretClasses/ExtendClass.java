@@ -76,7 +76,6 @@ FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
 
         lastencoder = Encoder;
         lastTimeInSec = timeInSec;
-        lastDesiredSet = desiredset;
         lastextendSpeedDifference = extendSpeedDifference;
         //returning the motor power for use
         return ExtendMotorPower;
