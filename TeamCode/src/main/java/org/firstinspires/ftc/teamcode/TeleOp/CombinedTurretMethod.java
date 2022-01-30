@@ -140,6 +140,7 @@ public class CombinedTurretMethod extends LinearOpMode{
         dashboardTelemetry.addData("roate Motor Power", CombinedTurret.rotateFinalMotorPower);
         dashboardTelemetry.addData("vPivot Speed", CombinedTurret.vPivotSpeed);
 
+
         dashboardTelemetry.update();
         telemetry.update();
     }

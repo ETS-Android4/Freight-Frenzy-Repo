@@ -25,7 +25,7 @@ public class FreightFrenzyHardwareMap {
     public DcMotor TC_M;
     public CRServo RI_S;
     public CRServo LI_S;
-    public AnalogInput TP_P;
+
     public DigitalChannel TR_G;
     public DigitalChannel TE_G;
     public DigitalChannel TP_G;
@@ -52,7 +52,7 @@ public class FreightFrenzyHardwareMap {
         RI_S = TestHubHardware.get(CRServo.class, "RI_S");
         LI_S = TestHubHardware.get(CRServo.class, "LI_S");
         TC_M = TestHubHardware.get(DcMotor.class, "TC_M");
-        TP_P = TestHubHardware.get(AnalogInput.class, "TP_P");
+
         TR_G = TestHubHardware.get(DigitalChannel.class, "TR_G");
         TE_G = TestHubHardware.get(DigitalChannel.class, "TE_G");
         TP_G = TestHubHardware.get(DigitalChannel.class, "TP_G");

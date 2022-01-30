@@ -111,7 +111,7 @@ public class RedWarehouseAuto extends LinearOpMode {
         telemetry.update();
         //Depending on the ring stack we change our intake to diffrent heights to be able to reach the top of the stack
         //Enters our 1 loop system, will exit once all actions are done
-        while (!opModeIsActive()) {
+       /* while (!opModeIsActive()) {
             if (RotateClass.isHomedRotateReturn() == false) {
                 if (VPivotClass.has1stloop == true) {
                     robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
@@ -163,7 +163,7 @@ public class RedWarehouseAuto extends LinearOpMode {
             telemetry.addData("region1AVG", pipeline.region1Avg());
             telemetry.addData("region2AVG", pipeline.region2Avg());
             telemetry.update();
-        }
+        }*/
 
 
 
@@ -319,7 +319,7 @@ public class RedWarehouseAuto extends LinearOpMode {
             Movement(xSetpoint, ySetpoint, thetaSetpoint, targetSpeed, thetaTargetSpeed, thetaDeccelerationDegree, slowMoveSpeed, accelerationDistance, decelerationDistance, slowMovedDistance);
             RotateClass.RotateAutoMethod(rotateSetpoint, rotateSpeed, robot.TR_M.getCurrentPosition(), robot.TR_G.getState());
             ExtendClass.ExtendAutoMethod(extendSetpoint, extendSpeed, robot.TE_M.getCurrentPosition(), robot.TE_G.getState());
-            VPivotClass.NEWVPivot(VPivotSetpoint, VPivotSpeed, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED);
+           // VPivotClass.NEWVPivot(VPivotSetpoint, VPivotSpeed, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED);
             PowerSetting();
             Telemetry();
         }
@@ -350,7 +350,7 @@ public class RedWarehouseAuto extends LinearOpMode {
         telemetry.addData("LF_Direction", DirectionClass.LF_M_DirectionReturn());
         telemetry.addData("Motor Power Ratio", DirectionClass.motorPowerRatioReturn());
         telemetry.addData("Action", action);
-        telemetry.addData("PT", robot.TP_P.getVoltage());
+      //  telemetry.addData("PT", robot.TP_P.getVoltage());
         telemetry.addData("ExtendE", ExtendClass.extendModifiedEncoder);
         telemetry.addData("RotateE", RotateClass.modifiedRotateCurrent());
         telemetry.addData("Distance Sensor", robot.I_DS.getDistance(DistanceUnit.INCH));

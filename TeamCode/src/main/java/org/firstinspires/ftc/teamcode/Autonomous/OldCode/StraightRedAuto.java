@@ -61,7 +61,7 @@ public class StraightRedAuto extends LinearOpMode {
 
     public void runOpMode() {
         robot.init(hardwareMap);
-        while (!opModeIsActive()) {
+      /*  while (!opModeIsActive()) {
             if (RotateClass.isHomedRotateReturn() == false) {
                 //robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15, .5, robot.TP_P.getVoltage()));
                 if (robot.TP_P.getVoltage() > 1.1 && robot.TP_P.getVoltage() < 1.25) {
@@ -96,7 +96,7 @@ public class StraightRedAuto extends LinearOpMode {
             telemetry.addData("Vpiovot PT", robot.TP_P.getVoltage());
             telemetry.addData("rotate modified", RotateClass.modifiedRotateCurrent());
             telemetry.update();
-        }
+        }*/
         waitForStart();
         //Shuts down Tensor Flow
         //Sets our intial varible setpoints
@@ -259,7 +259,7 @@ public class StraightRedAuto extends LinearOpMode {
         telemetry.addData("LF_Direction", DirectionClass.LF_M_DirectionReturn());
         telemetry.addData("Motor Power Ratio", DirectionClass.motorPowerRatioReturn());
         telemetry.addData("Action", action);
-        telemetry.addData("PT", robot.TP_P.getVoltage());
+       // telemetry.addData("PT", robot.TP_P.getVoltage());
         telemetry.update();
     }
 

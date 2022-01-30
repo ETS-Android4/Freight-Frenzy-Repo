@@ -66,7 +66,7 @@ public class RedDropAuto extends LinearOpMode {
         //Depending on the ring stack we change our intake to diffrent heights to be able to reach the top of the stack
         //Enters our 1 loop system, will exit once all actions are done
         while (!opModeIsActive()) {
-            if (RotateClass.isHomedRotateReturn() == false) {
+         /*   if (RotateClass.isHomedRotateReturn() == false) {
                 //robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15, .5, robot.TP_P.getVoltage()));
                 if (robot.TP_P.getVoltage() > 1.1 && robot.TP_P.getVoltage() < 1.25) {
                     robot.TE_M.setPower(ExtendClass.ExtendHoming(robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
@@ -99,7 +99,7 @@ public class RedDropAuto extends LinearOpMode {
             telemetry.addData("initPosition order", initPOsitionOrder);
             telemetry.addData("Vpiovot PT", robot.TP_P.getVoltage());
             telemetry.addData("rotate modified", RotateClass.modifiedRotateCurrent());
-            telemetry.update();
+            telemetry.update();*/
         }
         waitForStart();
         robot.LF_M.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -130,7 +130,7 @@ public class RedDropAuto extends LinearOpMode {
         rotateSetpoint = 1550;
         extendSetpoint = 0;
         VPivotSetpoint = 1.2;
-        while (opModeIsActive() && stopProgram == 0) {
+       /* while (opModeIsActive() && stopProgram == 0) {
 
             if (action == 1) {
                 if ((robot.TP_P.getVoltage() >= 1.15) && (robot.TP_P.getVoltage() <= 1.25)) {
@@ -253,7 +253,7 @@ public class RedDropAuto extends LinearOpMode {
                     breakout = 1;
                 }
             }
-            */
+
             //If nothing else to do, stop the program
             else {
                 stopProgram = 1;
@@ -266,7 +266,7 @@ public class RedDropAuto extends LinearOpMode {
            //VPivotClass.VPivotAutoMethod(VPivotSetpoint, VPivotSpeed, robot.TP_P.getVoltage());
             PowerSetting();
             Telemetry();
-        }
+        }*/
     }
 
 
@@ -294,7 +294,7 @@ public class RedDropAuto extends LinearOpMode {
         telemetry.addData("LF_Direction", DirectionClass.LF_M_DirectionReturn());
         telemetry.addData("Motor Power Ratio", DirectionClass.motorPowerRatioReturn());
         telemetry.addData("Action", action);
-        telemetry.addData("PT", robot.TP_P.getVoltage());
+       // telemetry.addData("PT", robot.TP_P.getVoltage());
         telemetry.addData("ExtendE", ExtendClass.extendModifiedEncoder);
         telemetry.addData("RotateE", RotateClass.modifiedRotateCurrent());
         telemetry.update();

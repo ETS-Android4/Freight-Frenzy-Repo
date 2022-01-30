@@ -21,9 +21,9 @@ public class ColorSensorTest extends LinearOpMode {
             telemetry.addData("color1", ColorSensor.green);
 
             if(gamepad1.a){
-                robot.LED1.setState(true);
+                //robot.LED1.setState(true);
             }else{
-                robot.LED1.setState(false);
+                //robot.LED1.setState(false);
             }
 
 

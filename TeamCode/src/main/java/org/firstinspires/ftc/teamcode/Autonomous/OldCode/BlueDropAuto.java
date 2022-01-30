@@ -66,7 +66,7 @@ public class BlueDropAuto extends LinearOpMode {
         //Depending on the ring stack we change our intake to diffrent heights to be able to reach the top of the stack
         //Enters our 1 loop system, will exit once all actions are done
         while (!opModeIsActive()) {
-            if (RotateClass.isHomedRotateReturn() == false) {
+         /*   if (RotateClass.isHomedRotateReturn() == false) {
                // robot.TP_M.setPower(VPivotClass.VPivotAutoMethod(1.15, .5, robot.TP_P.getVoltage()));
                 if (robot.TP_P.getVoltage() > 1.1 && robot.TP_P.getVoltage() < 1.25) {
                     robot.TE_M.setPower(ExtendClass.ExtendHoming(robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
@@ -254,7 +254,7 @@ public class BlueDropAuto extends LinearOpMode {
                     breakout = 1;
                 }
             }
-            */
+
             //If nothing else to do, stop the program
             else {
                 stopProgram = 1;
@@ -266,7 +266,7 @@ public class BlueDropAuto extends LinearOpMode {
             ExtendClass.ExtendAutoMethod(extendSetpoint, extendSpeed, robot.TE_M.getCurrentPosition(), robot.TE_G.getState());
             //VPivotClass.VPivotAutoMethod(VPivotSetpoint, VPivotSpeed, robot.TP_P.getVoltage());
             PowerSetting();
-            Telemetry();
+            Telemetry();*/
         }
     }
 
@@ -295,7 +295,7 @@ public class BlueDropAuto extends LinearOpMode {
         telemetry.addData("LF_Direction", DirectionClass.LF_M_DirectionReturn());
         telemetry.addData("Motor Power Ratio", DirectionClass.motorPowerRatioReturn());
         telemetry.addData("Action", action);
-        telemetry.addData("PT", robot.TP_P.getVoltage());
+       // telemetry.addData("PT", robot.TP_P.getVoltage());
         telemetry.addData("ExtendE", ExtendClass.extendModifiedEncoder);
         telemetry.addData("RotateE", RotateClass.modifiedRotateCurrent());
         telemetry.update();

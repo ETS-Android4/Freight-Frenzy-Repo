@@ -45,7 +45,7 @@ public class BlueTeleOp extends LinearOpMode{
     public void runOpMode(){
         robot.init(hardwareMap);
 
-        while (!opModeIsActive()){
+    /*    while (!opModeIsActive()){
             if(RotateClass.isHomedRotateReturn() == false){
                 if(VPivotClass.has1stloop == true){
                     robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
@@ -78,7 +78,7 @@ public class BlueTeleOp extends LinearOpMode{
             telemetry.addData("Vpiovot PT", robot.TP_P.getVoltage());
             telemetry.addData("rotate modified", RotateClass.modifiedRotateCurrent());
             telemetry.update();
-        }
+        }*/
 
 
 
@@ -221,7 +221,7 @@ public class BlueTeleOp extends LinearOpMode{
             }
             robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(extendSetPoint, EXTENDSPEED, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
             robot.TR_M.setPower(RotateClass.RotateAutoMethod(rotateSet, ROTATESPEED, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
-            robot.TP_M.setPower(VPivotClass.NEWVPivot(vPivotSetPoint, VPIVOTSPEED, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED));
+           // robot.TP_M.setPower(VPivotClass.NEWVPivot(vPivotSetPoint, VPIVOTSPEED, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED));
 
 
 
@@ -261,7 +261,7 @@ public class BlueTeleOp extends LinearOpMode{
     }
     public void Telemetry(){
         telemetry.addData("speedSet", VPivotClass.speedSetPoint);
-        telemetry.addData("POT", robot.TP_P.getVoltage());
+       // telemetry.addData("POT", robot.TP_P.getVoltage());
         telemetry.addData("motor power", VPivotClass.FinalMotorPower);
         telemetry.addData("setpt", VPivotClass.vPivotSet);
         telemetry.addData("DegreesTraveled", VPivotClass.DegreesTravelReturn());
@@ -278,7 +278,7 @@ public class BlueTeleOp extends LinearOpMode{
         dashboardTelemetry.addData("RATIOEncoderWithOffset", VPivotClass.encoderWithOffset/1000);
         dashboardTelemetry.addData("EncoderWithOffset", VPivotClass.encoderWithOffset);
         dashboardTelemetry.addData("Pivot Encoder", robot.TP_M.getCurrentPosition());
-        dashboardTelemetry.addData("POT", robot.TP_P.getVoltage());
+       // dashboardTelemetry.addData("POT", robot.TP_P.getVoltage());
         dashboardTelemetry.update();
         telemetry.update();
     }

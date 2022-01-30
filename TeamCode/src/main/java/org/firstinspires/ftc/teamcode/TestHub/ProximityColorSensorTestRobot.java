@@ -17,7 +17,7 @@ public class ProximityColorSensorTestRobot extends LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
         while (opModeIsActive()) {
-            telemetry.addData("IN", robot.PC.getDistance(DistanceUnit.INCH));
+            //telemetry.addData("IN", robot.PC.getDistance(DistanceUnit.INCH));
             telemetry.update();
 
         }

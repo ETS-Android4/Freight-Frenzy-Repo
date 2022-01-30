@@ -52,7 +52,7 @@ public class NewTurretProgrammingTeleOP extends LinearOpMode{
         robot.init(hardwareMap);
 
 
-        while (!opModeIsActive()){
+      /*  while (!opModeIsActive()){
             if(RotateClass.isHomedRotateReturn() == false){
                 if(VPivotClass.has1stloop == true){
                     robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, .2));
@@ -61,7 +61,7 @@ public class NewTurretProgrammingTeleOP extends LinearOpMode{
                 }
 
             }
-        }
+        }*/
 
 
 
@@ -125,7 +125,7 @@ public class NewTurretProgrammingTeleOP extends LinearOpMode{
     }
     public void Telemetry(){
         telemetry.addData("speedSet", VPivotClass.speedSetPoint);
-        telemetry.addData("POT", robot.TP_P.getVoltage());
+       // telemetry.addData("POT", robot.TP_P.getVoltage());
         telemetry.addData("motor power", VPivotClass.FinalMotorPower);
         telemetry.addData("setpt", VPivotClass.vPivotSet);
         telemetry.addData("DegreesTraveled", VPivotClass.DegreesTravelReturn());

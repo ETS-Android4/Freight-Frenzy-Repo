@@ -36,10 +36,10 @@ public class TurretTestReadingsOnly extends LinearOpMode {
         while (opModeIsActive()) {
 
 
-            robot.TP_M.setPower( VPivotClass.NEWVPivot(SETPOINT ,SPEEDSET , robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState() ,getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, .2));
+          //  robot.TP_M.setPower( VPivotClass.NEWVPivot(SETPOINT ,SPEEDSET , robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState() ,getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, .2));
 
             telemetry.addData("speedSet", VPivotClass.speedSetPoint);
-            telemetry.addData("POT", robot.TP_P.getVoltage());
+          //  telemetry.addData("POT", robot.TP_P.getVoltage());
             telemetry.addData("motor power", VPivotClass.FinalMotorPower);
             telemetry.addData("setpt", VPivotClass.vPivotSet);
             telemetry.addData("DegreesTraveled", VPivotClass.DegreesTravelReturn());
@@ -57,7 +57,7 @@ public class TurretTestReadingsOnly extends LinearOpMode {
             dashboardTelemetry.addData("RATIOEncoderWithOffset", VPivotClass.encoderWithOffset/1000);
             dashboardTelemetry.addData("EncoderWithOffset", VPivotClass.encoderWithOffset);
             dashboardTelemetry.addData("Pivot Encoder", robot.TP_M.getCurrentPosition());
-            dashboardTelemetry.addData("POT", robot.TP_P.getVoltage());
+          //  dashboardTelemetry.addData("POT", robot.TP_P.getVoltage());
             dashboardTelemetry.update();
 
             telemetry.update();

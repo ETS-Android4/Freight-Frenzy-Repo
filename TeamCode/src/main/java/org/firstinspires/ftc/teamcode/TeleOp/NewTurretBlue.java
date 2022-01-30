@@ -94,8 +94,8 @@ public class NewTurretBlue extends LinearOpMode{
                     robot.RI_S.setPower(.5);
                     robot.LI_S.setPower(-.5);
                 }else{
-                    robot.RI_S.setPower(0);
-                    robot.LI_S.setPower(0);
+                    robot.RI_S.setPower(-.05);
+                    robot.LI_S.setPower(0.05);
                 }
                 if(lastDS > 1 && robot.I_DS.getDistance(DistanceUnit.INCH) < 1 && robot.RI_S.getPower() > 0){
                     robot.RI_S.setPower(0);
@@ -179,6 +179,9 @@ public class NewTurretBlue extends LinearOpMode{
         dashboardTelemetry.addData("turret Homing trigger", CombinedTurret.turretHomingTrigger);
 
         telemetry.addData("intake Dist", robot.I_DS.getDistance(DistanceUnit.INCH));
+        telemetry.addData("rotate set", CombinedTurret.rotateSet);
+        telemetry.addData("rotate mod encoder", CombinedTurret.rotateModifiedEncoder);
+        telemetry.addData("rotate RAW Encoder", robot.TR_M.getCurrentPosition());
 
         dashboardTelemetry.update();
         telemetry.update();

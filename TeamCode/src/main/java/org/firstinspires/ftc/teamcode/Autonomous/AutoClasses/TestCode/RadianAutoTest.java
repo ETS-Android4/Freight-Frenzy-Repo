@@ -145,7 +145,7 @@ public class RadianAutoTest extends LinearOpMode {
         telemetry.addData("E1", robot.LF_M.getCurrentPosition());
         telemetry.addData("E2", robot.LB_M.getCurrentPosition());
         telemetry.addData("E3", robot.RF_M.getCurrentPosition());
-        telemetry.addData("PT", robot.TP_P.getVoltage());
+        //telemetry.addData("PT", robot.TP_P.getVoltage());
         telemetry.update();
     }
 

@@ -29,7 +29,7 @@ public class NEWHomingProgram extends LinearOpMode {
 
     public void runOpMode(){
         robot.init(hardwareMap);
-        while (!opModeIsActive()){
+     /*   while (!opModeIsActive()){
             if(RotateClass.isHomedRotateReturn() == false){
                 if(VPivotClass.has1stloop == true){
                     robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(),robot.TP_G.getState(), getRuntime(), 16, UPARMPM,UPARMDM,DNPM,DNDM, MINSPEED));
@@ -72,7 +72,7 @@ public class NEWHomingProgram extends LinearOpMode {
             telemetry.addData("Vpiovot PT", robot.TP_P.getVoltage());
             telemetry.addData("rotate modified", RotateClass.modifiedRotateCurrent());
             telemetry.update();
-        }
+        }*/
 
         waitForStart();
         while(opModeIsActive()){
@@ -87,7 +87,7 @@ public class NEWHomingProgram extends LinearOpMode {
 
             telemetry.addData("mag sensor", robot.TE_G.getState());
             telemetry.addData("homiing next set", ExtendClass.HomingnextSetReturn());
-            telemetry.addData("POT reading", robot.TP_P.getVoltage());
+          //  telemetry.addData("POT reading", robot.TP_P.getVoltage());
             telemetry.addData("extend mp", robot.TE_M.getPower());
             telemetry.addData("EXtend is homed", ExtendClass.isHomedExtendReturn());
             telemetry.addData("rotate is homed", RotateClass.isHomedRotateReturn());

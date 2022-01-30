@@ -204,7 +204,7 @@ public class StorageRedAuto extends LinearOpMode {
         telemetry.addData("LF_Direction", DirectionClass.LF_M_DirectionReturn());
         telemetry.addData("Motor Power Ratio", DirectionClass.motorPowerRatioReturn());
         telemetry.addData("Action", action);
-        telemetry.addData("PT", robot.TP_P.getVoltage());
+      //  telemetry.addData("PT", robot.TP_P.getVoltage());
         telemetry.update();
     }
 
