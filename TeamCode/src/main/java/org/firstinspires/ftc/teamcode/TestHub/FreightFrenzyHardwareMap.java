@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.TestHub;
 
+import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -33,6 +34,7 @@ public class FreightFrenzyHardwareMap {
     public ColorSensor  LB_C;
     public ColorSensor  RF_C;
     public ColorSensor  RB_C;
+    public LynxI2cColorRangeSensor PC;
 
 
     HardwareMap TestHubHardware;
