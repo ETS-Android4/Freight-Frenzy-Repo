@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.TestHub;
 
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -28,11 +29,12 @@ public class FreightFrenzyHardwareMap {
     public DigitalChannel TR_G;
     public DigitalChannel TE_G;
     public DigitalChannel TP_G;
-    public DistanceSensor I_DS;
+    public RevColorSensorV3 I_DS;
     public ColorSensor LF_C;
     public ColorSensor  LB_C;
     public ColorSensor  RF_C;
     public ColorSensor  RB_C;
+
 
 
     HardwareMap TestHubHardware;
@@ -54,7 +56,7 @@ public class FreightFrenzyHardwareMap {
         TR_G = TestHubHardware.get(DigitalChannel.class, "TR_G");
         TE_G = TestHubHardware.get(DigitalChannel.class, "TE_G");
         TP_G = TestHubHardware.get(DigitalChannel.class, "TP_G");
-        I_DS = TestHubHardware.get(DistanceSensor.class, "I_DS");
+        I_DS = TestHubHardware.get(RevColorSensorV3.class, "I_DS");
 
 
         LF_C = TestHubHardware.get(ColorSensor .class, "LF_C");

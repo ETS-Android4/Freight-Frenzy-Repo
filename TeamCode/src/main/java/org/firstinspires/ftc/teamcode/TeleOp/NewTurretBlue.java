@@ -25,6 +25,7 @@ public class NewTurretBlue extends LinearOpMode{
 
     double teleOpExtendSet = 200, teleOpRotateSet = 0, teleOpVPivotSet = 1000;
     double teleOpExtendSpeedSet = 25, teleOpRotateSpeedSet = 1500, teleOpVPivotSpeedSet = 16;
+    double lastDS = 5;
 
 
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
@@ -79,7 +80,7 @@ public class NewTurretBlue extends LinearOpMode{
                 if(gamepad2.b){
                     robot.TC_M.setPower(0);
                 }else if(gamepad2.a){
-                    robot.TC_M.setPower(1);
+                    robot.TC_M.setPower(-.3);
                 }else if(gamepad2.x){
                     robot.TC_M.setPower(-1);
                 }else{
@@ -96,6 +97,13 @@ public class NewTurretBlue extends LinearOpMode{
                     robot.RI_S.setPower(0);
                     robot.LI_S.setPower(0);
                 }
+                if(lastDS > 1 && robot.I_DS.getDistance(DistanceUnit.INCH) < 1 && robot.RI_S.getPower() > 0){
+                    robot.RI_S.setPower(0);
+                    robot.LI_S.setPower(0);
+                }
+
+
+
                 if(gamepad2.dpad_right) {
                     teleOpVPivotSet = 1600;
                     if (CombinedTurret.vPivotModifiedEncoder > 1000) {
@@ -104,11 +112,12 @@ public class NewTurretBlue extends LinearOpMode{
                     }
                 }else if(gamepad2.dpad_down) {
                     teleOpVPivotSet = 1000;
-                    if (CombinedTurret.vPivotModifiedEncoder > 800) {
+
+                    if (Math.abs(CombinedTurret.rotateModifiedEncoder) < 50 && CombinedTurret.extendModifiedEncoder > 220) {
+                        teleOpVPivotSet = 550;
+                    }else  if (CombinedTurret.vPivotModifiedEncoder > 800) {
                         teleOpRotateSet = 0;
-                        teleOpExtendSet = 300;
-                    } else if (Math.abs(CombinedTurret.rotateModifiedEncoder) < 50 && CombinedTurret.extendModifiedEncoder < 250) {
-                        teleOpVPivotSet = 300;
+                        teleOpExtendSet = 275;
                     }
                 }else if(gamepad2.dpad_left){
                     teleOpVPivotSet = 1000;
@@ -154,6 +163,7 @@ public class NewTurretBlue extends LinearOpMode{
             robot.TP_M.setPower(CombinedTurret.vPivotFinalMotorPower);
 
             Telemetry();
+            lastDS = robot.I_DS.getDistance(DistanceUnit.INCH);
         }
 
     }
