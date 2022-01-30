@@ -154,6 +154,7 @@ public class NewTurretProgrammingTeleOP extends LinearOpMode{
         dashboardTelemetry.addData("Rotate speed", RotateClass.currentSpeed);
         dashboardTelemetry.addData("Rotate motorPower", RotateClass.rotateMotorPower);
 
+
         dashboardTelemetry.addData("nanotimerin seconds", System.nanoTime()/1000000000);
         dashboardTelemetry.addData("elapsed Time", robot.TimerCustom());
         dashboardTelemetry.update();

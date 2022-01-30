@@ -21,6 +21,7 @@ public class FreightFrenzyHardwareMap {
     public DcMotor TR_M;
     public DcMotor TP_M;
     public DcMotor TE_M;
+    public DcMotor TC_M;
     public CRServo RI_S;
     public CRServo LI_S;
     public AnalogInput TP_P;
@@ -48,6 +49,7 @@ public class FreightFrenzyHardwareMap {
         TE_M = TestHubHardware.get(DcMotor.class, "TE_M");
         RI_S = TestHubHardware.get(CRServo.class, "RI_S");
         LI_S = TestHubHardware.get(CRServo.class, "LI_S");
+        TC_M = TestHubHardware.get(DcMotor.class, "TC_M");
         TP_P = TestHubHardware.get(AnalogInput.class, "TP_P");
         TR_G = TestHubHardware.get(DigitalChannel.class, "TR_G");
         TE_G = TestHubHardware.get(DigitalChannel.class, "TE_G");
@@ -74,6 +76,8 @@ public class FreightFrenzyHardwareMap {
         TR_M.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         TP_M.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         TE_M.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        TC_M.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        TC_M.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         LF_M.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         LB_M.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         RF_M.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -88,6 +92,7 @@ public class FreightFrenzyHardwareMap {
         TR_M.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         TP_M.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         TE_M.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        TC_M.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
 
         TR_G.setMode(DigitalChannel.Mode.INPUT);

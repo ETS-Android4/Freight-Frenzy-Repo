@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
 import org.firstinspires.ftc.teamcode.TestHub.Smoothing;
 import org.firstinspires.ftc.teamcode.TurretClasses.ExtendClass;
@@ -16,26 +17,14 @@ import org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass;
 
 @Config
 @TeleOp
-public class CombinedTurretMethod extends LinearOpMode{
-
-    public static double UPARMPM = .028;
-    public static double UPARMDM = .02;
-    public static double DNPM = .018;
-    public static double DNDM = .015;
-    public static double EXTENDSPEED = 20;
-    public static double EXTENDP = .013;
-    public static double EXTENDD = 0.01;
-    public static double ROTATEP = 0.0003;
-    public static double ROTATED = 0.0003;
-    public static double EXTENDSET = 300;
-    public static double VPIVOTSPEEDSET = 16;
-    public static double VPIVOTSETPOINT = 1500;
-    public static double ROTATESPEED = 500;
-    public static double ROTATESET = 10;
+public class NewTurretBlue extends LinearOpMode{
 
 
-    public double vPivotSetPoint = 1500, extendSetPoint = 0;
+
     public double x, y, z, initPOsitionOrder = 1, xOriginal;
+
+    double teleOpExtendSet = 200, teleOpRotateSet = 0, teleOpVPivotSet = 1000;
+    double teleOpExtendSpeedSet = 25, teleOpRotateSpeedSet = 1500, teleOpVPivotSpeedSet = 16;
 
 
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
@@ -59,22 +48,11 @@ public class CombinedTurretMethod extends LinearOpMode{
 
         while (opModeIsActive()){
 
-            CombinedTurret.vPivotUpPm = UPARMPM;
-            CombinedTurret.vPivotUpDM = UPARMDM;
-            CombinedTurret.vPivotDnPM = DNPM;
-            CombinedTurret.vPivotDnDM = DNDM;
 
-            CombinedTurret.extendPM = EXTENDP;
-            CombinedTurret.extendDM = EXTENDD;
 
-            CombinedTurret.rotatePM = ROTATEP;
-            CombinedTurret.extendDM = ROTATED;
 
-            CombinedTurret.TurretCombinedMethod(EXTENDSET,EXTENDSPEED,ROTATESET,ROTATESPEED, VPIVOTSETPOINT,VPIVOTSPEEDSET, robot.TE_M.getCurrentPosition(), robot.TE_G.getState(), robot.TR_M.getCurrentPosition(), robot.TR_G.getState(), robot.TP_M.getCurrentPosition(), robot.TP_G.getState());
 
-            robot.TE_M.setPower(CombinedTurret.extendFinalMotorPower);
-            robot.TR_M.setPower(CombinedTurret.rotateFinalMotorPower);
-            robot.TP_M.setPower(CombinedTurret.vPivotFinalMotorPower);
+
 
             x = Smoothing.SmoothDriveX(-Math.copySign(gamepad1.left_stick_x, gamepad1.left_stick_x * gamepad1.left_stick_x * gamepad1.left_stick_x));
             y = Smoothing.SmoothDriveY( -(Math.copySign(gamepad1.left_stick_y, gamepad1.left_stick_y * gamepad1.left_stick_y * gamepad1.left_stick_y)));
@@ -96,16 +74,7 @@ public class CombinedTurretMethod extends LinearOpMode{
                 robot.RB_M.setPower(.8*(-((y)-x-(.8*z))));//RB
             }
 
-            if(gamepad1.a || gamepad2.a){
-                robot.RI_S.setPower(-1);
-                robot.LI_S.setPower(1);
-            }else if(gamepad1.b || gamepad2.b){
-                robot.RI_S.setPower(.5);
-                robot.LI_S.setPower(-.5);
-            }else{
-                robot.RI_S.setPower(0);
-                robot.LI_S.setPower(0);
-            }
+
             if(gamepad2.left_bumper){
                 if(gamepad2.b){
                     robot.TC_M.setPower(0);
@@ -114,9 +83,75 @@ public class CombinedTurretMethod extends LinearOpMode{
                 }else if(gamepad2.x){
                     robot.TC_M.setPower(-1);
                 }else{
-                    robot.TC_M.setPower(robot.TC_M.getPower() + gamepad2.right_stick_y);
+                    robot.TC_M.setPower(robot.TC_M.getPower() + (gamepad2.right_stick_y * .01));
+                }
+            }else{
+                if(gamepad1.a || gamepad2.a){
+                    robot.RI_S.setPower(-.5);
+                    robot.LI_S.setPower(.5);
+                }else if(gamepad1.b || gamepad2.b){
+                    robot.RI_S.setPower(.5);
+                    robot.LI_S.setPower(-.5);
+                }else{
+                    robot.RI_S.setPower(0);
+                    robot.LI_S.setPower(0);
+                }
+                if(gamepad2.dpad_right) {
+                    teleOpVPivotSet = 1600;
+                    if (CombinedTurret.vPivotModifiedEncoder > 1000) {
+                        teleOpRotateSet = 1300;
+                        teleOpExtendSet = 500;
+                    }
+                }else if(gamepad2.dpad_down) {
+                    teleOpVPivotSet = 1000;
+                    if (CombinedTurret.vPivotModifiedEncoder > 800) {
+                        teleOpRotateSet = 0;
+                        teleOpExtendSet = 300;
+                    } else if (Math.abs(CombinedTurret.rotateModifiedEncoder) < 50 && CombinedTurret.extendModifiedEncoder < 250) {
+                        teleOpVPivotSet = 300;
+                    }
+                }else if(gamepad2.dpad_left){
+                    teleOpVPivotSet = 1000;
+                    if (CombinedTurret.vPivotModifiedEncoder > 800) {
+                        teleOpRotateSet = -1000;
+                        teleOpExtendSet = 200;
+                    }
+
+                }else{
+                    teleOpExtendSet = teleOpExtendSet - (gamepad2.right_stick_y * 30);
+                    if(gamepad2.right_trigger > .05){
+                        teleOpRotateSet = teleOpRotateSet + (gamepad2.right_trigger * 30);
+                    }else if(gamepad2.left_trigger > .05){
+                        teleOpRotateSet = teleOpRotateSet - (gamepad2.left_trigger * 30);
+                    }
+
+                    teleOpVPivotSet = teleOpVPivotSet + (gamepad2.left_stick_y * -20);
+
                 }
             }
+            if(teleOpVPivotSet > 1800){
+                teleOpVPivotSet = 1800;
+            }else if(teleOpVPivotSet < 100){
+                teleOpVPivotSet = 100;
+            }
+
+            if(teleOpExtendSet > 1200){
+                teleOpExtendSet = 1200;
+            }if(teleOpExtendSet < 0){
+                teleOpExtendSet = 0;
+            }
+
+            if(teleOpRotateSet > 5000){
+                teleOpRotateSet = 5000;
+            }else if(teleOpRotateSet < -5000){
+                teleOpRotateSet = -5000;
+            }
+
+            CombinedTurret.TurretCombinedMethod(teleOpExtendSet,teleOpExtendSpeedSet,teleOpRotateSet,teleOpRotateSpeedSet, teleOpVPivotSet,teleOpVPivotSpeedSet, robot.TE_M.getCurrentPosition(), robot.TE_G.getState(), robot.TR_M.getCurrentPosition(), robot.TR_G.getState(), robot.TP_M.getCurrentPosition(), robot.TP_G.getState());
+
+            robot.TE_M.setPower(CombinedTurret.extendFinalMotorPower);
+            robot.TR_M.setPower(CombinedTurret.rotateFinalMotorPower);
+            robot.TP_M.setPower(CombinedTurret.vPivotFinalMotorPower);
 
             Telemetry();
         }
@@ -126,19 +161,14 @@ public class CombinedTurretMethod extends LinearOpMode{
 
         dashboardTelemetry.addData("vPivotMotor Power", CombinedTurret.vPivotFinalMotorPower);
         dashboardTelemetry.addData("vPivot Modified Encoder", CombinedTurret.vPivotModifiedEncoder);
-        dashboardTelemetry.addData("vPivot RAW Encoder", robot.TP_M.getCurrentPosition());
 
         dashboardTelemetry.addData("extend Motor Power", CombinedTurret.extendFinalMotorPower);
-        dashboardTelemetry.addData("extend RAW Encoder", robot.TE_M.getCurrentPosition());
-        dashboardTelemetry.addData("vPivot Degree", CombinedTurret.currentDegree);
         dashboardTelemetry.addData("extend speed", CombinedTurret.extendSpeed);
         dashboardTelemetry.addData("extend Modified Encoder", CombinedTurret.extendModifiedEncoder);
         dashboardTelemetry.addData("extend Set", CombinedTurret.extendSet);
         dashboardTelemetry.addData("turret Homing trigger", CombinedTurret.turretHomingTrigger);
 
-        dashboardTelemetry.addData("rotate Speed", CombinedTurret.rotateSpeed);
-        dashboardTelemetry.addData("roate Motor Power", CombinedTurret.rotateFinalMotorPower);
-        dashboardTelemetry.addData("vPivot Speed", CombinedTurret.vPivotSpeed);
+        telemetry.addData("intake Dist", robot.I_DS.getDistance(DistanceUnit.INCH));
 
         dashboardTelemetry.update();
         telemetry.update();

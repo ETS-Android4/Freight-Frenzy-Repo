@@ -7,21 +7,23 @@ import java.util.Timer;
 public class TurretCombined {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
 
-    double extendSet, rotateSet, vPivotSet, extendEncoder, rotateEncoder, vPivotEncoder;
+    public double extendSet, rotateSet, vPivotSet, extendEncoder, rotateEncoder, vPivotEncoder;
     double timeInSec = robot.TimerCustom(), lastTime = 0;
     public double extendDeltaEncoder, extendModifiedEncoder, rotateDeltaEncoder, rotateModifiedEncoder, vPivotDeltaEncoder, vPivotModifiedEncoder;
     double extendLastEncoder, rotateLastEncoder, vPivotLastEncoder;
     double extendDirection, rotateDirection, vPivotDirection;
     double extendSpeedSet, rotateSpeedSet, vPivotSpeedSet;
     public double extendSpeed, rotateSpeed, vPivotSpeed;
-    double extendEncoderTickPerIn = 70,vPivotEncoder1Degree = 23 ;
-    public double vPivotPM, vPivotDM, vPivotUpPm = .015, vPivotDnPM = .004, vPivotUpDM = .009, vPivotDnDM = .012;
+    double extendEncoderTickPerIn = 53,vPivotEncoder1Degree = 23 ;
+    public double vPivotPM, vPivotDM, vPivotUpPm = .028, vPivotDnPM = .018, vPivotUpDM = .02, vPivotDnDM = .015;
     public double extendPM = .015, extendDM = 0.012;
     public double rotatePM = .0003, rotateDM = 0.0003;
     double extendSpeedDifference, rotateSpeedDifference, vPivotSpeedDifference;
     double extendLastSpeedDifference = 0, rotateLastSpeedDifference = 0, vPivotLastSpeedDifference = 0;
     public double extendFinalMotorPower = 0, rotateFinalMotorPower = 0, vPivotFinalMotorPower = 0;
-    double cosineMult = 1, currentDegree;
+    public double cosineMult = 1, currentDegree;
+    public boolean turretHomingTrigger = true, vPivotIsHomed = false, lastVPivotMag = false, homing1loop = false, extendStart = false;
+    public boolean extendHomingHasExtended = false, extendIsHomed = false, rotateMagStart, rotateIsHomed = false, rotateHomingHasMoved = false;
 
     public void TurretCombinedMethod(double ExtendSet, double ExtendSpeedSet, double RotateSet, double RotateSpeedSet,
                                      double VPivotSet, double VPivotSpeedSet, double ExtendEncoder, boolean ExtendMag,
@@ -34,34 +36,88 @@ public class TurretCombined {
         //setting our encoder parameters to variables to reverse some encoders
         extendEncoder = ExtendEncoder;
         rotateEncoder = RotateEncoder;
-        vPivotEncoder = -VPivotEncoder;
+        vPivotEncoder = VPivotEncoder;
 
 
 
-        //setpoint limits
-        if(ExtendSet > 1550){
-            extendSet = 1550;
-        }else{
-            extendSet = ExtendSet;
+        //homing sequence to home to turret
+        if(turretHomingTrigger == true){
+            if(homing1loop = false){
+                extendStart = ExtendMag;
+                homing1loop = true;
+            }
+            //vPivot Homing
+            if(vPivotIsHomed == false){
+                vPivotSet = 3000;
+                vPivotSpeedSet = 10;
+            }
+            if(VPivotMag == false && lastVPivotMag == true){
+                vPivotModifiedEncoder = 1200;
+                vPivotSet = 1500;
+                vPivotIsHomed = true;
+            }
+            if(vPivotIsHomed == true){
+                //extend homing
+                if(extendStart == false && ExtendMag == false && extendIsHomed == false){
+                    extendSet = extendSet + 20;
+                    extendSpeedSet = 10;
+                }else if(extendIsHomed == false){
+                    extendSet = extendSet - 20;
+                    extendSpeedSet = 10;
+                    extendHomingHasExtended = true;
+                }
+                if(extendHomingHasExtended == true && ExtendMag == false && extendIsHomed == false){
+                    extendModifiedEncoder = 0;
+                    extendSet = 0;
+                    extendIsHomed = true;
+                }
+                //rotate Homing
+                if(rotateMagStart == false && RotateMag == false && rotateIsHomed == false){
+                    rotateSet = rotateSet + 10;
+                    rotateSpeedSet = 500;
+                }else if(rotateIsHomed == false){
+                    rotateSet = rotateSet - 10;
+                    rotateSpeedSet = 500;
+                    rotateHomingHasMoved = true;
+                }
+
+                if(rotateHomingHasMoved == true && RotateMag == false && rotateIsHomed == false){
+                    rotateSet = 0;
+                    rotateModifiedEncoder = 20;
+                    rotateIsHomed = true;
+
+                }
+                if(rotateIsHomed == true && extendIsHomed == true && vPivotIsHomed == true){
+                    turretHomingTrigger = false;
+                }
+            }
+
+        }else {
+
+            //setpoint limits
+            if (ExtendSet > 1550) {
+                extendSet = 1550;
+            } else {
+                extendSet = ExtendSet;
+            }
+
+            if (RotateSet > 5000) {
+                rotateSet = 5000;
+            } else if (RotateSet < -5000) {
+                rotateSet = -5000;
+            } else {
+                rotateSet = RotateSet;
+            }
+
+            if (VPivotSet > 3000) {
+                vPivotSet = 3000;
+            } else if (VPivotSet < 200) {
+                vPivotSet = 200;
+            } else {
+                vPivotSet = VPivotSet;
+            }
+
         }
-
-        if(RotateSet > 5000){
-            rotateSet = 5000;
-        }else if(RotateSet < -5000){
-            rotateSet = -5000;
-        }else{
-            rotateSet = RotateSet;
-        }
-
-        if(VPivotSet > 3000){
-            vPivotSet = 3000;
-        }else if(VPivotSet < 200){
-            vPivotSet = 200;
-        }else{
-            vPivotSet = VPivotSet;
-        }
-
-
 
         //setting the current encoder to a variable to reset positions using sensors
         extendDeltaEncoder = extendEncoder - extendLastEncoder;
@@ -89,9 +145,9 @@ public class TurretCombined {
         }
 
         if(vPivotSet < vPivotModifiedEncoder){
-            vPivotDirection = -1;
-        }else if(vPivotSet > vPivotModifiedEncoder){
             vPivotDirection = 1;
+        }else if(vPivotSet > vPivotModifiedEncoder){
+            vPivotDirection = -1;
         }
 
 
@@ -103,8 +159,8 @@ public class TurretCombined {
 
 
         //Setting motion profiles and deadzones
-        if(Math.abs(extendSet - extendModifiedEncoder) < Math.abs(ExtendSpeedSet * 20)){
-            extendSpeedSet = extendSpeedSet * (Math.abs(extendSet - extendModifiedEncoder)/Math.abs(ExtendSpeedSet * 20));
+        if(Math.abs(extendSet - extendModifiedEncoder) < Math.abs(ExtendSpeedSet * 10)){
+            extendSpeedSet = extendSpeedSet * (Math.abs(extendSet - extendModifiedEncoder)/Math.abs(ExtendSpeedSet * 10));
         }
 
         if(Math.abs(rotateSet - rotateModifiedEncoder) < Math.abs(rotateSpeedSet/5)){
@@ -124,11 +180,11 @@ public class TurretCombined {
         //calculating speed on all 3 axis
         extendSpeed = (extendDeltaEncoder/extendEncoderTickPerIn)/(timeInSec - lastTime);
         rotateSpeed = rotateDeltaEncoder/(timeInSec - lastTime);
-        vPivotSpeed = ((2 * 16) * Math.PI)*((vPivotDeltaEncoder/vPivotEncoder1Degree) / 360) / (timeInSec - lastTime);
+        vPivotSpeed = -((2 * 16) * Math.PI)*((vPivotDeltaEncoder/vPivotEncoder1Degree) / 360) / (timeInSec - lastTime);
 
         //calculating the cosine multiplier, this is to let the arm correct with less power and the easier
         //to move position like lower or higher angles
-        currentDegree = (vPivotModifiedEncoder - 1200)/vPivotEncoder1Degree;
+        currentDegree = (vPivotModifiedEncoder - 1250)/vPivotEncoder1Degree;
         cosineMult = Math.cos(Math.toRadians(currentDegree));
 
 
@@ -154,7 +210,7 @@ public class TurretCombined {
         //calculating the correction motor power for each axis
         extendFinalMotorPower = extendFinalMotorPower + (extendSpeedDifference * extendPM) + ((extendSpeedDifference - extendLastSpeedDifference) * extendDM);
         rotateFinalMotorPower = rotateFinalMotorPower + (rotateSpeedDifference * rotatePM) + ((rotateSpeedDifference - rotateLastSpeedDifference) * rotateDM);
-        vPivotFinalMotorPower = vPivotFinalMotorPower + (((vPivotSpeedDifference * vPivotPM) + ((vPivotSpeedDifference - vPivotLastSpeedDifference) * vPivotDM)) * cosineMult);
+        vPivotFinalMotorPower = vPivotFinalMotorPower + (((vPivotSpeedDifference * vPivotPM) + ((vPivotSpeedDifference - vPivotLastSpeedDifference) * vPivotDM))); //* cosineMult);
 
 
 
@@ -186,6 +242,9 @@ public class TurretCombined {
         extendLastSpeedDifference = extendSpeedDifference;
         rotateLastSpeedDifference = rotateSpeedDifference;
         vPivotLastSpeedDifference = vPivotSpeedDifference;
+        lastVPivotMag = VPivotMag;
+
+
 
     }
 }
