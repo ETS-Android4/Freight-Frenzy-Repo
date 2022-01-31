@@ -2,10 +2,9 @@ package org.firstinspires.ftc.teamcode.Autonomous.OldCode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
-import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
+import org.firstinspires.ftc.teamcode.GeneralRobotCode.FreightFrenzyHardwareMap;
 
 @TeleOp
 public class EncoderTest extends LinearOpMode {

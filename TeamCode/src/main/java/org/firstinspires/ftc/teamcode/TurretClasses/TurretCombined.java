@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.TurretClasses;
 
-import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
-
-import java.util.Timer;
+import org.firstinspires.ftc.teamcode.GeneralRobotCode.FreightFrenzyHardwareMap;
 
 public class TurretCombined {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();

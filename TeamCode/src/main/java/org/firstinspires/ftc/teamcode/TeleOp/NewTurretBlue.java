@@ -7,12 +7,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
-import org.firstinspires.ftc.teamcode.TestHub.Smoothing;
-import org.firstinspires.ftc.teamcode.TurretClasses.ExtendClass;
-import org.firstinspires.ftc.teamcode.TurretClasses.RotateClass;
+import org.firstinspires.ftc.teamcode.GeneralRobotCode.FreightFrenzyHardwareMap;
+import org.firstinspires.ftc.teamcode.GeneralRobotCode.Smoothing;
 import org.firstinspires.ftc.teamcode.TurretClasses.TurretCombined;
-import org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass;
 
 
 @Config
@@ -21,18 +18,16 @@ public class NewTurretBlue extends LinearOpMode{
 
 
 
-    public double x, y, z, initPOsitionOrder = 1, xOriginal;
+    public double x, y, z;
 
     double teleOpExtendSet = 200, teleOpRotateSet = 0, teleOpVPivotSet = 1000;
-    double teleOpExtendSpeedSet = 25, teleOpRotateSpeedSet = 1500, teleOpVPivotSpeedSet = 16;
+    double intakeVPivotSet = 550, intakeRotateSet = 0, intakeExtendSet = 275;
+    double teleOpExtendSpeedSet = 30, teleOpRotateSpeedSet = 2000, teleOpVPivotSpeedSet = 18;
     double lastDS = 5;
 
 
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     TurretCombined CombinedTurret = new TurretCombined();
-    VPivotClass VPivotClass = new VPivotClass();
-    ExtendClass ExtendClass = new ExtendClass();
-    RotateClass RotateClass = new RotateClass();
     Smoothing Smoothing = new Smoothing();
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
@@ -54,7 +49,6 @@ public class NewTurretBlue extends LinearOpMode{
 
 
 
-
             x = Smoothing.SmoothDriveX(-Math.copySign(gamepad1.left_stick_x, gamepad1.left_stick_x * gamepad1.left_stick_x * gamepad1.left_stick_x));
             y = Smoothing.SmoothDriveY( -(Math.copySign(gamepad1.left_stick_y, gamepad1.left_stick_y * gamepad1.left_stick_y * gamepad1.left_stick_y)));
             z = Smoothing.SmoothDriveZ(  Math.copySign(gamepad1.right_stick_x, gamepad1.right_stick_x * gamepad1.right_stick_x * gamepad1.right_stick_x));
@@ -69,77 +63,82 @@ public class NewTurretBlue extends LinearOpMode{
                 robot.RF_M.setPower(.4*(-((y)+x-(z))));//RF
                 robot.RB_M.setPower(.4*(-((y)-x-(z))));//RB
             }else{
-                robot.LF_M.setPower(.8*((y)-x+(.8*z)));//LF
-                robot.LB_M.setPower(.8*((y)+x+(.8*z)));//LB
-                robot.RF_M.setPower(.8*(-((y)+x-(.8*z))));//RF
-                robot.RB_M.setPower(.8*(-((y)-x-(.8*z))));//RB
+                robot.LF_M.setPower(((y)-x+(.8*z)));//LF
+                robot.LB_M.setPower(((y)+x+(.8*z)));//LB
+                robot.RF_M.setPower((-((y)+x-(.8*z))));//RF
+                robot.RB_M.setPower((-((y)-x-(.8*z))));//RB
             }
 
 
-            if(gamepad2.left_bumper){
+            if(gamepad2.left_bumper){//Carousel trigger to let us use buttons more than once
                 if(gamepad2.b){
                     robot.TC_M.setPower(0);
                 }else if(gamepad2.a){
-                    robot.TC_M.setPower(-.3);
+                    robot.TC_M.setPower(-.4);
                 }else if(gamepad2.x){
                     robot.TC_M.setPower(-1);
                 }else{
                     robot.TC_M.setPower(robot.TC_M.getPower() + (gamepad2.right_stick_y * .01));
                 }
-            }else{
-                if(gamepad1.a || gamepad2.a){
+            }else{//regular game functions for the intake of the turret
+                if(gamepad1.a || gamepad2.a){//intake
                     robot.RI_S.setPower(-.5);
                     robot.LI_S.setPower(.5);
-                }else if(gamepad1.b || gamepad2.b){
+                }else if(gamepad1.b || gamepad2.b){//outtake
                     robot.RI_S.setPower(.5);
                     robot.LI_S.setPower(-.5);
-                }else{
+                }else{//servos off
                     robot.RI_S.setPower(-.05);
                     robot.LI_S.setPower(0.05);
                 }
-                if(lastDS > 1 && robot.I_DS.getDistance(DistanceUnit.INCH) < 1 && robot.RI_S.getPower() > 0){
+                if(lastDS > 1 && robot.I_DS.getDistance(DistanceUnit.INCH) < 1 && robot.RI_S.getPower() > 0){//shutting down the intake once we have a piece of freight in our intake
                     robot.RI_S.setPower(0);
                     robot.LI_S.setPower(0);
-                }
+                }//TODO fix this so it works
 
+                                //turret Presets
+                if(gamepad2.y){//Resetting our intake position in case of any encoder drift
+                    intakeVPivotSet = CombinedTurret.vPivotModifiedEncoder;
+                    intakeExtendSet = CombinedTurret.extendModifiedEncoder;
+                    intakeRotateSet = CombinedTurret.rotateModifiedEncoder;
 
-
-                if(gamepad2.dpad_right) {
+                }else if(gamepad2.dpad_right) {//Alliance hub dropping preset
                     teleOpVPivotSet = 1600;
                     if (CombinedTurret.vPivotModifiedEncoder > 1000) {
                         teleOpRotateSet = 1300;
-                        teleOpExtendSet = 500;
+                        teleOpExtendSet = 800;
                     }
-                }else if(gamepad2.dpad_down) {
+                }else if(gamepad2.dpad_down) {//Intake position
                     teleOpVPivotSet = 1000;
 
                     if (Math.abs(CombinedTurret.rotateModifiedEncoder) < 50 && CombinedTurret.extendModifiedEncoder > 220) {
-                        teleOpVPivotSet = 550;
+                        teleOpVPivotSet = intakeVPivotSet;
                     }else  if (CombinedTurret.vPivotModifiedEncoder > 800) {
-                        teleOpRotateSet = 0;
-                        teleOpExtendSet = 275;
+                        teleOpRotateSet = intakeRotateSet;
+                        teleOpExtendSet = intakeExtendSet;
                     }
-                }else if(gamepad2.dpad_left){
+                }else if(gamepad2.dpad_left){//Shared shipping hub intake position
                     teleOpVPivotSet = 1000;
                     if (CombinedTurret.vPivotModifiedEncoder > 800) {
                         teleOpRotateSet = -1000;
                         teleOpExtendSet = 200;
                     }
 
-                }else{
-                    teleOpExtendSet = teleOpExtendSet - (gamepad2.right_stick_y * 30);
+                }else{//manual turret position setting
+                    teleOpExtendSet = teleOpExtendSet - (gamepad2.right_stick_y * 50);
                     if(gamepad2.right_trigger > .05){
-                        teleOpRotateSet = teleOpRotateSet + (gamepad2.right_trigger * 30);
+                        teleOpRotateSet = teleOpRotateSet + (gamepad2.right_trigger * 40);
                     }else if(gamepad2.left_trigger > .05){
-                        teleOpRotateSet = teleOpRotateSet - (gamepad2.left_trigger * 30);
+                        teleOpRotateSet = teleOpRotateSet - (gamepad2.left_trigger * 40);
                     }
 
-                    teleOpVPivotSet = teleOpVPivotSet + (gamepad2.left_stick_y * -20);
+                    teleOpVPivotSet = teleOpVPivotSet + (gamepad2.left_stick_y * -30);
 
                 }
             }
-            if(teleOpVPivotSet > 1800){
-                teleOpVPivotSet = 1800;
+            //setpoint limits
+            if(teleOpVPivotSet > 2000){
+                teleOpVPivotSet = 2000;
             }else if(teleOpVPivotSet < 100){
                 teleOpVPivotSet = 100;
             }

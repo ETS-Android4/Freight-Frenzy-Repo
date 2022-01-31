@@ -8,7 +8,6 @@ import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.SpeedClass;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.TestCode.Just_DrivetrainHardware;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.TurnControl;
-import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
 
 @Autonomous
 

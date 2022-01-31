@@ -6,10 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.SpeedClass;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.TurnControl;
-import org.firstinspires.ftc.teamcode.TurretClasses.RotateClass;
-import org.firstinspires.ftc.teamcode.TurretClasses.ExtendClass;
-import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
-import org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass;
+import org.firstinspires.ftc.teamcode.GeneralRobotCode.FreightFrenzyHardwareMap;
 
 @Autonomous
 

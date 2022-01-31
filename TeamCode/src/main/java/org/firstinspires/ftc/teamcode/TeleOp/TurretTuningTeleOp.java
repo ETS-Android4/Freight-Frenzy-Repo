@@ -6,17 +6,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
-import org.firstinspires.ftc.teamcode.TestHub.Smoothing;
-import org.firstinspires.ftc.teamcode.TurretClasses.ExtendClass;
-import org.firstinspires.ftc.teamcode.TurretClasses.RotateClass;
+import org.firstinspires.ftc.teamcode.GeneralRobotCode.FreightFrenzyHardwareMap;
+import org.firstinspires.ftc.teamcode.GeneralRobotCode.Smoothing;
 import org.firstinspires.ftc.teamcode.TurretClasses.TurretCombined;
-import org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass;
 
 
 @Config
 @TeleOp
-public class CombinedTurretMethod extends LinearOpMode{
+public class TurretTuningTeleOp extends LinearOpMode{
 
     public static double UPARMPM = .028;
     public static double UPARMDM = .02;
@@ -40,9 +37,6 @@ public class CombinedTurretMethod extends LinearOpMode{
 
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     TurretCombined CombinedTurret = new TurretCombined();
-    VPivotClass VPivotClass = new VPivotClass();
-    ExtendClass ExtendClass = new ExtendClass();
-    RotateClass RotateClass = new RotateClass();
     Smoothing Smoothing = new Smoothing();
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();

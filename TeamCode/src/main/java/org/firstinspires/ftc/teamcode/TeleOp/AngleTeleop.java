@@ -1,14 +1,10 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.TestHub.FreightFrenzyHardwareMap;
-import org.firstinspires.ftc.teamcode.TurretClasses.RotateClass;
+import org.firstinspires.ftc.teamcode.GeneralRobotCode.FreightFrenzyHardwareMap;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
-import org.firstinspires.ftc.teamcode.TurretClasses.ExtendClass;
-import org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass;
 
 //@TeleOp
 public class AngleTeleop extends LinearOpMode {

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.TestHub;
+package org.firstinspires.ftc.teamcode.GeneralRobotCode;
 
 public class Smoothing {
     double Gpad1xinput1 = 0,Gpad1xinput2 = 0,Gpad1xinput3 = 0,Gpad1xinput4 = 0,Gpad1xinput5 = 0,Gpad1xinput6 = 0,Gpad1xinput7 = 0,Gpad1xinput8 = 0,Gpad1xinput9 = 0,Gpad1xinput10 = 0;
@@ -56,12 +56,12 @@ public class Smoothing {
 
     double DriveYTotal;
     int DriveYArrayNum = 0, DriveYfirstLoop = 0;
-    double DriveYArray[] = new double[10];
+    double DriveYArray[] = new double[7];
 
     public double SmoothDriveY(double input){
         if(DriveYfirstLoop == 0) {
             DriveYfirstLoop = 1;
-            for (int DriveYInitialSet = 0; DriveYInitialSet < 10; DriveYInitialSet++) {
+            for (int DriveYInitialSet = 0; DriveYInitialSet < 7; DriveYInitialSet++) {
                 DriveYArray[DriveYInitialSet] = 0;
             }
         }
@@ -73,29 +73,29 @@ public class Smoothing {
 
 
         DriveYArrayNum = DriveYArrayNum + 1;
-        if(DriveYArrayNum >= 10){
+        if(DriveYArrayNum >= 7){
             DriveYArrayNum = 0;
         }
 
         if(Math.abs(input) < .08){
-            for (int DriveYInitialSet = 0; DriveYInitialSet < 10; DriveYInitialSet++) {
+            for (int DriveYInitialSet = 0; DriveYInitialSet < 7; DriveYInitialSet++) {
                 DriveYArray[DriveYInitialSet] = 0;
             }
             DriveYTotal = 0;
         }
 
-        return DriveYTotal/10;
+        return DriveYTotal/7;
 
     }
 
     double DriveXTotal;
     int DriveXArrayNum = 0, DriveXfirstLoop = 0;
-    double DriveXArray[] = new double[10];
+    double DriveXArray[] = new double[7];
 
     public double SmoothDriveX(double input){
         if(DriveXfirstLoop == 0) {
             DriveXfirstLoop = 1;
-            for (int DriveXInitialSet = 0; DriveXInitialSet < 10; DriveXInitialSet++) {
+            for (int DriveXInitialSet = 0; DriveXInitialSet < 7; DriveXInitialSet++) {
                 DriveXArray[DriveXInitialSet] = 0;
             }
         }
@@ -107,29 +107,29 @@ public class Smoothing {
 
 
         DriveXArrayNum = DriveXArrayNum + 1;
-        if(DriveXArrayNum >= 10){
+        if(DriveXArrayNum >= 7){
             DriveXArrayNum = 0;
         }
 
         if(Math.abs(input) < .08){
-            for (int DriveXInitialSet = 0; DriveXInitialSet < 10; DriveXInitialSet++) {
+            for (int DriveXInitialSet = 0; DriveXInitialSet < 7; DriveXInitialSet++) {
                 DriveXArray[DriveXInitialSet] = 0;
             }
             DriveXTotal = 0;
         }
 
-        return DriveXTotal/10;
+        return DriveXTotal/7;
 
     }
 
     double DriveZTotal;
     int DriveZArrayNum = 0, DriveZfirstLoop = 0;
-    double DriveZArray[] = new double[10];
+    double DriveZArray[] = new double[7];
 
     public double SmoothDriveZ(double input){
         if(DriveZfirstLoop == 0) {
             DriveZfirstLoop = 1;
-            for (int DriveZInitialSet = 0; DriveZInitialSet < 10; DriveZInitialSet++) {
+            for (int DriveZInitialSet = 0; DriveZInitialSet < 7; DriveZInitialSet++) {
                 DriveZArray[DriveZInitialSet] = 0;
             }
         }
@@ -141,18 +141,18 @@ public class Smoothing {
 
 
         DriveZArrayNum = DriveZArrayNum + 1;
-        if(DriveZArrayNum >= 10){
+        if(DriveZArrayNum >= 7){
             DriveZArrayNum = 0;
         }
 
         if(Math.abs(input) < .08){
-            for (int DriveZInitialSet = 0; DriveZInitialSet < 10; DriveZInitialSet++) {
+            for (int DriveZInitialSet = 0; DriveZInitialSet < 7; DriveZInitialSet++) {
                 DriveZArray[DriveZInitialSet] = 0;
             }
             DriveZTotal = 0;
         }
 
-        return DriveZTotal/10;
+        return DriveZTotal/7;
 
     }
 }
