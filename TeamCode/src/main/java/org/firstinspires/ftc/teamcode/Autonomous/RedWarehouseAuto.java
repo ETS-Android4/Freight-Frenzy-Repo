@@ -23,7 +23,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
-
+/*
 @Autonomous
 public class RedWarehouseAuto extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
@@ -31,7 +31,7 @@ public class RedWarehouseAuto extends LinearOpMode {
     DirectionCalcClass DirectionClass = new DirectionCalcClass();
     TurnControl TurnControl = new TurnControl();
     Odometry OdoClass = new Odometry();
-    ExtendClass ExtendClass = new ExtendClass();
+    /*ExtendClass ExtendClass = new ExtendClass();
     VPivotClass VPivotClass = new VPivotClass();
     RotateClass RotateClass = new RotateClass();
     FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -102,7 +102,7 @@ public class RedWarehouseAuto extends LinearOpMode {
             public void onError(int errorCode) {
                 /*
                  * This will be called if the camera could not be opened
-                 */
+
             }
         });
         telemetry.update();
@@ -160,7 +160,7 @@ public class RedWarehouseAuto extends LinearOpMode {
             telemetry.addData("region1AVG", pipeline.region1Avg());
             telemetry.addData("region2AVG", pipeline.region2Avg());
             telemetry.update();
-        }*/
+        }
 
 
 
@@ -468,4 +468,4 @@ public class RedWarehouseAuto extends LinearOpMode {
 
 
     }
-}
+}*/

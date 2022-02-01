@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.SpeedClass;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.TurnControl;
 import org.firstinspires.ftc.teamcode.GeneralRobotCode.FreightFrenzyHardwareMap;
-
+/*
 @Autonomous
 
 public class BlueDropAuto extends LinearOpMode {
@@ -262,7 +262,7 @@ public class BlueDropAuto extends LinearOpMode {
             ExtendClass.ExtendAutoMethod(extendSetpoint, extendSpeed, robot.TE_M.getCurrentPosition(), robot.TE_G.getState());
             //VPivotClass.VPivotAutoMethod(VPivotSetpoint, VPivotSpeed, robot.TP_P.getVoltage());
             PowerSetting();
-            Telemetry();*/
+            Telemetry();
         }
     }
 
@@ -324,4 +324,4 @@ public class BlueDropAuto extends LinearOpMode {
         robot.RF_M.setPower(0);
         robot.RB_M.setPower(0);
     }
-}
+}*/

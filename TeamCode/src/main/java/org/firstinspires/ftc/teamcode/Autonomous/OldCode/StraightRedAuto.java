@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.SpeedClass;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.TurnControl;
 import org.firstinspires.ftc.teamcode.GeneralRobotCode.FreightFrenzyHardwareMap;
-
+/*
 @Autonomous
 
 public class StraightRedAuto extends LinearOpMode {
@@ -17,7 +17,7 @@ public class StraightRedAuto extends LinearOpMode {
     DirectionCalcClass DirectionClass = new DirectionCalcClass();
     TurnControl TurnControl = new TurnControl();
     Odometry OdoClass = new Odometry();
-    ExtendClass ExtendClass = new ExtendClass();
+    /*ExtendClass ExtendClass = new ExtendClass();
     VPivotClass VPivotClass = new VPivotClass();
     RotateClass RotateClass = new RotateClass();
     //Uses Vuforia Developer Code
@@ -93,7 +93,7 @@ public class StraightRedAuto extends LinearOpMode {
             telemetry.addData("Vpiovot PT", robot.TP_P.getVoltage());
             telemetry.addData("rotate modified", RotateClass.modifiedRotateCurrent());
             telemetry.update();
-        }*/
+        }
         waitForStart();
         //Shuts down Tensor Flow
         //Sets our intial varible setpoints
@@ -214,7 +214,7 @@ public class StraightRedAuto extends LinearOpMode {
                     breakout = 1;
                 }
             }
-            */
+
                 //If nothing else to do, stop the program
                 else {
                     stopProgram = 1;
@@ -286,4 +286,4 @@ public class StraightRedAuto extends LinearOpMode {
         robot.RF_M.setPower(0);
         robot.RB_M.setPower(0);
     }
-}
+}*/

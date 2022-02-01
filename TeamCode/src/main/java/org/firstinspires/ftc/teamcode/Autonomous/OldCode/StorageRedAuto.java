@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.SpeedClass;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.TurnControl;
 import org.firstinspires.ftc.teamcode.GeneralRobotCode.FreightFrenzyHardwareMap;
-
+/*
 @Autonomous
 
 public class StorageRedAuto extends LinearOpMode {
@@ -159,7 +159,7 @@ public class StorageRedAuto extends LinearOpMode {
                     breakout = 1;
                 }
             }
-            */
+
                 //If nothing else to do, stop the program
                 else {
                     stopProgram = 1;
@@ -231,4 +231,4 @@ public class StorageRedAuto extends LinearOpMode {
         robot.RF_M.setPower(0);
         robot.RB_M.setPower(0);
     }
-}
+}*/

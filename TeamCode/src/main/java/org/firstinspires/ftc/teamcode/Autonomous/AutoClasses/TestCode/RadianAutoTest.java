@@ -16,9 +16,9 @@ public class RadianAutoTest extends LinearOpMode {
     RadianDirectionCalcClass RadDirectionClass = new RadianDirectionCalcClass();
     TurnControl TurnControl = new TurnControl();
     Odometry OdoClass = new Odometry();
-    ExtendClass ExtendClass = new ExtendClass();
+    /*ExtendClass ExtendClass = new ExtendClass();
     VPivotClass VPivotClass = new VPivotClass();
-    RotateClass RotateClass = new RotateClass();
+    RotateClass RotateClass = new RotateClass();*/
 
     //Uses Vuforia Developer Code
     //Declares Varibles

@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.SpeedClass;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.TurnControl;
 import org.firstinspires.ftc.teamcode.GeneralRobotCode.FreightFrenzyHardwareMap;
-
+/*
 @Autonomous
 
 public class RedDropAuto extends LinearOpMode {
@@ -96,7 +96,7 @@ public class RedDropAuto extends LinearOpMode {
             telemetry.addData("initPosition order", initPOsitionOrder);
             telemetry.addData("Vpiovot PT", robot.TP_P.getVoltage());
             telemetry.addData("rotate modified", RotateClass.modifiedRotateCurrent());
-            telemetry.update();*/
+            telemetry.update();
         }
         waitForStart();
         robot.LF_M.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -263,7 +263,7 @@ public class RedDropAuto extends LinearOpMode {
            //VPivotClass.VPivotAutoMethod(VPivotSetpoint, VPivotSpeed, robot.TP_P.getVoltage());
             PowerSetting();
             Telemetry();
-        }*/
+        }
     }
 
 
@@ -324,4 +324,4 @@ public class RedDropAuto extends LinearOpMode {
         robot.RF_M.setPower(0);
         robot.RB_M.setPower(0);
     }
-}
+}*/

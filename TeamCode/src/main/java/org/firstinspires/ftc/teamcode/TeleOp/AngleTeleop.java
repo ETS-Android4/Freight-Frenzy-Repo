@@ -7,9 +7,9 @@ import org.firstinspires.ftc.teamcode.GeneralRobotCode.FreightFrenzyHardwareMap;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
 
 //@TeleOp
-public class AngleTeleop extends LinearOpMode {
-    FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
-    org.firstinspires.ftc.teamcode.TurretClasses.ExtendClass ExtendClass = new ExtendClass();
+//public class AngleTeleop extends LinearOpMode {
+  //  FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
+  /*  org.firstinspires.ftc.teamcode.TurretClasses.ExtendClass ExtendClass = new ExtendClass();
     org.firstinspires.ftc.teamcode.TurretClasses.VPivotClass VPivotClass = new VPivotClass();
     RotateClass RotateClass = new RotateClass();
     Odometry OdoClass = new Odometry();
@@ -62,7 +62,7 @@ public class AngleTeleop extends LinearOpMode {
             telemetry.update();
         }
 
-        */
+
         robot.LF_M.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.LF_M.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.LB_M.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -94,7 +94,7 @@ public class AngleTeleop extends LinearOpMode {
                 setpointAngle = 0;
             }
 
-             */
+
                 finalAngle = setpointAngle + OdoClass.thetaINRadiansReturn();
                 finalX = Math.sin(finalAngle) * 1;
                 finalY = Math.cos(finalAngle) * 1;
@@ -203,7 +203,7 @@ public class AngleTeleop extends LinearOpMode {
             telemetry.addData("vpivotset", VPivotClass.PivotSetReturn());
             telemetry.addData("pivot POT", robot.TP_P.getVoltage());
 
-             */
+
             telemetry.addData("setpointAngle", setpointAngle);
             telemetry.addData("speed", speed);
             telemetry.addData("LF_M",robot.LF_M.getPower());
@@ -215,4 +215,4 @@ public class AngleTeleop extends LinearOpMode {
             telemetry.update();
         }
     }
-}
+}*/

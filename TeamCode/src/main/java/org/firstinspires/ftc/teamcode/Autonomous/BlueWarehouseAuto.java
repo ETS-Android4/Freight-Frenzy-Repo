@@ -24,8 +24,8 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-@Autonomous
-public class BlueWarehouseAuto extends LinearOpMode {
+//@Autonomous
+/*public class BlueWarehouseAuto extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     SpeedClass SpeedClass = new SpeedClass();
     DirectionCalcClass DirectionClass = new DirectionCalcClass();
@@ -102,7 +102,7 @@ public class BlueWarehouseAuto extends LinearOpMode {
             public void onError(int errorCode) {
                 /*
                  * This will be called if the camera could not be opened
-                 */
+
             }
         });
         telemetry.update();
@@ -468,4 +468,4 @@ public class BlueWarehouseAuto extends LinearOpMode {
 
 
     }
-}
+}*/
