@@ -66,6 +66,7 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
     double VPivotSetpoint;
     double VPivotSpeed;
     double TSEPos;
+    double leftIntakeSet = 0, rightIntakeSet = 0;
     double timeRemaining = 30, startTime;
     double timepassed2;
     public static double UPARMPM = .015;
@@ -237,12 +238,21 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                 }
             }
             else if(action == 2){//intaking
-                extendSetpoint = 100;
+                //setting the intake position using a safe path to prevent collisions
+                extendSetpoint = 275;
                 extendSpeed = 20;
-                rotateSpeed = .65;
+                rotateSpeed = 1800;
                 rotateSetpoint = 0;
-                VPivotSetpoint = 1500;
-                VPivotSpeed = 8;
+
+                if(Math.abs(extendSetpoint - CombinedTurret.extendModifiedEncoder) < 50 && Math.abs(rotateSetpoint - CombinedTurret.rotateModifiedEncoder) < 100){
+                      VPivotSetpoint = 500;
+                      VPivotSpeed = 8;
+                  }else{
+                      VPivotSetpoint = 1000;
+                      VPivotSpeed = 8;
+                  }
+
+                //setting drivetrain positions and speeds
 
                 thetaSetpoint = 0;
                 accelerationDistance = .25;
@@ -254,7 +264,9 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                 xSetpoint = 41;
                 ySetpoint = 1;
                 thetaSetpoint = 0;
-                targetSpeed = 18;
+                targetSpeed = 10;
+                leftIntakeSet = .5;
+                rightIntakeSet = -.5;
 
 
                 if(robot.I_DS.getDistance(DistanceUnit.INCH) < 1){
@@ -366,6 +378,8 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
         robot.LB_M.setPower(DirectionClass.LB_M_DirectionReturn() * (SpeedClass.SpeedReturn() ));
        robot.RF_M.setPower(DirectionClass.RF_M_DirectionReturn() * (SpeedClass.SpeedReturn()));
        robot.RB_M.setPower(DirectionClass.RB_M_DirectionReturn() * (SpeedClass.SpeedReturn() ));
+       robot.LI_S.setPower(leftIntakeSet);
+       robot.RI_S.setPower(rightIntakeSet);
 
 
     }

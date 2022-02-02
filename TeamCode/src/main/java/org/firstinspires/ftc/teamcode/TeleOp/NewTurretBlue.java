@@ -143,8 +143,8 @@ public class NewTurretBlue extends LinearOpMode{
                 teleOpVPivotSet = 100;
             }
 
-            if(teleOpExtendSet > 1200){
-                teleOpExtendSet = 1200;
+            if(teleOpExtendSet > 1250){
+                teleOpExtendSet = 1250;
             }if(teleOpExtendSet < 0){
                 teleOpExtendSet = 0;
             }
