@@ -66,6 +66,7 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
     double VPivotSetpoint;
     double VPivotSpeed;
     double TSEPos;
+    double timeRemaining = 30, startTime;
     double timepassed2;
     public static double UPARMPM = .015;
     public static double UPARMDM = .009;
@@ -135,6 +136,7 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
         //Shuts down Tensor Flow
         //Sets our intial varible setpoints
         action = 1;
+        startTime = getRuntime();
         startPointX = 0;
         startPointY = 0;
         stopProgram = 0;
@@ -154,7 +156,7 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
         loopcount = 0;
         timepassed = 0;
         while (opModeIsActive() && stopProgram == 0) {
-            if(action == 1) {
+            if(action == 1) {//dropping in correct level
                 if (TSEPos == 1) {
                     rotateSetpoint = 1800;
                     extendSetpoint = 0;
@@ -234,9 +236,14 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                     }
                 }
             }
-            else if(action == 2){
+            else if(action == 2){//intaking
                 extendSetpoint = 100;
-                extendSpeed = .8;
+                extendSpeed = 20;
+                rotateSpeed = .65;
+                rotateSetpoint = 0;
+                VPivotSetpoint = 1500;
+                VPivotSpeed = 8;
+
                 thetaSetpoint = 0;
                 accelerationDistance = .25;
                 decelerationDistance = 7.5;
@@ -244,29 +251,58 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                 slowMovedDistance = 2;
                 thetaDeccelerationDegree = 2;
                 thetaTargetSpeed = 1;
-                VPivotSetpoint = 1000;
-                VPivotSpeed = 8;
                 xSetpoint = 41;
                 ySetpoint = 1;
                 thetaSetpoint = 0;
                 targetSpeed = 18;
+
+
+                if(robot.I_DS.getDistance(DistanceUnit.INCH) < 1){
+                    action = 3;
+                    StopMotors();
+                    startPointX = OdoClass.odoXReturn();
+                    startPointY = OdoClass.odoYReturn();
+                }
+
+            }else if(action == 3){//Decision to drop freight or to stop
+                timeRemaining = startTime - getRuntime();
+                if(timeRemaining > 8){
+                    action = 4;
+                }else{
+                    action = 5;
+                }
+            } else if (action == 4) {//dropping freight in top goal
+
+
+            } else if (action == 5) {
+                extendSetpoint = 100;
+                extendSpeed = 20;
                 rotateSpeed = .65;
                 rotateSetpoint = 0;
                 VPivotSetpoint = 1500;
-                //Exits once the robot is a certain distance and angle away
+                VPivotSpeed = 8;
+
+                thetaSetpoint = 0;
+                accelerationDistance = .25;
+                decelerationDistance = 7.5;
+                slowMoveSpeed = 1;
+                slowMovedDistance = 2;
+                thetaDeccelerationDegree = 2;
+                thetaTargetSpeed = 1;
+                xSetpoint = 41;
+                ySetpoint = 1;
+                thetaSetpoint = 0;
+                targetSpeed = 18;
                 if (DirectionClass.distanceFromReturn() <= 1.3 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 7 && OdoClass.thetaInDegreesReturn() > -7)) {
                     StopMotors();
                     breakout = 0;
-                    action = 3;
+                    action = 6;
                     startPointX = OdoClass.odoXReturn();
                     startPointY = OdoClass.odoYReturn();
-                }else {
+                } else {
                     breakout = 1;
                 }
             }
-
-
-
 
 
             //If nothing else to do, stop the program
