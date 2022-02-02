@@ -71,11 +71,11 @@ public class TurretCombined {
                 }
                 //rotate Homing
                 if(rotateMagStart == false && RotateMag == false && rotateIsHomed == false){
-                    rotateSet = rotateSet + 10;
-                    rotateSpeedSet = 500;
+                    rotateSet = rotateSet + 15;
+                    rotateSpeedSet = 1000;
                 }else if(rotateIsHomed == false){
-                    rotateSet = rotateSet - 10;
-                    rotateSpeedSet = 500;
+                    rotateSet = rotateSet - 15;
+                    rotateSpeedSet = 1000;
                     rotateHomingHasMoved = true;
                 }
 
