@@ -5,6 +5,8 @@ import org.firstinspires.ftc.teamcode.GeneralRobotCode.FreightFrenzyHardwareMap;
 public class TurretCombined {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
 
+
+    //setting varibles for use in calculating corrections for 3 axes of our turret
     public double extendSet, rotateSet, vPivotSet, extendEncoder, rotateEncoder, vPivotEncoder;
     double timeInSec = robot.TimerCustom(), lastTime = 0;
     public double extendDeltaEncoder, extendModifiedEncoder, rotateDeltaEncoder, rotateModifiedEncoder, vPivotDeltaEncoder, vPivotModifiedEncoder;
@@ -23,6 +25,7 @@ public class TurretCombined {
     public boolean turretHomingTrigger = true, vPivotIsHomed = false, lastVPivotMag = false, homing1loop = false, extendStart = false;
     public boolean extendHomingHasExtended = false, extendIsHomed = false, rotateMagStart, rotateIsHomed = false, rotateHomingHasMoved = false;
 
+    //the main turret method and inputting parameters to run the calculations
     public void TurretCombinedMethod(double ExtendSet, double ExtendSpeedSet, double RotateSet, double RotateSpeedSet,
                                      double VPivotSet, double VPivotSpeedSet, double ExtendEncoder, boolean ExtendMag,
                                      double RotateEncoder, boolean RotateMag, double VPivotEncoder, boolean VPivotMag){
@@ -93,8 +96,8 @@ public class TurretCombined {
         }else {
 
             //setpoint limits
-            if (ExtendSet > 1550) {
-                extendSet = 1550;
+            if (ExtendSet > 1290) {
+                extendSet = 1290;
             } else {
                 extendSet = ExtendSet;
             }
@@ -107,8 +110,8 @@ public class TurretCombined {
                 rotateSet = RotateSet;
             }
 
-            if (VPivotSet > 3000) {
-                vPivotSet = 3000;
+            if (VPivotSet > 2000) {
+                vPivotSet = 2000;
             } else if (VPivotSet < 200) {
                 vPivotSet = 200;
             } else {
@@ -208,7 +211,7 @@ public class TurretCombined {
         //calculating the correction motor power for each axis
         extendFinalMotorPower = extendFinalMotorPower + (extendSpeedDifference * extendPM) + ((extendSpeedDifference - extendLastSpeedDifference) * extendDM);
         rotateFinalMotorPower = rotateFinalMotorPower + (rotateSpeedDifference * rotatePM) + ((rotateSpeedDifference - rotateLastSpeedDifference) * rotateDM);
-        vPivotFinalMotorPower = vPivotFinalMotorPower + (((vPivotSpeedDifference * vPivotPM) + ((vPivotSpeedDifference - vPivotLastSpeedDifference) * vPivotDM))); //* cosineMult);
+        vPivotFinalMotorPower = vPivotFinalMotorPower + (((vPivotSpeedDifference * vPivotPM) + ((vPivotSpeedDifference - vPivotLastSpeedDifference) * vPivotDM))* cosineMult);
 
 
 

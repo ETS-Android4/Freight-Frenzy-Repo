@@ -21,9 +21,10 @@ public class NewTurretBlue extends LinearOpMode{
     public double x, y, z;
 
     double teleOpExtendSet = 200, teleOpRotateSet = 0, teleOpVPivotSet = 1000;
-    double intakeVPivotSet = 550, intakeRotateSet = 0, intakeExtendSet = 275;
+    double intakeVPivotSet = 480, intakeRotateSet = 0, intakeExtendSet = 275;
     double teleOpExtendSpeedSet = 30, teleOpRotateSpeedSet = 2000, teleOpVPivotSpeedSet = 18;
     double lastDS = 5;
+
 
 
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
@@ -105,26 +106,40 @@ public class NewTurretBlue extends LinearOpMode{
                 }else if(gamepad2.dpad_right) {//Alliance hub dropping preset
                     teleOpVPivotSet = 1600;
                     if (CombinedTurret.vPivotModifiedEncoder > 1000) {
-                        teleOpRotateSet = 1300;
-                        teleOpExtendSet = 800;
+                        teleOpRotateSet = intakeRotateSet + 1300;
+                        if(CombinedTurret.rotateModifiedEncoder > 700) {
+                            teleOpExtendSet = 1200;
+                        }
                     }
                 }else if(gamepad2.dpad_down) {//Intake position
                     teleOpVPivotSet = 1000;
 
-                    if (Math.abs(CombinedTurret.rotateModifiedEncoder) < 50 && CombinedTurret.extendModifiedEncoder > 220) {
+                    if (Math.abs(teleOpRotateSet - CombinedTurret.rotateModifiedEncoder) < 50 && Math.abs(teleOpExtendSet - CombinedTurret.extendModifiedEncoder) < 100) {
                         teleOpVPivotSet = intakeVPivotSet;
                     }else  if (CombinedTurret.vPivotModifiedEncoder > 800) {
-                        teleOpRotateSet = intakeRotateSet;
+                        if(Math.abs(intakeExtendSet - CombinedTurret.extendModifiedEncoder) < 500){
+                            teleOpRotateSet = intakeRotateSet;
+                        }
                         teleOpExtendSet = intakeExtendSet;
+
                     }
                 }else if(gamepad2.dpad_left){//Shared shipping hub intake position
                     teleOpVPivotSet = 1000;
                     if (CombinedTurret.vPivotModifiedEncoder > 800) {
-                        teleOpRotateSet = -1000;
+                        teleOpRotateSet = intakeRotateSet -1000;
                         teleOpExtendSet = 200;
                     }
 
-                }else{//manual turret position setting
+                }else if(gamepad2.dpad_up){
+                    teleOpVPivotSet = 1200;
+                    if (CombinedTurret.vPivotModifiedEncoder > 1000) {
+                        teleOpRotateSet = intakeRotateSet + 1300;
+                        if(CombinedTurret.rotateModifiedEncoder > 700) {
+                            teleOpExtendSet = 1100;
+                        }
+                    }
+
+                } else{//manual turret position setting
                     teleOpExtendSet = teleOpExtendSet - (gamepad2.right_stick_y * 50);
                     if(gamepad2.right_trigger > .05){
                         teleOpRotateSet = teleOpRotateSet + (gamepad2.right_trigger * 40);
@@ -181,6 +196,7 @@ public class NewTurretBlue extends LinearOpMode{
         telemetry.addData("rotate set", CombinedTurret.rotateSet);
         telemetry.addData("rotate mod encoder", CombinedTurret.rotateModifiedEncoder);
         telemetry.addData("rotate RAW Encoder", robot.TR_M.getCurrentPosition());
+
 
         dashboardTelemetry.update();
         telemetry.update();

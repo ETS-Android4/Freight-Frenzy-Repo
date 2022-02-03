@@ -110,19 +110,31 @@ public class BlueWareHouseDropPark extends LinearOpMode {
         //Depending on the ring stack we change our intake to diffrent heights to be able to reach the top of the stack
         //Enters our 1 loop system, will exit once all actions are done
         while (!opModeIsActive()) {
-            CombinedTurret.TurretCombinedMethod(100,20,0,1500, 1500,16, robot.TE_M.getCurrentPosition(), robot.TE_G.getState(), robot.TR_M.getCurrentPosition(), robot.TR_G.getState(), robot.TP_M.getCurrentPosition(), robot.TP_G.getState());
+
+            VPivotSetpoint = 900;
+            VPivotSpeed = 10;
+            if(Math.abs(0 - CombinedTurret.extendModifiedEncoder) < 50 && Math.abs(400 - CombinedTurret.rotateModifiedEncoder) < 50){
+                VPivotSetpoint = 570;
+            }else if(VPivotSetpoint > 850){
+                extendSetpoint = -10;
+                extendSpeed = 15;
+                rotateSetpoint = 420;
+                rotateSpeed = 1000;
+            }
+
+            CombinedTurret.TurretCombinedMethod(extendSetpoint,extendSpeed,rotateSetpoint,rotateSpeed, VPivotSetpoint,VPivotSpeed, robot.TE_M.getCurrentPosition(), robot.TE_G.getState(), robot.TR_M.getCurrentPosition(), robot.TR_G.getState(), robot.TP_M.getCurrentPosition(), robot.TP_G.getState());
             robot.TR_M.setPower(CombinedTurret.rotateFinalMotorPower);
             robot.TE_M.setPower(CombinedTurret.extendFinalMotorPower);
             robot.TP_M.setPower(CombinedTurret.vPivotFinalMotorPower);
-            if (pipeline.region1Avg() <= 100) {
+            if (pipeline.region1Avg() <= 120) {
                 TSEPos = 2;
                 telemetry.addData("TSE", 2);
-            } else if (pipeline.region2Avg() <= 100) {
-                TSEPos = 3;
-                telemetry.addData("TSE", 3);
-            } else {
+            } else if (pipeline.region2Avg() <= 120) {
                 TSEPos = 1;
                 telemetry.addData("TSE", 1);
+            } else {
+                TSEPos = 3;
+                telemetry.addData("TSE", 3);
             }
             telemetry.addData("region2", pipeline.region1Avg());
             telemetry.addData("region3", pipeline.region2Avg());
