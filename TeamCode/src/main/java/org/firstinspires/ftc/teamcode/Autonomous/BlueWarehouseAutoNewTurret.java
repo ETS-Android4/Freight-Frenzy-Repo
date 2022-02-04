@@ -78,7 +78,7 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
     public  static double SPEEDSET = 16;
     public static double MINSPEED = .2;
     public static double SETPOINT = 1500;
-    double TSERegionThreshold = 120;
+    double TSERegionThreshold = 100;
 
     double action;
     double initPOsitionOrder = 1;
@@ -517,21 +517,22 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
         Mat HLS = new Mat();
         Mat A = new Mat();
         Mat H = new Mat();
+        Mat GRAY = new Mat();
         int avg1, avg2, avg3, avg4;
 
 
         //actual image processing
         void inputToG(Mat input) {
-            Imgproc.cvtColor(input, RGBA, Imgproc.COLOR_RGB2RGBA);
-            Core.extractChannel(RGBA, A, 1);
+            Imgproc.cvtColor(input, GRAY, Imgproc.COLOR_RGB2GRAY);
+            Core.extractChannel(GRAY, GRAY, 0);
         }
 
         @Override
         public void init(Mat firstFrame) {
             inputToG(firstFrame);
             //sets region to look in for color
-            region1_G = A.submat(new Rect(region1_pointA, region1_pointB));
-            region2_G = A.submat(new Rect(region2_pointA, region2_pointB));
+            region1_G = GRAY.submat(new Rect(region1_pointA, region1_pointB));
+            region2_G = GRAY.submat(new Rect(region2_pointA, region2_pointB));
             //region3_G = A.submat(new Rect(region3_pointA, region3_pointB));
             //region4_G = L.submat(new Rect(region4_pointA, region4_pointB));
         }
