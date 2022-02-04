@@ -17,7 +17,9 @@ public class TestHubHardware {
     public CRServo CRServo1;
     public CRServo CRServo2;
     public AnalogInput PivotPT;
-    public NormalizedColorSensor ColorSensor;
+    public DigitalChannel redLED;
+    public DigitalChannel greenLED;
+    //public NormalizedColorSensor ColorSensor;
    // DigitalChannel MagneticExtend;
    // DigitalChannel MagneticRotate;
 
@@ -34,10 +36,13 @@ public class TestHubHardware {
         CRServo1 = TestHubHardware.get(CRServo.class, "CRServo1");
         CRServo2 = TestHubHardware.get(CRServo.class, "CRServo2");
         PivotPT = TestHubHardware.get(AnalogInput.class, "PivotPT");
+        redLED= TestHubHardware.get(DigitalChannel.class, "redLED");
+        greenLED = TestHubHardware.get(DigitalChannel.class, "greenLED");
+
      //   MagneticExtend = TestHubHardware.get(DigitalChannel.class, "MagneticTest");
      //   MagneticRotate = TestHubHardware.get(DigitalChannel.class, "MagneticRotate");
 
-        ColorSensor = TestHubHardware.get(NormalizedColorSensor.class, "ColorSensor");
+       // ColorSensor = TestHubHardware.get(NormalizedColorSensor.class, "ColorSensor");
         // ColorSensor1 = JustmotorhardwareMap.get(NormalizedColorSensor.class, "ColorSensor1");
 
         //servo = hardwareMap.get(Servo.class, "servo");
@@ -58,6 +63,9 @@ public class TestHubHardware {
         Motor4.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Motor3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Motor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        redLED.setMode(DigitalChannel.Mode.OUTPUT);
+        greenLED.setMode(DigitalChannel.Mode.OUTPUT);
+
 
 
 

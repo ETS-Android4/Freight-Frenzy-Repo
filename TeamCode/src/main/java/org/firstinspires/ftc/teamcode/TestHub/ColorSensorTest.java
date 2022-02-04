@@ -13,12 +13,12 @@ public class ColorSensorTest extends LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
         while (opModeIsActive()) {
-            NormalizedRGBA ColorSensor = robot.ColorSensor.getNormalizedColors();
+            //NormalizedRGBA ColorSensor = robot.ColorSensor.getNormalizedColors();
 
-            telemetry.addData("color1", ColorSensor.alpha);
-            telemetry.addData("color1", ColorSensor.red);
-            telemetry.addData("color1", ColorSensor.blue);
-            telemetry.addData("color1", ColorSensor.green);
+           // telemetry.addData("color1", ColorSensor.alpha);
+           // telemetry.addData("color1", ColorSensor.red);
+           // telemetry.addData("color1", ColorSensor.blue);
+           // telemetry.addData("color1", ColorSensor.green);
 
             if(gamepad1.a){
                 //robot.LED1.setState(true);

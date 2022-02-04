@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.Autonomous.OldCode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -23,15 +23,15 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
-
-//@Autonomous
-/*public class BlueWarehouseAuto extends LinearOpMode {
+/*
+@Autonomous
+public class RedWarehouseAuto extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     SpeedClass SpeedClass = new SpeedClass();
     DirectionCalcClass DirectionClass = new DirectionCalcClass();
     TurnControl TurnControl = new TurnControl();
     Odometry OdoClass = new Odometry();
-    ExtendClass ExtendClass = new ExtendClass();
+    /*ExtendClass ExtendClass = new ExtendClass();
     VPivotClass VPivotClass = new VPivotClass();
     RotateClass RotateClass = new RotateClass();
     FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -85,7 +85,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
     public void runOpMode() {
         robot.init(hardwareMap);
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 2"), cameraMonitorViewId);
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
 
         //allows to call pipline
         pipeline = new OpenCVPipeline();
@@ -108,10 +108,10 @@ import org.openftc.easyopencv.OpenCvPipeline;
         telemetry.update();
         //Depending on the ring stack we change our intake to diffrent heights to be able to reach the top of the stack
         //Enters our 1 loop system, will exit once all actions are done
-        while (!opModeIsActive()) {
+       /* while (!opModeIsActive()) {
             if (RotateClass.isHomedRotateReturn() == false) {
                 if (VPivotClass.has1stloop == true) {
-                   // robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
                     if (VPivotClass.encoderWithOffset > 1900 && VPivotClass.encoderWithOffset < 2100) {
                         robot.TE_M.setPower(ExtendClass.ExtendHoming(robot.TE_G.getState(), robot.TE_M.getCurrentPosition()));
                         if (ExtendClass.isHomedExtendReturn() == true) {
@@ -119,27 +119,27 @@ import org.openftc.easyopencv.OpenCvPipeline;
                         }
                     }
                 } else {
-                  //  robot.TP_M.setPower(VPivotClass.NEWVPivot(3000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(3000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
                 }
 
             } else {
                 telemetry.addData("homed", 0);
                 robot.TE_M.setPower(ExtendClass.ExtendAutoMethod(10, .8, robot.TE_M.getCurrentPosition(), robot.TE_G.getState()));
                 if (initPOsitionOrder == 1) {
-                  //  robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
-                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(800, .5, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
-                    if (RotateClass.modifiedRotateCurrent() > 750 && RotateClass.modifiedRotateCurrent() < 850) {
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(2000, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(-800, .5, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+                    if (RotateClass.modifiedRotateCurrent() < -750 && RotateClass.modifiedRotateCurrent() > -850) {
                         initPOsitionOrder = 2;
                     }
                 } else if (initPOsitionOrder == 2) {
-                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(800, .5, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
-                   // robot.TP_M.setPower(VPivotClass.NEWVPivot(500, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
-                    if (VPivotClass.encoderWithOffset < 550 && VPivotClass.encoderWithOffset > 450) {
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(-800, .5, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(525, 10, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
+                    if (VPivotClass.encoderWithOffset < 575 && VPivotClass.encoderWithOffset > 475) {
                         initPOsitionOrder = 3;
                     }
                 } else if (initPOsitionOrder == 3) {
-                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(600, .4, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
-                   // robot.TP_M.setPower(VPivotClass.NEWVPivot(475, 5, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
+                    robot.TR_M.setPower(RotateClass.RotateAutoMethod(-735, .6, robot.TR_M.getCurrentPosition(), robot.TR_G.getState()));
+                    robot.TP_M.setPower(VPivotClass.NEWVPivot(525, 5, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM, DNDM, MINSPEED));
 
                 }
 
@@ -150,12 +150,15 @@ import org.openftc.easyopencv.OpenCvPipeline;
                 TSEPos = 2;
                 telemetry.addData("TSE", 2);
             } else if (pipeline.region2Avg() <= 160) {
-                TSEPos = 3;
-                telemetry.addData("TSE", 3);
-            } else {
                 TSEPos = 1;
                 telemetry.addData("TSE", 1);
+
+            } else {
+                TSEPos = 3;
+                telemetry.addData("TSE", 3);
             }
+            telemetry.addData("region1AVG", pipeline.region1Avg());
+            telemetry.addData("region2AVG", pipeline.region2Avg());
             telemetry.update();
         }
 
@@ -192,7 +195,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
         while (opModeIsActive() && stopProgram == 0) {
             if(action == 1) {
                 if (TSEPos == 1 && action == 1) {
-                    rotateSetpoint = 1800;
+                    rotateSetpoint = -1800;
                     extendSetpoint = 0;
                     VPivotSetpoint = 900;
                     if (DirectionClass.distanceFromReturn() <= .7) {
@@ -219,15 +222,15 @@ import org.openftc.easyopencv.OpenCvPipeline;
                     }
                 }
                 if (TSEPos == 2 && action == 1) {
-                    rotateSetpoint = 1800;
+                    rotateSetpoint = -1800;
                     extendSetpoint = 0;
                     VPivotSetpoint = 1190;
                     if (DirectionClass.distanceFromReturn() <= .7) {
                         StopMotors();
                     }
                     if (VPivotClass.encoderWithOffset >= 875) {
-                        extendSetpoint = 1300;
-                        if (ExtendClass.extendModifiedEncoder <= 1450 && ExtendClass.extendModifiedEncoder >= 1280) {
+                        extendSetpoint = 1320;
+                        if (ExtendClass.extendModifiedEncoder <= 1450 && ExtendClass.extendModifiedEncoder >= 1290) {
                             if(loopcount == 0){
                                 loopcount = 1;
                                 timepassed = getRuntime() + 4;
@@ -245,7 +248,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
                     }
                 }
                 if (TSEPos == 3 && action == 1) {
-                    rotateSetpoint = 1800;
+                    rotateSetpoint = -1800;
                     extendSetpoint = 0;
                     VPivotSetpoint = 1500;
                     if (DirectionClass.distanceFromReturn() <= .7) {
@@ -278,34 +281,31 @@ import org.openftc.easyopencv.OpenCvPipeline;
                 thetaSetpoint = 0;
                 accelerationDistance = .25;
                 decelerationDistance = 7.5;
-                slowMoveSpeed = 1;
+                slowMoveSpeed = 2;
                 slowMovedDistance = 2;
                 thetaDeccelerationDegree = 2;
                 thetaTargetSpeed = 1;
                 VPivotSetpoint = .9;
                 VPivotSpeed = 5;
                 xSetpoint = 41;
-                ySetpoint = 1;
+                ySetpoint = -1.2;
                 thetaSetpoint = 0;
-                targetSpeed = 18;
+                targetSpeed = 20;
                 rotateSpeed = .65;
                 rotateSetpoint = 0;
                 VPivotSetpoint = 1500;
                 //Exits once the robot is a certain distance and angle away
-                if (DirectionClass.distanceFromReturn() <= 1.3 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 7 && OdoClass.thetaInDegreesReturn() > -7)) {
+                if (DirectionClass.distanceFromReturn() <= 1.5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 7 && OdoClass.thetaInDegreesReturn() > -7)) {
                     StopMotors();
                     breakout = 0;
                     action = 3;
                     startPointX = OdoClass.odoXReturn();
                     startPointY = OdoClass.odoYReturn();
-                }else {
-                    breakout = 1;
+                } else {
+                        breakout = 1;
+
                 }
             }
-
-
-
-
 
             //If nothing else to do, stop the program
             else {
@@ -316,7 +316,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
             Movement(xSetpoint, ySetpoint, thetaSetpoint, targetSpeed, thetaTargetSpeed, thetaDeccelerationDegree, slowMoveSpeed, accelerationDistance, decelerationDistance, slowMovedDistance);
             RotateClass.RotateAutoMethod(rotateSetpoint, rotateSpeed, robot.TR_M.getCurrentPosition(), robot.TR_G.getState());
             ExtendClass.ExtendAutoMethod(extendSetpoint, extendSpeed, robot.TE_M.getCurrentPosition(), robot.TE_G.getState());
-          //  VPivotClass.NEWVPivot(VPivotSetpoint, VPivotSpeed, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED);
+           // VPivotClass.NEWVPivot(VPivotSetpoint, VPivotSpeed, robot.TP_P.getVoltage(), -robot.TP_M.getCurrentPosition(), robot.TP_G.getState(), getRuntime(), 16, UPARMPM, UPARMDM, DNPM,DNDM,MINSPEED);
             PowerSetting();
             Telemetry();
         }
@@ -347,7 +347,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
         telemetry.addData("LF_Direction", DirectionClass.LF_M_DirectionReturn());
         telemetry.addData("Motor Power Ratio", DirectionClass.motorPowerRatioReturn());
         telemetry.addData("Action", action);
-       // telemetry.addData("PT", robot.TP_P.getVoltage());
+      //  telemetry.addData("PT", robot.TP_P.getVoltage());
         telemetry.addData("ExtendE", ExtendClass.extendModifiedEncoder);
         telemetry.addData("RotateE", RotateClass.modifiedRotateCurrent());
         telemetry.addData("Distance Sensor", robot.I_DS.getDistance(DistanceUnit.INCH));
@@ -389,10 +389,10 @@ import org.openftc.easyopencv.OpenCvPipeline;
       // static final Scalar PARAKEET = new Scalar(3, 192, 74);
 
         //sets the boxes where we will look
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(115, 300);
+        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(515, 255);
         static int REGION1_WIDTH = 80;
         static int REGION1_HEIGHT = 40;
-        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(253, 305);
+        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(385, 260);
         static final int REGION2_WIDTH = 80;
         static final int REGION2_HEIGHT = 40;
         //static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(430, 260);

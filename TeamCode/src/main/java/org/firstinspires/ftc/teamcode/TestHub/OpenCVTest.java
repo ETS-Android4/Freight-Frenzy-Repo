@@ -109,7 +109,7 @@ public class OpenCVTest extends LinearOpMode {
         Mat region1_G, region2_G, region3_G, region4_G;
         Mat RGBA = new Mat();
         Mat HLS = new Mat();
-        Mat A = new Mat();
+        Mat G = new Mat();
         Mat H = new Mat();
         int avg1, avg2, avg3, avg4;
 
@@ -120,17 +120,16 @@ public class OpenCVTest extends LinearOpMode {
 
         //actual image processing
         void inputToG(Mat input) {
-            Imgproc.cvtColor(input, RGBA, Imgproc.COLOR_RGB2RGBA);
-            Core.extractChannel(RGBA, A, 1);
+            Core.extractChannel(RGBA, G, 1);
         }
 
         @Override
         public void init(Mat firstFrame) {
             inputToG(firstFrame);
             //sets region to look in for color
-            region1_G = A.submat(new Rect(region1_pointA, region1_pointB));
-            region2_G = A.submat(new Rect(region2_pointA, region2_pointB));
-            region3_G = A.submat(new Rect(region3_pointA, region3_pointB));
+            region1_G = G.submat(new Rect(region1_pointA, region1_pointB));
+            region2_G = G.submat(new Rect(region2_pointA, region2_pointB));
+            region3_G = G.submat(new Rect(region3_pointA, region3_pointB));
             //region4_G = L.submat(new Rect(region4_pointA, region4_pointB));
         }
 

@@ -20,15 +20,15 @@ public class SpeedClass {
     public double speedSetpoint;
     double DoThetaSpeed;
     //Sets our Proportional and Derivative multipliers
-    double speedPM = .009;
-    double speedDM = .038;
+    public double speedPM = .009;
+    public double speedDM = .038;
     double thetaError;
     double thetaLastError;
     double thetaSpeedSetpoint;
     double lastTheta;
     double thetaSpeedCurrent;
-    double thetaPM = .01;
-    double thetaDM = .043;
+    public double thetaPM = .01;
+    public double thetaDM = .043;
     double thetaSpeedError;
     double thetaProportional;
     double thetaDerivitave;
