@@ -86,11 +86,11 @@ public class NewTurretBlue extends LinearOpMode{
                     robot.RI_S.setPower(-.5);
                     robot.LI_S.setPower(.5);
                 }else if(gamepad1.b || gamepad2.b){//outtake
-                    robot.RI_S.setPower(.5);
-                    robot.LI_S.setPower(-.5);
+                    robot.RI_S.setPower(.2);
+                    robot.LI_S.setPower(-.2);
                 }else{//servos off
-                    robot.RI_S.setPower(-.05);
-                    robot.LI_S.setPower(0.05);
+                    robot.RI_S.setPower(0);
+                    robot.LI_S.setPower(0);
                 }
                 if(lastDS > 1 && robot.I_DS.getDistance(DistanceUnit.INCH) < 1 && robot.RI_S.getPower() > 0){//shutting down the intake once we have a piece of freight in our intake
                     robot.RI_S.setPower(0);
@@ -136,7 +136,7 @@ public class NewTurretBlue extends LinearOpMode{
                     if (CombinedTurret.vPivotModifiedEncoder > 1000) {
                         teleOpRotateSet = intakeRotateSet + 1300;
                         if(CombinedTurret.rotateModifiedEncoder > 700) {
-                            teleOpExtendSet = 1100;
+                            teleOpExtendSet = 900;
                         }
                     }
 
@@ -153,8 +153,8 @@ public class NewTurretBlue extends LinearOpMode{
                 }
             }
             //if we have a freight in our intake we raise up our arm
-            if(robot.I_DS.getDistance(DistanceUnit.INCH) < 1 && teleOpVPivotSet < 900){
-                teleOpVPivotSet = 900;
+            if(robot.I_DS.getDistance(DistanceUnit.INCH) < 1 && teleOpVPivotSet < 700){
+                teleOpVPivotSet = 700;
             }
             //setpoint limits
             if(teleOpVPivotSet > 2000){

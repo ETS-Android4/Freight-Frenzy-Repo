@@ -38,6 +38,8 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
     //Uses Vuforia Developer Code
     //Declares Varibles
     double breakout;
+    double lastAction = 0;
+    double intakeXSetMod = 1;
     double Detected;
     double startPointX;
     double startPointY;
@@ -136,11 +138,11 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                 TSEPos = 2;
                 telemetry.addData("TSE", 2);
             } else if (pipeline.region2Avg() <= TSERegionThreshold) {
-                TSEPos = 1;
-                telemetry.addData("TSE", 1);
-            } else {
                 TSEPos = 3;
                 telemetry.addData("TSE", 3);
+            } else {
+                TSEPos = 1;
+                telemetry.addData("TSE", 1);
             }
             telemetry.addData("region2", pipeline.region1Avg());
             telemetry.addData("region3", pipeline.region2Avg());
@@ -183,7 +185,7 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
         VPivotSpeed = 12;
         while (opModeIsActive() && stopProgram == 0) {
             if(action == 1) {//dropping in correct level
-                if (TSEPos == 1) {
+                if (TSEPos == 3) {
                     rotateSetpoint = 1400;
                     extendSetpoint = 0;
                     VPivotSetpoint = 1450;
@@ -197,15 +199,15 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                                 loopcount = 1;
                                 timepassed = getRuntime() + 4;
                             }
-                            robot.LI_S.setPower(-.5);
-                            robot.RI_S.setPower(.5);
+                            leftIntakeSet = -0.5;
+                            rightIntakeSet = 0.5;
                             if (robot.I_DS.getDistance(DistanceUnit.INCH) >= 1 || getRuntime() > timepassed) {
                                 StopMotors();
                                 action = 2;
                                 startPointY = OdoClass.odoYReturn();
                                 startPointX = OdoClass.odoXReturn();
-                                robot.LI_S.setPower(0);
-                                robot.RI_S.setPower(0);
+                                leftIntakeSet = 0;
+                                rightIntakeSet = 0;
                                 breakout = 0;
                             }
                         }
@@ -224,19 +226,19 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                                 loopcount = 1;
                                 timepassed = getRuntime() + 4;
                             }
-                            robot.LI_S.setPower(-.5);
-                            robot.RI_S.setPower(.5);
+                            leftIntakeSet = -.5;
+                            rightIntakeSet = .5;
                             if (robot.I_DS.getDistance(DistanceUnit.INCH) >= 1 || getRuntime() > timepassed) {
                                 StopMotors();
                                 action = 2;
                                 startPointY = OdoClass.odoYReturn();
-                                robot.LI_S.setPower(0);
-                                robot.RI_S.setPower(0);
+                                leftIntakeSet = 0;
+                                rightIntakeSet = 0;
                                 breakout = 0;
                             }
                         }
                     }
-                }else if (TSEPos == 3) {
+                }else if (TSEPos == 1) {
                     rotateSetpoint = 1400;
                     extendSetpoint = 0;
                     VPivotSetpoint = 950;
@@ -250,14 +252,14 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                                 loopcount = 1;
                                 timepassed = getRuntime() + 4;
                             }
-                            robot.LI_S.setPower(-.5);
-                            robot.RI_S.setPower(.5);
+                            leftIntakeSet = -.5;
+                            rightIntakeSet = .5;
                             if (robot.I_DS.getDistance(DistanceUnit.INCH) >= 1 || getRuntime() > timepassed) {
                                 StopMotors();
                                 action = 2;
                                 startPointY = OdoClass.odoYReturn();
-                                robot.LI_S.setPower(0);
-                                robot.RI_S.setPower(0);
+                                leftIntakeSet = 0;
+                                rightIntakeSet = 0;
                                 breakout = 0;
                             }
                         }
@@ -268,46 +270,51 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                 //setting the intake position using a safe path to prevent collisions
                 extendSetpoint = 275;
                 extendSpeed = 20;
-                rotateSpeed = 1800;
-                rotateSetpoint = 0;
+                if(CombinedTurret.extendModifiedEncoder < 600){
+                    rotateSpeed = 1800;
+                    rotateSetpoint = 0;
+                }
 
                 if(Math.abs(extendSetpoint - CombinedTurret.extendModifiedEncoder) < 50 && Math.abs(rotateSetpoint - CombinedTurret.rotateModifiedEncoder) < 100){
-                      VPivotSetpoint = 500;
-                      VPivotSpeed = 8;
+                      VPivotSetpoint = 400;
+                      VPivotSpeed = 10;
                   }else{
                       VPivotSetpoint = 1000;
-                      VPivotSpeed = 8;
+                      VPivotSpeed = 10;
                   }
 
                 //setting drivetrain positions and speeds
 
                 thetaSetpoint = 0;
-                accelerationDistance = .25;
-                decelerationDistance = 7.5;
-                slowMoveSpeed = 1;
-                slowMovedDistance = 2;
+                accelerationDistance = 0;
+                decelerationDistance = 7;
+                slowMoveSpeed = 8;
+                slowMovedDistance = 6;
                 thetaDeccelerationDegree = 2;
                 thetaTargetSpeed = 1;
-                xSetpoint = 41;
+                xSetpoint = 44;
                 ySetpoint = 1;
                 thetaSetpoint = 0;
-                targetSpeed = 10;
+                targetSpeed = 24;
                 leftIntakeSet = .5;
                 rightIntakeSet = -.5;
 
 
                 if(robot.I_DS.getDistance(DistanceUnit.INCH) < 1 && breakout == 1|| DirectionClass.distanceFromReturn() <= .7 && breakout == 1){
                     action = 3;
+
                     StopMotors();
                     startPointX = OdoClass.odoXReturn();
                     startPointY = OdoClass.odoYReturn();
                     breakout = 0;
+                    rightIntakeSet = 0;
+                    leftIntakeSet = 0;
                 }else{
                     breakout = 1;
                 }
 
             }else if(action == 3){//Decision to drop freight or to stop
-                timeRemaining = getRuntime() - startTime;
+                timeRemaining = 30 - (getRuntime() - startTime);
                 if(timeRemaining > 8){
                     action = 4;
                 }else{
@@ -318,48 +325,52 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                 loopcount = 0;
             } else if (action == 4) {//dropping freight in top goal
                 thetaSetpoint = 0;
-                accelerationDistance = .25;
-                decelerationDistance = 7.5;
+                accelerationDistance = 0;
+                decelerationDistance = 8;
                 slowMoveSpeed = 1;
-                slowMovedDistance = 2;
+                slowMovedDistance = 3;
                 thetaDeccelerationDegree = 2;
                 thetaTargetSpeed = 1;
                 xSetpoint = 0;
                 ySetpoint = 1;
                 thetaSetpoint = 0;
-                targetSpeed = 18;
+                targetSpeed = 40;
 
-                rotateSetpoint = 1400;
-                extendSetpoint = 0;
+
+                extendSetpoint = 200;
                 VPivotSetpoint = 1450;
 
                 if ((CombinedTurret.vPivotModifiedEncoder >= 875)) {
-                    extendSetpoint = 1250;
-                    if ((CombinedTurret.extendModifiedEncoder <= 1300 && CombinedTurret.extendModifiedEncoder >= 1200) && DirectionClass.distanceFromReturn() <= 1.5) {
+                    rotateSetpoint = 1400;
+                    if(CombinedTurret.rotateModifiedEncoder > 700){
+                        extendSetpoint = 1250;
+                    }
+                    if ((CombinedTurret.extendModifiedEncoder <= 1300 && CombinedTurret.extendModifiedEncoder >= 1200) && DirectionClass.distanceFromReturn() <= 2) {
                         if (loopcount == 0) {
                             loopcount = 1;
                             timepassed = getRuntime() + 4;
                         }
-                        robot.LI_S.setPower(-.5);
-                        robot.RI_S.setPower(.5);
+                        leftIntakeSet = -.5;
+                        rightIntakeSet = .5;
+
                         if (robot.I_DS.getDistance(DistanceUnit.INCH) >= 1 || getRuntime() > timepassed) {
                             StopMotors();
                             action = 2;
                             startPointY = OdoClass.odoYReturn();
                             startPointX = OdoClass.odoXReturn();
-                            robot.LI_S.setPower(0);
-                            robot.RI_S.setPower(0);
+                            leftIntakeSet = 0;
+                            rightIntakeSet = 0;
                         }
                     }
                 }
 
 
             } else if (action == 5) {
-                extendSetpoint = 100;
+                extendSetpoint = 200;
                 extendSpeed = 20;
-                rotateSpeed = .65;
+                rotateSpeed = 1500;
                 rotateSetpoint = 0;
-                VPivotSetpoint = 1500;
+                VPivotSetpoint = 800;
                 VPivotSpeed = 8;
 
                 thetaSetpoint = 0;
@@ -390,6 +401,13 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                 stopProgram = 1;
                 StopMotors();
             }
+            if(action == 2 && lastAction != 2){
+                xSetpoint = 44 + intakeXSetMod;
+                intakeXSetMod = intakeXSetMod + 2;
+            }
+
+            lastAction = action;
+
             //Runs all of our equations each loop cycle
             Movement(xSetpoint, ySetpoint, thetaSetpoint, targetSpeed, thetaTargetSpeed, thetaDeccelerationDegree, slowMoveSpeed, accelerationDistance, decelerationDistance, slowMovedDistance);
             CombinedTurret.TurretCombinedMethod(extendSetpoint,extendSpeed,rotateSetpoint,rotateSpeed, VPivotSetpoint,VPivotSpeed, robot.TE_M.getCurrentPosition(), robot.TE_G.getState(), robot.TR_M.getCurrentPosition(), robot.TR_G.getState(), robot.TP_M.getCurrentPosition(), robot.TP_G.getState());
@@ -401,6 +419,10 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
 
     public void Telemetry() {
         //Displays telemetry
+        telemetry.addData("Action", action);
+        telemetry.addData("time", getRuntime());
+        telemetry.addData("start Time", startTime);
+        telemetry.addData("time left", getRuntime() - startTime);
         telemetry.addData("Odo X", OdoClass.odoXReturn());
         telemetry.addData("Odo Y", OdoClass.odoYReturn());
         telemetry.addData("Theta Angle", OdoClass.thetaInDegreesReturn());
@@ -414,7 +436,7 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
         telemetry.addData("Distance From", DirectionClass.distanceFromReturn());
         telemetry.addData("Speed Setpoint", SpeedClass.speedSetpoint());
         telemetry.addData("Speed", SpeedClass.SpeedReturn());
-        telemetry.addData("time", getRuntime());
+
         telemetry.addData("Distance Delta", SpeedClass.DistanceDelta());
         telemetry.addData("XSetpoint", DirectionClass.XSetpointReturn());
         telemetry.addData("YSetpoint", DirectionClass.YSetpointReturn());
@@ -422,7 +444,7 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
         telemetry.addData("RF_Power", robot.RF_M.getPower());
         telemetry.addData("LF_Direction", DirectionClass.LF_M_DirectionReturn());
         telemetry.addData("Motor Power Ratio", DirectionClass.motorPowerRatioReturn());
-        telemetry.addData("Action", action);
+
        // telemetry.addData("PT", robot.TP_P.getVoltage());
 
         telemetry.addData("Distance Sensor", robot.I_DS.getDistance(DistanceUnit.INCH));
