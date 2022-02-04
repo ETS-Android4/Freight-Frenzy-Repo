@@ -80,13 +80,13 @@ public class OpenCVTest extends LinearOpMode {
         static final Scalar CYAN = new Scalar(0, 139, 139);
 
         //sets the boxes where we will look
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(155, 220);
+        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(155, 320);
         static final int REGION1_WIDTH = 60;
         static final int REGION1_HEIGHT = 25;
-        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(270, 220);
+        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(270, 320);
         static final int REGION2_WIDTH = 60;
         static final int REGION2_HEIGHT = 25;
-       static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(430, 220);
+       static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(430, 320);
         static final int REGION3_WIDTH = 60;
         static final int REGION3_HEIGHT = 25;
         //static final Point REGION4_TOPLEFT_ANCHOR_POINT = new Point(100, 70);
