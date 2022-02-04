@@ -116,7 +116,7 @@ public class BlueWareHouseDropPark extends LinearOpMode {
             if(Math.abs(0 - CombinedTurret.extendModifiedEncoder) < 50 && Math.abs(400 - CombinedTurret.rotateModifiedEncoder) < 50){
                 VPivotSetpoint = 570;
             }else if(VPivotSetpoint > 850){
-                extendSetpoint = -10;
+                extendSetpoint = -30;
                 extendSpeed = 15;
                 rotateSetpoint = 420;
                 rotateSpeed = 1000;
@@ -288,7 +288,7 @@ public class BlueWareHouseDropPark extends LinearOpMode {
                 leftIntakeSet = .5;
                 rightIntakeSet = -.5;
 
-                if (DirectionClass.distanceFromReturn() <= .7 && breakout == 1) {
+                if (DirectionClass.distanceFromReturn() <= .7 && breakout == 1  || robot.I_DS.getDistance(DistanceUnit.INCH) < 1) {
                     StopMotors();
                     action = 3;
                 }else{

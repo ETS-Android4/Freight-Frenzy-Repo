@@ -112,12 +112,13 @@ public class NewTurretBlue extends LinearOpMode{
                         }
                     }
                 }else if(gamepad2.dpad_down) {//Intake position
-                    teleOpVPivotSet = 1000;
 
-                    if (Math.abs(teleOpRotateSet - CombinedTurret.rotateModifiedEncoder) < 50 && Math.abs(teleOpExtendSet - CombinedTurret.extendModifiedEncoder) < 100) {
+
+                    if (Math.abs(intakeRotateSet - CombinedTurret.rotateModifiedEncoder) < 150 && Math.abs(intakeExtendSet - CombinedTurret.extendModifiedEncoder) < 100) {
                         teleOpVPivotSet = intakeVPivotSet;
-                    }else  if (CombinedTurret.vPivotModifiedEncoder > 800) {
-                        if(Math.abs(intakeExtendSet - CombinedTurret.extendModifiedEncoder) < 500){
+                    }
+                    if (CombinedTurret.vPivotModifiedEncoder > 800) {
+                        if(Math.abs(intakeExtendSet - CombinedTurret.extendModifiedEncoder) < 800){
                             teleOpRotateSet = intakeRotateSet;
                         }
                         teleOpExtendSet = intakeExtendSet;
@@ -130,7 +131,7 @@ public class NewTurretBlue extends LinearOpMode{
                         teleOpExtendSet = 200;
                     }
 
-                }else if(gamepad2.dpad_up){
+                }else if(gamepad2.dpad_up){//Mid alliance hub scoring position
                     teleOpVPivotSet = 1200;
                     if (CombinedTurret.vPivotModifiedEncoder > 1000) {
                         teleOpRotateSet = intakeRotateSet + 1300;
@@ -150,6 +151,10 @@ public class NewTurretBlue extends LinearOpMode{
                     teleOpVPivotSet = teleOpVPivotSet + (gamepad2.left_stick_y * -30);
 
                 }
+            }
+            //if we have a freight in our intake we raise up our arm
+            if(robot.I_DS.getDistance(DistanceUnit.INCH) < 1 && teleOpVPivotSet < 900){
+                teleOpVPivotSet = 900;
             }
             //setpoint limits
             if(teleOpVPivotSet > 2000){

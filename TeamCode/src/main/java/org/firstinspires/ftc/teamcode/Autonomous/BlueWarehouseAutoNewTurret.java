@@ -110,20 +110,34 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
         //Depending on the ring stack we change our intake to diffrent heights to be able to reach the top of the stack
         //Enters our 1 loop system, will exit once all actions are done
         while (!opModeIsActive()) {
-            CombinedTurret.TurretCombinedMethod(100,20,0,1500, 1500,16, robot.TE_M.getCurrentPosition(), robot.TE_G.getState(), robot.TR_M.getCurrentPosition(), robot.TR_G.getState(), robot.TP_M.getCurrentPosition(), robot.TP_G.getState());
+
+            VPivotSetpoint = 900;
+            VPivotSpeed = 10;
+            if(Math.abs(0 - CombinedTurret.extendModifiedEncoder) < 50 && Math.abs(400 - CombinedTurret.rotateModifiedEncoder) < 50){
+                VPivotSetpoint = 570;
+            }else if(VPivotSetpoint > 850){
+                extendSetpoint = -30;
+                extendSpeed = 15;
+                rotateSetpoint = 420;
+                rotateSpeed = 1000;
+            }
+
+            CombinedTurret.TurretCombinedMethod(extendSetpoint,extendSpeed,rotateSetpoint,rotateSpeed, VPivotSetpoint,VPivotSpeed, robot.TE_M.getCurrentPosition(), robot.TE_G.getState(), robot.TR_M.getCurrentPosition(), robot.TR_G.getState(), robot.TP_M.getCurrentPosition(), robot.TP_G.getState());
             robot.TR_M.setPower(CombinedTurret.rotateFinalMotorPower);
             robot.TE_M.setPower(CombinedTurret.extendFinalMotorPower);
             robot.TP_M.setPower(CombinedTurret.vPivotFinalMotorPower);
-            if (pipeline.region1Avg() <= 160) {
+            if (pipeline.region1Avg() <= 120) {
                 TSEPos = 2;
                 telemetry.addData("TSE", 2);
-            } else if (pipeline.region2Avg() <= 160) {
-                TSEPos = 3;
-                telemetry.addData("TSE", 3);
-            } else {
+            } else if (pipeline.region2Avg() <= 120) {
                 TSEPos = 1;
                 telemetry.addData("TSE", 1);
+            } else {
+                TSEPos = 3;
+                telemetry.addData("TSE", 3);
             }
+            telemetry.addData("region2", pipeline.region1Avg());
+            telemetry.addData("region3", pipeline.region2Avg());
             telemetry.update();
         }
 
@@ -178,13 +192,14 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                             }
                             robot.LI_S.setPower(-.5);
                             robot.RI_S.setPower(.5);
-                            if ( getRuntime() > timepassed) {//robot.I_DS.getDistance(DistanceUnit.INCH) >= 1 ||
+                            if (robot.I_DS.getDistance(DistanceUnit.INCH) >= 1 || getRuntime() > timepassed) {
                                 StopMotors();
                                 action = 2;
                                 startPointY = OdoClass.odoYReturn();
                                 startPointX = OdoClass.odoXReturn();
                                 robot.LI_S.setPower(0);
                                 robot.RI_S.setPower(0);
+                                breakout = 0;
                             }
                         }
                     }
@@ -204,7 +219,7 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                             }
                             robot.LI_S.setPower(-.5);
                             robot.RI_S.setPower(.5);
-                            if ((robot.I_DS.getDistance(DistanceUnit.INCH) >= 1 || getRuntime() > timepassed)) {
+                            if (robot.I_DS.getDistance(DistanceUnit.INCH) >= 1 || getRuntime() > timepassed) {
                                 StopMotors();
                                 action = 2;
                                 startPointY = OdoClass.odoYReturn();
@@ -285,7 +300,7 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                 }
 
             }else if(action == 3){//Decision to drop freight or to stop
-                timeRemaining = startTime - getRuntime();
+                timeRemaining = getRuntime() - startTime;
                 if(timeRemaining > 8){
                     action = 4;
                 }else{
@@ -320,7 +335,7 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                         }
                         robot.LI_S.setPower(-.5);
                         robot.RI_S.setPower(.5);
-                        if ( getRuntime() > timepassed) {//robot.I_DS.getDistance(DistanceUnit.INCH) >= 1 ||
+                        if (robot.I_DS.getDistance(DistanceUnit.INCH) >= 1 || getRuntime() > timepassed) {
                             StopMotors();
                             action = 2;
                             startPointY = OdoClass.odoYReturn();
