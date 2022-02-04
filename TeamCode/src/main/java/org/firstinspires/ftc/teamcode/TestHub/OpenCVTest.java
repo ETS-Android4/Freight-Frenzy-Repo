@@ -82,13 +82,13 @@ public class OpenCVTest extends LinearOpMode {
         //sets the boxes where we will look
         static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(155, 260);
         static final int REGION1_WIDTH = 60;
-        static final int REGION1_HEIGHT = 85;
+        static final int REGION1_HEIGHT = 25;
         static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(270, 260);
         static final int REGION2_WIDTH = 60;
-        static final int REGION2_HEIGHT = 85;
+        static final int REGION2_HEIGHT = 25;
        static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(430, 260);
         static final int REGION3_WIDTH = 60;
-        static final int REGION3_HEIGHT = 85;
+        static final int REGION3_HEIGHT = 25;
         //static final Point REGION4_TOPLEFT_ANCHOR_POINT = new Point(100, 70);
         //static final int REGION4_WIDTH = 105;
        //static final int REGION4_HEIGHT = 105;
@@ -108,7 +108,7 @@ public class OpenCVTest extends LinearOpMode {
 
         Mat region1_G, region2_G, region3_G, region4_G;
         Mat RGBA = new Mat();
-        Mat HLS = new Mat();
+        Mat HSV = new Mat();
         Mat G = new Mat();
         Mat H = new Mat();
         int avg1, avg2, avg3, avg4;
@@ -120,8 +120,8 @@ public class OpenCVTest extends LinearOpMode {
 
         //actual image processing
         void inputToG(Mat input) {
-            Imgproc.cvtColor(input, RGBA, Imgproc.COLOR_RGB2RGBA);
-            Core.extractChannel(RGBA, G, 2);
+            Imgproc.cvtColor(input, RGBA, Imgproc.COLOR_RGB2HSV);
+
 
         }
 
