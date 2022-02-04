@@ -120,7 +120,9 @@ public class OpenCVTest extends LinearOpMode {
 
         //actual image processing
         void inputToG(Mat input) {
-            Core.extractChannel(RGBA, G, 1);
+            Imgproc.cvtColor(input, RGBA, Imgproc.COLOR_RGB2RGBA);
+            Core.extractChannel(RGBA, G, 2);
+
         }
 
         @Override
