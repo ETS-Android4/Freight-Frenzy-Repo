@@ -269,15 +269,15 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
             else if(action == 2){//intaking
                 //setting the intake position using a safe path to prevent collisions
                 extendSetpoint = 275;
-                extendSpeed = 20;
+                extendSpeed = 30;
                 if(CombinedTurret.extendModifiedEncoder < 600){
-                    rotateSpeed = 1800;
+                    rotateSpeed = 2000;
                     rotateSetpoint = 0;
                 }
 
-                if(Math.abs(extendSetpoint - CombinedTurret.extendModifiedEncoder) < 50 && Math.abs(rotateSetpoint - CombinedTurret.rotateModifiedEncoder) < 100){
+                if(Math.abs(extendSetpoint - CombinedTurret.extendModifiedEncoder) < 300 && Math.abs(rotateSetpoint - CombinedTurret.rotateModifiedEncoder) < 450){
                       VPivotSetpoint = 400;
-                      VPivotSpeed = 10;
+                      VPivotSpeed = 25;
                   }else{
                       VPivotSetpoint = 1000;
                       VPivotSpeed = 10;
@@ -295,7 +295,7 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                 xSetpoint = 44;
                 ySetpoint = 1;
                 thetaSetpoint = 0;
-                targetSpeed = 24;
+                targetSpeed = 20;
                 leftIntakeSet = .5;
                 rightIntakeSet = -.5;
 
@@ -337,12 +337,12 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                 targetSpeed = 40;
 
 
-                extendSetpoint = 200;
+
                 VPivotSetpoint = 1450;
 
                 if ((CombinedTurret.vPivotModifiedEncoder >= 875)) {
                     rotateSetpoint = 1400;
-                    if(CombinedTurret.rotateModifiedEncoder > 700){
+                    if(CombinedTurret.rotateModifiedEncoder > 1000){
                         extendSetpoint = 1250;
                     }
                     if ((CombinedTurret.extendModifiedEncoder <= 1300 && CombinedTurret.extendModifiedEncoder >= 1200) && DirectionClass.distanceFromReturn() <= 2) {
@@ -403,7 +403,7 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
             }
             if(action == 2 && lastAction != 2){
                 xSetpoint = 44 + intakeXSetMod;
-                intakeXSetMod = intakeXSetMod + 2;
+                intakeXSetMod = intakeXSetMod + 3;
             }
 
             lastAction = action;
