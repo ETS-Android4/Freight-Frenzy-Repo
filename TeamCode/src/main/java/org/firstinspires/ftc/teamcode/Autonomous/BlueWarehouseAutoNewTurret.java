@@ -126,6 +126,7 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
             robot.TR_M.setPower(CombinedTurret.rotateFinalMotorPower);
             robot.TE_M.setPower(CombinedTurret.extendFinalMotorPower);
             robot.TP_M.setPower(CombinedTurret.vPivotFinalMotorPower);
+
             if (pipeline.region1Avg() <= 120) {
                 TSEPos = 2;
                 telemetry.addData("TSE", 2);
