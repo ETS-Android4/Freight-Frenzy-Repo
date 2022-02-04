@@ -144,6 +144,7 @@ public class BlueWareHouseDropPark extends LinearOpMode {
             }
             telemetry.addData("region2", pipeline.region1Avg());
             telemetry.addData("region3", pipeline.region2Avg());
+            telemetry.addData("TSE Threshold", TSERegionThreshold);
             telemetry.update();
         }
 

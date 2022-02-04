@@ -76,6 +76,7 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
     public  static double SPEEDSET = 16;
     public static double MINSPEED = .2;
     public static double SETPOINT = 1500;
+    double TSERegionThreshold = 120;
 
     double action;
     double initPOsitionOrder = 1;
@@ -126,11 +127,15 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
             robot.TR_M.setPower(CombinedTurret.rotateFinalMotorPower);
             robot.TE_M.setPower(CombinedTurret.extendFinalMotorPower);
             robot.TP_M.setPower(CombinedTurret.vPivotFinalMotorPower);
-
-            if (pipeline.region1Avg() <= 120) {
+            if(gamepad1.dpad_up){
+                TSERegionThreshold = TSERegionThreshold + 1;
+            }else if(gamepad1.dpad_down){
+                TSERegionThreshold = TSERegionThreshold - 1;
+            }
+            if (pipeline.region1Avg() <= TSERegionThreshold) {
                 TSEPos = 2;
                 telemetry.addData("TSE", 2);
-            } else if (pipeline.region2Avg() <= 120) {
+            } else if (pipeline.region2Avg() <= TSERegionThreshold) {
                 TSEPos = 1;
                 telemetry.addData("TSE", 1);
             } else {
@@ -139,6 +144,7 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
             }
             telemetry.addData("region2", pipeline.region1Avg());
             telemetry.addData("region3", pipeline.region2Avg());
+            telemetry.addData("TSE Threshold", TSERegionThreshold);
             telemetry.update();
         }
 
