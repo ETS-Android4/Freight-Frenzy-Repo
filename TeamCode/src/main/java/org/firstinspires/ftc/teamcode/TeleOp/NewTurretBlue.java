@@ -128,7 +128,7 @@ public class NewTurretBlue extends LinearOpMode{
                     teleOpVPivotSet = 1000;
                     if (CombinedTurret.vPivotModifiedEncoder > 800) {
                         teleOpRotateSet = intakeRotateSet -1000;
-                        teleOpExtendSet = 200;
+                        teleOpExtendSet = 0;
                     }
 
                 }else if(gamepad2.dpad_up){//Mid alliance hub scoring position

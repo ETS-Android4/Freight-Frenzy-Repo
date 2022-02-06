@@ -310,7 +310,7 @@ public class BlueWarehouseCycling extends LinearOpMode {
 
                 }
 
-                if(((robot.RF_C.alpha() + robot.LF_C.alpha()) / 2) > 900 ||  ((robot.RB_C.alpha() + robot.LB_C.alpha()) / 2) > 900 || action2TimeSafe + 4 < getRuntime()){
+                if(robot.LF_C.alpha() > 900  || robot.RF_C.alpha() > 900 || robot.RB_C.alpha() > 900 || robot.RF_C.alpha() > 900 ||action2TimeSafe + 4 < getRuntime()){
                     hasColorSenssors = true;
 
                 }
@@ -532,7 +532,7 @@ public class BlueWarehouseCycling extends LinearOpMode {
                 stuckTiggerOne = 0;
                 stuckTiggerOne = 0;
             }
-            if(getRuntime() - stuckStart > 1.5 && action != 1 && stuckOneLoopDelay == 0){
+            if(getRuntime() - stuckStart > 1 && action != 1 && stuckOneLoopDelay == 0){
 
                 if(action < 10){
                     preStuckAction = action;
