@@ -99,7 +99,7 @@ public class SpeedClass {
     }
 
     //Return the robots current speed in in/s
-    public double qCurrentSpeed() {
+    public double CurrentSpeed() {
         return speedCurrent;
     }
 

@@ -35,8 +35,8 @@ public class DirectionCalcClass {
     //Sets the distance we want our pure pursuit point to be set ahead of us
     double purePursuitDistance = 1.6;
     //Sets our PD multipliers
-   public  double yPM = 4.5;
-   public  double yDM = 9;
+   public  double yPM = 4;
+   public  double yDM = 7.5;
     public double xPM = 2.2;
     public double xDM = 5.9;
     public void DirectionCalc(double startpointx, double startpointy, double endpointx, double endpointy, double odoX, double odoY, double theta){
@@ -76,6 +76,7 @@ public class DirectionCalcClass {
         yDerivitive = (yError - yLastError)*yDM;
         yLastError = yError;
         y = yPorportional + yDerivitive;
+       // y = ysetpoint;
         //X PD
 
         xError = xsetpoint - odoX;
@@ -83,6 +84,7 @@ public class DirectionCalcClass {
         xDerivitive = (xError - xLastError) * xDM;
         xLastError = xError;
         x = xPorportional + xDerivitive;
+       // x = xsetpoint;
         //Makes sure our purepuresuit distance never goes backwards
         //When we are close to the desired point hold there
         //Motor Direction Equation

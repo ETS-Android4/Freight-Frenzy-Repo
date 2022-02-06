@@ -30,8 +30,8 @@ public class NewTurretBlue extends LinearOpMode{
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     TurretCombined CombinedTurret = new TurretCombined();
     Smoothing Smoothing = new Smoothing();
-    FtcDashboard dashboard = FtcDashboard.getInstance();
-    Telemetry dashboardTelemetry = dashboard.getTelemetry();
+  //  FtcDashboard dashboard = FtcDashboard.getInstance();
+  //  Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
 
 
@@ -86,8 +86,8 @@ public class NewTurretBlue extends LinearOpMode{
                     robot.RI_S.setPower(-.5);
                     robot.LI_S.setPower(.5);
                 }else if(gamepad1.b || gamepad2.b){//outtake
-                    robot.RI_S.setPower(.2);
-                    robot.LI_S.setPower(-.2);
+                    robot.RI_S.setPower(.3);
+                    robot.LI_S.setPower(-.3);
                 }else{//servos off
                     robot.RI_S.setPower(0);
                     robot.LI_S.setPower(0);
@@ -188,14 +188,14 @@ public class NewTurretBlue extends LinearOpMode{
     }
     public void Telemetry(){
 
-        dashboardTelemetry.addData("vPivotMotor Power", CombinedTurret.vPivotFinalMotorPower);
-        dashboardTelemetry.addData("vPivot Modified Encoder", CombinedTurret.vPivotModifiedEncoder);
+      //  dashboardTelemetry.addData("vPivotMotor Power", CombinedTurret.vPivotFinalMotorPower);
+      //  dashboardTelemetry.addData("vPivot Modified Encoder", CombinedTurret.vPivotModifiedEncoder);
 
-        dashboardTelemetry.addData("extend Motor Power", CombinedTurret.extendFinalMotorPower);
-        dashboardTelemetry.addData("extend speed", CombinedTurret.extendSpeed);
-        dashboardTelemetry.addData("extend Modified Encoder", CombinedTurret.extendModifiedEncoder);
-        dashboardTelemetry.addData("extend Set", CombinedTurret.extendSet);
-        dashboardTelemetry.addData("turret Homing trigger", CombinedTurret.turretHomingTrigger);
+      //  dashboardTelemetry.addData("extend Motor Power", CombinedTurret.extendFinalMotorPower);
+      //  dashboardTelemetry.addData("extend speed", CombinedTurret.extendSpeed);
+      //  dashboardTelemetry.addData("extend Modified Encoder", CombinedTurret.extendModifiedEncoder);
+      //  dashboardTelemetry.addData("extend Set", CombinedTurret.extendSet);
+      //  dashboardTelemetry.addData("turret Homing trigger", CombinedTurret.turretHomingTrigger);
 
         telemetry.addData("intake Dist", robot.I_DS.getDistance(DistanceUnit.INCH));
         telemetry.addData("rotate set", CombinedTurret.rotateSet);
@@ -203,7 +203,7 @@ public class NewTurretBlue extends LinearOpMode{
         telemetry.addData("rotate RAW Encoder", robot.TR_M.getCurrentPosition());
 
 
-        dashboardTelemetry.update();
+     //   dashboardTelemetry.update();
         telemetry.update();
     }
 

@@ -26,7 +26,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 @Autonomous
-public class BlueWarehouseAutoNewTurret extends LinearOpMode {
+public class BlueWarehouseCycling extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     SpeedClass SpeedClass = new SpeedClass();
     DirectionCalcClass DirectionClass = new DirectionCalcClass();
@@ -81,6 +81,13 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
     double TSERegionThreshold = 100;
     double IntakeXSetpoint = 44;
     double YChangingSet = 1;
+    double oneLoop = 0;
+    boolean hasColorSenssors = false;
+    double action2TimeSafe;
+    boolean STOPMOTORS = false;
+    double rotateIntake = 0;
+    double stuckTimer = 0, stuckStart = 0, preStuckAction = 0, stuckOne = 0, stuckFixTimer, stuckTiggerOne = 0;
+    double stuckOneLoopDelay = 0;
 
     double action;
     double initPOsitionOrder = 1;
@@ -183,7 +190,7 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
         loopcount = 0;
         timepassed = 0;
         rotateSpeed = 1500;
-        extendSpeed = 25;
+        extendSpeed = 35;
         VPivotSpeed = 12;
         while (opModeIsActive() && stopProgram == 0) {
             if(action == 1) {//dropping in correct level
@@ -269,44 +276,88 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                         }
                     }
                 }
-            }
-            else if(action == 2){//intaking
+            }else if(action == 2){
                 //setting the intake position using a safe path to prevent collisions
                 extendSetpoint = 275;
-                extendSpeed = 30;
+                extendSpeed = 35;
                 if(CombinedTurret.extendModifiedEncoder < 600){
                     rotateSpeed = 2000;
                     rotateSetpoint = 0;
                 }
 
                 if(Math.abs(extendSetpoint - CombinedTurret.extendModifiedEncoder) < 300 && Math.abs(rotateSetpoint - CombinedTurret.rotateModifiedEncoder) < 450){
-                      VPivotSetpoint = 400;
-                      VPivotSpeed = 25;
-                  }else{
-                      VPivotSetpoint = 1000;
-                      VPivotSpeed = 10;
-                  }
-
-                //setting drivetrain positions and speeds
-
-                thetaSetpoint = 0;
-                accelerationDistance = 0;
-                decelerationDistance = 7;
-                slowMoveSpeed = 8;
-                slowMovedDistance = 6;
-                thetaDeccelerationDegree = 2;
-                thetaTargetSpeed = 1;
-                xSetpoint = IntakeXSetpoint;
-                ySetpoint = YChangingSet;
-                thetaSetpoint = 0;
-                targetSpeed = 20;
-                leftIntakeSet = .5;
-                rightIntakeSet = -.5;
+                    VPivotSetpoint = 400;
+                    VPivotSpeed = 25;
+                }else{
+                    VPivotSetpoint = 1000;
+                    VPivotSpeed = 10;
+                }
+                if(oneLoop == 0){//setting variables only once so we can change them if we need to using our failsafe program
+                    //setting drivetrain positions and speeds
+                    thetaSetpoint = 0;
+                    thetaDeccelerationDegree = 2;
+                    thetaTargetSpeed = 1;
+                    accelerationDistance = 0;
+                    decelerationDistance = 7;
+                    slowMoveSpeed = 8;
+                    slowMovedDistance = 6;
+                    xSetpoint = 34;
+                    ySetpoint = YChangingSet;
+                    targetSpeed = 35;
+                    oneLoop = 1;
+                    action2TimeSafe = getRuntime();
 
 
-                if(robot.I_DS.getDistance(DistanceUnit.INCH) < 1 && breakout == 1|| DirectionClass.distanceFromReturn() <= .7 && breakout == 1){
-                    action = 3;
+                }
 
+                if(((robot.RF_C.alpha() + robot.LF_C.alpha()) / 2) > 900 ||  ((robot.RB_C.alpha() + robot.LB_C.alpha()) / 2) > 900 || action2TimeSafe + 4 < getRuntime()){
+                    hasColorSenssors = true;
+
+                }
+                if(hasColorSenssors == true){
+                    StopMotors();
+                    STOPMOTORS = true;
+                    if(CombinedTurret.vPivotModifiedEncoder < 600){
+                        action = 3;
+                        startPointX = OdoClass.odoXReturn();
+                        startPointY = OdoClass.odoYReturn();
+                        leftIntakeSet = .5;
+                        rightIntakeSet = -.5;
+                        breakout = 0;
+                        oneLoop = 0;
+                        hasColorSenssors = false;
+                        STOPMOTORS = false;
+                    }
+                }
+
+
+            }
+            else if(action == 3){//intaking
+                if(oneLoop == 0){//setting variables only once so we can change them if we need to using our failsafe program
+                    //setting drivetrain positions and speeds
+                    thetaSetpoint = 0;
+                    thetaDeccelerationDegree = 2;
+                    thetaTargetSpeed = 1;
+                    accelerationDistance = 0;
+                    decelerationDistance = 7;
+                    slowMoveSpeed = 8;
+                    slowMovedDistance = 6;
+                    xSetpoint = IntakeXSetpoint;
+                    ySetpoint = YChangingSet;
+                    targetSpeed = 25;
+                    leftIntakeSet = .5;
+                    rightIntakeSet = -.5;
+                    oneLoop = 1;
+                }
+
+                if(DirectionClass.distanceFromReturn() <= 1.2 && breakout == 1 && (robot.I_DS.getDistance(DistanceUnit.INCH) > 1)){
+                    xSetpoint = xSetpoint + 1;
+                }
+
+                if(robot.I_DS.getDistance(DistanceUnit.INCH) < 1 && breakout == 1){
+                    action = 4;
+                    oneLoop = 0;
+                    IntakeXSetpoint = xSetpoint;
                     StopMotors();
                     startPointX = OdoClass.odoXReturn();
                     startPointY = OdoClass.odoYReturn();
@@ -317,28 +368,35 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                     breakout = 1;
                 }
 
-            }else if(action == 3){//Decision to drop freight or to stop
+            }else if(action == 4){//Decision to drop freight or to stop
                 timeRemaining = 30 - (getRuntime() - startTime);
-                if(timeRemaining > 8){
-                    action = 4;
-                }else{
+                if(timeRemaining > 5){
                     action = 5;
+                }else{
+                    action = 6;
                 }
                 startPointX = OdoClass.odoXReturn();
                 startPointY = OdoClass.odoYReturn();
                 loopcount = 0;
-            } else if (action == 4) {//dropping freight in top goal
+            } else if (action == 5) {//dropping freight in top goal
                 thetaSetpoint = 0;
                 accelerationDistance = 0;
-                decelerationDistance = 8;
+                decelerationDistance = 18;
                 slowMoveSpeed = 1;
                 slowMovedDistance = 3;
                 thetaDeccelerationDegree = 2;
                 thetaTargetSpeed = 1;
-                xSetpoint = 0;
+                xSetpoint = 2;
                 ySetpoint = YChangingSet;
                 thetaSetpoint = 0;
                 targetSpeed = 40;
+                if(robot.I_DS.getDistance(DistanceUnit.INCH) > .6){
+                    leftIntakeSet = .5;
+                    rightIntakeSet = -.5;
+                }else{
+                    leftIntakeSet = 0;
+                    rightIntakeSet = 0;
+                }
 
 
 
@@ -360,6 +418,7 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                         if (robot.I_DS.getDistance(DistanceUnit.INCH) >= 1 || getRuntime() > timepassed) {
                             StopMotors();
                             action = 2;
+                            oneLoop = 0;
                             startPointY = OdoClass.odoYReturn();
                             startPointX = OdoClass.odoXReturn();
                             leftIntakeSet = 0;
@@ -369,7 +428,7 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                 }
 
 
-            } else if (action == 5) {
+            } else if (action == 6) {
                 extendSetpoint = 200;
                 extendSpeed = 20;
                 rotateSpeed = 1500;
@@ -391,11 +450,63 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                 if (DirectionClass.distanceFromReturn() <= 1.3 && breakout != 0) {
                     StopMotors();
                     breakout = 0;
-                    action = 6;
+                    action = 7;
+                    oneLoop = 0;
                     startPointX = OdoClass.odoXReturn();
                     startPointY = OdoClass.odoYReturn();
                 } else {
                     breakout = 1;
+                }
+            }else if(action == 103){
+                if(stuckOne == 0){
+                    startPointX = OdoClass.odoXReturn();
+                    startPointY = OdoClass.odoYReturn();
+
+                    thetaSetpoint = 0;
+                    accelerationDistance = .25;
+                    decelerationDistance = 7.5;
+                    slowMoveSpeed = 1;
+                    slowMovedDistance = 2;
+                    thetaDeccelerationDegree = 2;
+                    thetaTargetSpeed = 1;
+                    xSetpoint = startPointX - 10;
+                    ySetpoint = startPointY - 10;
+                    thetaSetpoint = 0;
+                    targetSpeed = 10;
+                    stuckFixTimer = getRuntime();
+                    stuckOne = 1;
+                }
+                if(stuckFixTimer + 3 < getRuntime()){
+                    action = preStuckAction;
+                    oneLoop = 0;
+                    stuckOne = 0;
+                    stuckStart = getRuntime();
+                }
+
+            }else if(action == 105){
+                if(stuckOne == 0){
+                    startPointX = OdoClass.odoXReturn();
+                    startPointY = OdoClass.odoYReturn();
+
+                    thetaSetpoint = 0;
+                    accelerationDistance = .25;
+                    decelerationDistance = 7.5;
+                    slowMoveSpeed = 1;
+                    slowMovedDistance = 2;
+                    thetaDeccelerationDegree = 2;
+                    thetaTargetSpeed = 1;
+                    xSetpoint = startPointX + 10;
+                    ySetpoint = startPointY - 10;
+                    thetaSetpoint = 0;
+                    targetSpeed = 10;
+                    stuckFixTimer = getRuntime();
+                    stuckOne = 1;
+                }
+                if(stuckFixTimer + 3 < getRuntime()){
+                    action = preStuckAction;
+                    oneLoop = 0;
+                    stuckOne = 0;
+                    stuckStart = getRuntime();
                 }
             }
 
@@ -406,12 +517,35 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
                 StopMotors();
             }
             if(action == 2 && lastAction != 2){
-                IntakeXSetpoint = 42 + intakeXSetMod;
-                intakeXSetMod = intakeXSetMod + 1.5;
-                YChangingSet = YChangingSet - 0;
+
+                YChangingSet = YChangingSet - .2;
+                rotateIntake = rotateIntake + 100;
+            }
+            if(SpeedClass.CurrentSpeed() < 1  && targetSpeed > 5){
+                if(stuckTiggerOne == 0){
+                    stuckStart = getRuntime();
+                    stuckTiggerOne = 1;
+                }
+
+            }else{
+                stuckStart = getRuntime() + 1;
+                stuckTiggerOne = 0;
+                stuckTiggerOne = 0;
+            }
+            if(getRuntime() - stuckStart > 1.5 && action != 1 && stuckOneLoopDelay == 0){
+
+                if(action < 10){
+                    preStuckAction = action;
+                }
+                if(DirectionClass.LF_M_DirectionReturn() > 0){
+                    action = 103;
+                }else{
+                    action = 105;
+                }
             }
 
             lastAction = action;
+            stuckOneLoopDelay = 0;
 
             //Runs all of our equations each loop cycle
             Movement(xSetpoint, ySetpoint, thetaSetpoint, targetSpeed, thetaTargetSpeed, thetaDeccelerationDegree, slowMoveSpeed, accelerationDistance, decelerationDistance, slowMovedDistance);
@@ -425,7 +559,6 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
     public void Telemetry() {
         //Displays telemetry
         telemetry.addData("Action", action);
-        telemetry.addData("time", getRuntime());
         telemetry.addData("start Time", startTime);
         telemetry.addData("time left", getRuntime() - startTime);
         telemetry.addData("Odo X", OdoClass.odoXReturn());
@@ -433,22 +566,16 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
         telemetry.addData("Theta Angle", OdoClass.thetaInDegreesReturn());
         telemetry.addData("X", DirectionClass.XReturn());
         telemetry.addData("Y", DirectionClass.YReturn());
-        telemetry.addData("Theta", TurnControl.theta);
-        telemetry.addData("ThetaSpeedSetpoint", SpeedClass.thetaSpeedSetpoint());
-        telemetry.addData("SlowMoveSpeed", slowMoveSpeed);
-        telemetry.addData("slowMovedDistance", slowMovedDistance);
-        telemetry.addData("Distance", DirectionClass.distanceReturn());
         telemetry.addData("Distance From", DirectionClass.distanceFromReturn());
-        telemetry.addData("Speed Setpoint", SpeedClass.speedSetpoint());
         telemetry.addData("Speed", SpeedClass.SpeedReturn());
+        telemetry.addData("has color sensors", hasColorSenssors);
+        telemetry.addData("current Speed", SpeedClass.CurrentSpeed());
+        telemetry.addData("time", getRuntime());
+        telemetry.addData("stuck Timer", getRuntime() - stuckStart );
+        telemetry.addData("stuck Start", stuckStart);
+        telemetry.addData("prestuck action", preStuckAction);
+        telemetry.addData("stuck Fix TImer", stuckFixTimer + 3);
 
-        telemetry.addData("Distance Delta", SpeedClass.DistanceDelta());
-        telemetry.addData("XSetpoint", DirectionClass.XSetpointReturn());
-        telemetry.addData("YSetpoint", DirectionClass.YSetpointReturn());
-        telemetry.addData("LF_Power", robot.LF_M.getPower());
-        telemetry.addData("RF_Power", robot.RF_M.getPower());
-        telemetry.addData("LF_Direction", DirectionClass.LF_M_DirectionReturn());
-        telemetry.addData("Motor Power Ratio", DirectionClass.motorPowerRatioReturn());
 
        // telemetry.addData("PT", robot.TP_P.getVoltage());
 
@@ -465,16 +592,29 @@ public class BlueWarehouseAutoNewTurret extends LinearOpMode {
     }
 
     public void PowerSetting() {
+        if(STOPMOTORS == false) {
 
-        robot.TR_M.setPower(CombinedTurret.rotateFinalMotorPower);
-        robot.TE_M.setPower(CombinedTurret.extendFinalMotorPower);
-       robot.TP_M.setPower(CombinedTurret.vPivotFinalMotorPower);
-        robot.LF_M.setPower(DirectionClass.LF_M_DirectionReturn() * (SpeedClass.SpeedReturn()));
-        robot.LB_M.setPower(DirectionClass.LB_M_DirectionReturn() * (SpeedClass.SpeedReturn() ));
-       robot.RF_M.setPower(DirectionClass.RF_M_DirectionReturn() * (SpeedClass.SpeedReturn()));
-       robot.RB_M.setPower(DirectionClass.RB_M_DirectionReturn() * (SpeedClass.SpeedReturn() ));
-       robot.LI_S.setPower(leftIntakeSet);
-       robot.RI_S.setPower(rightIntakeSet);
+
+            robot.TR_M.setPower(CombinedTurret.rotateFinalMotorPower);
+            robot.TE_M.setPower(CombinedTurret.extendFinalMotorPower);
+            robot.TP_M.setPower(CombinedTurret.vPivotFinalMotorPower);
+            robot.LF_M.setPower(DirectionClass.LF_M_DirectionReturn() * (SpeedClass.SpeedReturn()));
+            robot.LB_M.setPower(DirectionClass.LB_M_DirectionReturn() * (SpeedClass.SpeedReturn()));
+            robot.RF_M.setPower(DirectionClass.RF_M_DirectionReturn() * (SpeedClass.SpeedReturn()));
+            robot.RB_M.setPower(DirectionClass.RB_M_DirectionReturn() * (SpeedClass.SpeedReturn()));
+            robot.LI_S.setPower(leftIntakeSet);
+            robot.RI_S.setPower(rightIntakeSet);
+        }else{
+            robot.LF_M.setPower(0);
+            robot.LB_M.setPower(0);
+            robot.RF_M.setPower(0);
+            robot.RB_M.setPower(0);
+            robot.TR_M.setPower(CombinedTurret.rotateFinalMotorPower);
+            robot.TE_M.setPower(CombinedTurret.extendFinalMotorPower);
+            robot.TP_M.setPower(CombinedTurret.vPivotFinalMotorPower);
+            robot.LI_S.setPower(leftIntakeSet);
+            robot.RI_S.setPower(rightIntakeSet);
+        }
 
 
     }

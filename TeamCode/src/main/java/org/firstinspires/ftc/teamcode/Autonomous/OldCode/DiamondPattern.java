@@ -47,7 +47,7 @@ public class DiamondPattern extends LinearOpMode {
     double timepassed2;
 
     double action;
-    public static double SpeedDM;
+    public static double SpeedDM ;
     public static double SpeedPM;
     public static double ThetaPM;
     public static double ThetaDM;
@@ -60,14 +60,14 @@ public class DiamondPattern extends LinearOpMode {
     public void runOpMode() {
         robot.init(hardwareMap);
         waitForStart();
-        SpeedCalc.speedDM = SpeedDM;
+    /*    SpeedCalc.speedDM = SpeedDM;
         SpeedCalc.speedPM = SpeedPM;
         SpeedCalc.thetaDM = ThetaDM;
         SpeedCalc.thetaPM = ThetaPM;
         DirectionClass.xDM = xDM;
         DirectionClass.xPM = xPM;
         DirectionClass.yDM = yDM;
-        DirectionClass.yPM = yPM;
+        DirectionClass.yPM = yPM;*/
         //Shuts down Tensor Flow
         //Sets our intial varible setpoints
         action = 1;
@@ -79,36 +79,37 @@ public class DiamondPattern extends LinearOpMode {
         while (opModeIsActive() && stopProgram == 0) {
             //Moves to first power shot shooting position
             if (action == 1) {
-                xSetpoint = 15;
-                ySetpoint = 15;
+                xSetpoint = 50;
+                ySetpoint = 0;
                 thetaSetpoint = 0;
                 targetSpeed = 50;
                 accelerationDistance = .25;
                 decelerationDistance = 8;
-                slowMoveSpeed = 3.85;
-                slowMovedDistance = 1;
-                thetaDeccelerationDegree = 2;
-                thetaTargetSpeed = .6;
+                slowMoveSpeed = 2;
+                slowMovedDistance = 2;
+                thetaDeccelerationDegree = 3;
+                thetaTargetSpeed = 2;
                 //Exits once the robot is a certain distance and angle away
-                if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 1 && OdoClass.thetaInDegreesReturn() > -1)) {
+                if (DirectionClass.distanceFromReturn() <= 1 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 1 && OdoClass.thetaInDegreesReturn() > -1)) {
                     StopMotors();
                     action = 2;
                     startPointX = OdoClass.odoXReturn();
                     startPointY = OdoClass.odoYReturn();
+
                     breakout = 0;
                 } else {
                     breakout = 1;
                 }
             }
             else if (action == 2) {
-                xSetpoint = 30;
+                xSetpoint = 0;
                 ySetpoint = 0;
                 thetaSetpoint = 0;
                 targetSpeed = 50;
                 //Exits once the robot is a certain distance and angle away
-                if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 1 && OdoClass.thetaInDegreesReturn() > -1)) {
+                if (DirectionClass.distanceFromReturn() <= .375 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 1 && OdoClass.thetaInDegreesReturn() > -1)) {
                     StopMotors();
-                    action = 3;
+                    action = 99;
                     startPointX = OdoClass.odoXReturn();
                     startPointY = OdoClass.odoYReturn();
                     breakout = 0;
@@ -117,12 +118,12 @@ public class DiamondPattern extends LinearOpMode {
                 }
             }
             else if (action == 3) {
-                xSetpoint = -15;
-                ySetpoint = 15;
+                xSetpoint = -20;
+                ySetpoint = 20;
                 thetaSetpoint = 0;
                 targetSpeed = 50;
                 //Exits once the robot is a certain distance and angle away
-                if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 1 && OdoClass.thetaInDegreesReturn() > -1)) {
+                if (DirectionClass.distanceFromReturn() <= 1 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 1 && OdoClass.thetaInDegreesReturn() > -1)) {
                     StopMotors();
                     action = 4;
                     startPointX = OdoClass.odoXReturn();
@@ -138,9 +139,9 @@ public class DiamondPattern extends LinearOpMode {
                 thetaSetpoint = 0;
                 targetSpeed = 50;
                 //Exits once the robot is a certain distance and angle away
-                if (DirectionClass.distanceFromReturn() <= .5 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 1 && OdoClass.thetaInDegreesReturn() > -1)) {
+                if (DirectionClass.distanceFromReturn() <= .25 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 1 && OdoClass.thetaInDegreesReturn() > -1)) {
                     StopMotors();
-                    action = 1;
+                    action = 4;
                     startPointX = OdoClass.odoXReturn();
                     startPointY = OdoClass.odoYReturn();
                     breakout = 0;
