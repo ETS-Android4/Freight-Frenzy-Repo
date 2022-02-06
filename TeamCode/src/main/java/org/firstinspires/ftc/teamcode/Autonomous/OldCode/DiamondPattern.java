@@ -48,24 +48,23 @@ public class DiamondPattern extends LinearOpMode {
     double timepassed2;
 
     double action;
-    public static double SpeedDM ;
-    public static double SpeedPM;
+    public static double SpeedDM = .00008;
+    public static double SpeedPM = .00006;
     public static double ThetaPM;
     public static double ThetaDM;
     public static double yPM;
     public static double yDM;
     public static double xPM;
     public static double xDM;
-    @Override
 
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    Telemetry dashboardTelemetry = dashboard.getTelemetry();
+    @Override
     public void runOpMode() {
         robot.init(hardwareMap);
+
         waitForStart();
-        SpeedDM = .00008;
-        SpeedPM = .00006;
-        SpeedCalc.speedDM = SpeedDM;
-        SpeedDM =
-        SpeedCalc.speedPM = SpeedPM;
+
         //SpeedCalc.thetaDM = ThetaDM;
         //SpeedCalc.thetaPM = ThetaPM;
         //DirectionClass.xDM = xDM;
@@ -82,6 +81,9 @@ public class DiamondPattern extends LinearOpMode {
         //Enters our 1 loop system, will exit once all actions are done
         while (opModeIsActive() && stopProgram == 0) {
             //Moves to first power shot shooting position
+
+            SpeedCalc.speedDM = SpeedDM;
+            SpeedCalc.speedPM = SpeedPM;
             SpeedCalc.speedDM = SpeedDM;
             SpeedCalc.speedPM = SpeedPM;
             if (action == 1) {
@@ -101,7 +103,6 @@ public class DiamondPattern extends LinearOpMode {
                     action = 2;
                     startPointX = OdoClass.odoXReturn();
                     startPointY = OdoClass.odoYReturn();
-
                     breakout = 0;
                 } else {
                     breakout = 1;
@@ -115,7 +116,7 @@ public class DiamondPattern extends LinearOpMode {
                 //Exits once the robot is a certain distance and angle away
                 if (DirectionClass.distanceFromReturn() <= .375 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 1 && OdoClass.thetaInDegreesReturn() > -1)) {
                     StopMotors();
-                    action = 99;
+                    action = 3;
                     startPointX = OdoClass.odoXReturn();
                     startPointY = OdoClass.odoYReturn();
                     breakout = 0;
@@ -173,8 +174,7 @@ public class DiamondPattern extends LinearOpMode {
 
     public void Telemetry() {
         //Displays telemetry
-        FtcDashboard dashboard = FtcDashboard.getInstance();
-        Telemetry dashboardTelemetry = dashboard.getTelemetry();
+
         dashboardTelemetry.addData("Speed", SpeedCalc.speed);
         dashboardTelemetry.addData("SpeedDM", SpeedDM);
         dashboardTelemetry.addData("SpeedPM", SpeedPM);
