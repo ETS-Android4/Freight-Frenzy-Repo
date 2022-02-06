@@ -62,6 +62,12 @@ public class CarouselTesting extends LinearOpMode{
         }else if(gamepad1.dpad_left){
             slowSpeed = slowSpeed - .00001;
         }
+        if(gamepad1.left_trigger >= .2){
+            slowSpeed = 0.678;
+            fastSpeed = 1;
+            timeWait = 0.895;
+        }
+
 
         if(gamepad1.right_bumper || gamepad1.left_bumper){
             if(oneLoop == false){

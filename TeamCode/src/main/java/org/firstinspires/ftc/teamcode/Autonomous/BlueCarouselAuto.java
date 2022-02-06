@@ -177,18 +177,18 @@ public class BlueCarouselAuto extends LinearOpMode {
         while (opModeIsActive() && stopProgram == 0) {
             if(action == 1){ //Move to carousel position
 
-                accelerationDistance = .25;
-                decelerationDistance = 7;
-                slowMoveSpeed = 2;
-                slowMovedDistance = 4;
+                accelerationDistance = .1;
+                decelerationDistance = 2;
+                slowMoveSpeed = 1;
+                slowMovedDistance = 1;
                 thetaDeccelerationDegree = .5;
-                thetaTargetSpeed = 4;
-                xSetpoint = -13;
-                ySetpoint = 5;
+                thetaTargetSpeed = 2;
+                xSetpoint = 0;
+                ySetpoint = 10;
                 thetaSetpoint = 0;
                 targetSpeed = 25;
 
-                if(DirectionClass.distanceFromReturn() <= .3 && breakout == 1){
+                if(DirectionClass.distanceFromReturn() <= .00001 && breakout == 1){
                     action = 2;
                     StopMotors();
                     startPointX = OdoClass.odoXReturn();

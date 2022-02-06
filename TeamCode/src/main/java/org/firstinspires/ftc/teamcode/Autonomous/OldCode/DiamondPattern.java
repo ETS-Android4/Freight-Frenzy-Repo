@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.dashboard.FtcDashboard;
 
 import org.checkerframework.checker.units.qual.Speed;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.DirectionCalcClass;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.SpeedClass;
@@ -60,14 +61,17 @@ public class DiamondPattern extends LinearOpMode {
     public void runOpMode() {
         robot.init(hardwareMap);
         waitForStart();
-    /*    SpeedCalc.speedDM = SpeedDM;
+        SpeedDM = .00008;
+        SpeedPM = .00006;
+        SpeedCalc.speedDM = SpeedDM;
+        SpeedDM =
         SpeedCalc.speedPM = SpeedPM;
-        SpeedCalc.thetaDM = ThetaDM;
-        SpeedCalc.thetaPM = ThetaPM;
-        DirectionClass.xDM = xDM;
-        DirectionClass.xPM = xPM;
-        DirectionClass.yDM = yDM;
-        DirectionClass.yPM = yPM;*/
+        //SpeedCalc.thetaDM = ThetaDM;
+        //SpeedCalc.thetaPM = ThetaPM;
+        //DirectionClass.xDM = xDM;
+        //DirectionClass.xPM = xPM;
+        //DirectionClass.yDM = yDM;
+        //DirectionClass.yPM = yPM;
         //Shuts down Tensor Flow
         //Sets our intial varible setpoints
         action = 1;
@@ -78,19 +82,21 @@ public class DiamondPattern extends LinearOpMode {
         //Enters our 1 loop system, will exit once all actions are done
         while (opModeIsActive() && stopProgram == 0) {
             //Moves to first power shot shooting position
+            SpeedCalc.speedDM = SpeedDM;
+            SpeedCalc.speedPM = SpeedPM;
             if (action == 1) {
-                xSetpoint = 50;
+                xSetpoint = 20;
                 ySetpoint = 0;
                 thetaSetpoint = 0;
-                targetSpeed = 50;
+                targetSpeed = 40;
                 accelerationDistance = .25;
-                decelerationDistance = 8;
+                decelerationDistance = 6;
                 slowMoveSpeed = 2;
                 slowMovedDistance = 2;
                 thetaDeccelerationDegree = 3;
                 thetaTargetSpeed = 2;
                 //Exits once the robot is a certain distance and angle away
-                if (DirectionClass.distanceFromReturn() <= 1 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 1 && OdoClass.thetaInDegreesReturn() > -1)) {
+                if (DirectionClass.distanceFromReturn() <= .25 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 1 && OdoClass.thetaInDegreesReturn() > -1)) {
                     StopMotors();
                     action = 2;
                     startPointX = OdoClass.odoXReturn();
@@ -105,7 +111,7 @@ public class DiamondPattern extends LinearOpMode {
                 xSetpoint = 0;
                 ySetpoint = 0;
                 thetaSetpoint = 0;
-                targetSpeed = 50;
+                targetSpeed = 20;
                 //Exits once the robot is a certain distance and angle away
                 if (DirectionClass.distanceFromReturn() <= .375 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 1 && OdoClass.thetaInDegreesReturn() > -1)) {
                     StopMotors();
@@ -118,12 +124,12 @@ public class DiamondPattern extends LinearOpMode {
                 }
             }
             else if (action == 3) {
-                xSetpoint = -20;
+                xSetpoint = 0;
                 ySetpoint = 20;
                 thetaSetpoint = 0;
-                targetSpeed = 50;
+                targetSpeed = 10;
                 //Exits once the robot is a certain distance and angle away
-                if (DirectionClass.distanceFromReturn() <= 1 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 1 && OdoClass.thetaInDegreesReturn() > -1)) {
+                if (DirectionClass.distanceFromReturn() <= .25 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 1 && OdoClass.thetaInDegreesReturn() > -1)) {
                     StopMotors();
                     action = 4;
                     startPointX = OdoClass.odoXReturn();
@@ -137,7 +143,7 @@ public class DiamondPattern extends LinearOpMode {
                 xSetpoint = 0;
                 ySetpoint = 0;
                 thetaSetpoint = 0;
-                targetSpeed = 50;
+                targetSpeed = 30;
                 //Exits once the robot is a certain distance and angle away
                 if (DirectionClass.distanceFromReturn() <= .25 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 1 && OdoClass.thetaInDegreesReturn() > -1)) {
                     StopMotors();
@@ -167,6 +173,13 @@ public class DiamondPattern extends LinearOpMode {
 
     public void Telemetry() {
         //Displays telemetry
+        FtcDashboard dashboard = FtcDashboard.getInstance();
+        Telemetry dashboardTelemetry = dashboard.getTelemetry();
+        dashboardTelemetry.addData("Speed", SpeedCalc.speed);
+        dashboardTelemetry.addData("SpeedDM", SpeedDM);
+        dashboardTelemetry.addData("SpeedPM", SpeedPM);
+        dashboardTelemetry.addData("Distance_From", DirectionClass.distanceFromReturn());
+
         telemetry.addData("Odo X", OdoClass.odoXReturn());
         telemetry.addData("Odo Y", OdoClass.odoYReturn());
         telemetry.addData("Theta Angle", OdoClass.thetaInDegreesReturn());
@@ -189,6 +202,7 @@ public class DiamondPattern extends LinearOpMode {
         telemetry.addData("Motor Power Ratio", DirectionClass.motorPowerRatioReturn());
         telemetry.addData("Action", action);
         telemetry.update();
+        dashboardTelemetry.update();
     }
 
     public void Movement(double endpointx, double endpointy, double thetasetpoint, double targetspeed, double thetaTargetSpeed, double thetaDeccelerationDegree, double slowMoveSpeed, double accelerationdistance, double deccelerationdistance, double slowMovedDistance) {
