@@ -153,8 +153,8 @@ public class NewTurretBlue extends LinearOpMode{
                 }
             }
             //if we have a freight in our intake we raise up our arm
-            if(robot.I_DS.getDistance(DistanceUnit.INCH) < 1 && teleOpVPivotSet < 700){
-                teleOpVPivotSet = 700;
+            if(robot.I_DS.getDistance(DistanceUnit.INCH) < 1 && teleOpVPivotSet < 650 && Math.abs(intakeRotateSet - CombinedTurret.rotateModifiedEncoder) < 100){
+                teleOpVPivotSet = 650;
             }
             //setpoint limits
             if(teleOpVPivotSet > 2000){
