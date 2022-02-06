@@ -33,7 +33,7 @@ public class DirectionCalcClass {
     double endPointX;
     double endPointY;
     //Sets the distance we want our pure pursuit point to be set ahead of us
-    double purePursuitDistance = 1.6;
+    double purePursuitDistance = 2;
     //Sets our PD multipliers
    public  double yPM = 4;
    public  double yDM = 7.5;

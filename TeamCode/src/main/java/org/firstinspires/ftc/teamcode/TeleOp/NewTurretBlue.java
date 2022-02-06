@@ -157,8 +157,8 @@ public class NewTurretBlue extends LinearOpMode{
                 teleOpVPivotSet = 650;
             }
             //setpoint limits
-            if(teleOpVPivotSet > 2000){
-                teleOpVPivotSet = 2000;
+            if(teleOpVPivotSet > 2600){
+                teleOpVPivotSet = 2600;
             }else if(teleOpVPivotSet < 100){
                 teleOpVPivotSet = 100;
             }

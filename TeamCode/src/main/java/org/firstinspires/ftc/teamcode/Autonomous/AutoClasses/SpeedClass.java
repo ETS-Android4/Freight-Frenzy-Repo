@@ -27,8 +27,8 @@ public class SpeedClass {
     double thetaSpeedSetpoint;
     double lastTheta;
     double thetaSpeedCurrent;
-    public double thetaPM = .01;
-    public double thetaDM = .043;
+    public double thetaPM = .024;
+    public double thetaDM = .028;
     double thetaSpeedError;
     double thetaProportional;
     double thetaDerivitave;
@@ -66,12 +66,8 @@ public class SpeedClass {
         //theta last error for derivitave last loop
         thetaLastError = thetaSpeedError;
         //theta speed
-        if(DoThetaSpeed == 1){
         thetaSpeed = thetaProportional + thetaDerivitave;
-        }
-        else{
-            thetaSpeed = 0;
-        }
+
         //Speed PD
         //Compares the desired speed to our current
         speedError = speedsetpoint - speedCurrent;
@@ -140,15 +136,9 @@ public class SpeedClass {
             speedSetpoint = speedtarget;
         }
         //returns the setpoint to be used in the speedCalc method
-        if (distancefrom <= 1) {
             if(thetaDecclerationDegree > Math.abs(thetaSetpoint - OdoTheta)) {
                 thetaSpeedSetpoint = (thetaTargetSpeed / thetaDecclerationDegree) * Math.abs(thetaSetpoint - OdoTheta);
             }
-            DoThetaSpeed =1;
-        }
-        else{
-            DoThetaSpeed = 0;
-        }
 
 
     }

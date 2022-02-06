@@ -46,21 +46,21 @@ public class CarouselTesting extends LinearOpMode{
         while (opModeIsActive()){
 
         if(gamepad1.dpad_up){
-            timeWait = timeWait + .001;
+            timeWait = timeWait + .00001;
         }else if(gamepad1.dpad_down){
-            timeWait = timeWait - .001;
+            timeWait = timeWait - .00001;
         }
 
         if(gamepad1.y){
-            fastSpeed = fastSpeed + .001;
+            fastSpeed = fastSpeed + .00001;
         }else if(gamepad1.a){
-            fastSpeed = fastSpeed - .001;
+            fastSpeed = fastSpeed - .00001;
         }
 
         if(gamepad1.dpad_right){
-            slowSpeed = slowSpeed + .001;
+            slowSpeed = slowSpeed + .00001;
         }else if(gamepad1.dpad_left){
-            slowSpeed = slowSpeed - .001;
+            slowSpeed = slowSpeed - .00001;
         }
 
         if(gamepad1.right_bumper || gamepad1.left_bumper){
@@ -98,7 +98,7 @@ public class CarouselTesting extends LinearOpMode{
         telemetry.addData("slow speed", slowSpeed);
         telemetry.addData("fast Speed", fastSpeed);
         telemetry.addData("wait timer", timeWait);
-
+        telemetry.update();
 
 
 

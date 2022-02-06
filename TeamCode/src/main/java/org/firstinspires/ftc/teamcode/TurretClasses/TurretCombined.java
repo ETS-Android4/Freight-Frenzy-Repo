@@ -110,8 +110,8 @@ public class TurretCombined {
                 rotateSet = RotateSet;
             }
 
-            if (VPivotSet > 2000) {
-                vPivotSet = 2000;
+            if (VPivotSet > 2600) {
+                vPivotSet = 2600;
             } else if (VPivotSet < 200) {
                 vPivotSet = 200;
             } else {
