@@ -47,6 +47,7 @@ public class BlueCarouselAuto extends LinearOpMode {
     double justTurn;
     double timepassed;
     double lastEndPointX;
+
     double xSetpoint;
     double ySetpoint;
     double turnIncriments;
@@ -68,6 +69,7 @@ public class BlueCarouselAuto extends LinearOpMode {
     double VPivotSetpoint;
     double VPivotSpeed;
     double TSEPos;
+    double nextMove;
     double leftIntakeSet = 0, rightIntakeSet = 0;
     double timeRemaining = 30, startTime;
     double timepassed2;
@@ -168,28 +170,53 @@ public class BlueCarouselAuto extends LinearOpMode {
 
 
         loopcount = 0;
+        VPivotSpeed = 23;
         timepassed = 0;
-        rotateSpeed = 1500;
-        rotateSetpoint = 2000;
+        rotateSpeed = 2500;
         VPivotSetpoint = 2600;
         extendSpeed = 25;
         VPivotSpeed = 12;
         while (opModeIsActive() && stopProgram == 0) {
             if(action == 1){ //Move to carousel position
 
-                accelerationDistance = .1;
-                decelerationDistance = 2;
-                slowMoveSpeed = 1;
-                slowMovedDistance = 1;
+                accelerationDistance = 0;
+                decelerationDistance = 1;
+                slowMoveSpeed = 3;
+                slowMovedDistance = .5;
                 thetaDeccelerationDegree = .5;
-                thetaTargetSpeed = 2;
-                xSetpoint = 0;
-                ySetpoint = 10;
+                thetaTargetSpeed = 15;
+                xSetpoint = -13;
+                ySetpoint = 6;
                 thetaSetpoint = 0;
-                targetSpeed = 25;
-
-                if(DirectionClass.distanceFromReturn() <= .00001 && breakout == 1){
+                targetSpeed = 7;
+                if(CombinedTurret.vPivotModifiedEncoder >= 2300){
+                    rotateSetpoint = 2000;
+                }
+                if(DirectionClass.distanceFromReturn() <= .25 && breakout == 1){
                     action = 2;
+                    StopMotors();
+                    startPointX = OdoClass.odoXReturn();
+                    startPointY = OdoClass.odoYReturn();
+                    breakout = 0;
+                    loopcount = 1;
+                    nextMove = 0;
+                }else{
+                    breakout = 1;
+                }
+            }
+            else if(action ==2){
+               if(loopcount == 1){
+                   timepassed = getRuntime() + 2;
+                   loopcount = 0;
+               }
+               if(timepassed >= getRuntime()){
+                   robot.TC_M.setPower(-.35);
+               }
+               else{
+                   nextMove = 1;
+               }
+                if(nextMove == 1 && breakout == 1){
+                    action = 3;
                     StopMotors();
                     startPointX = OdoClass.odoXReturn();
                     startPointY = OdoClass.odoYReturn();

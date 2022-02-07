@@ -48,10 +48,10 @@ public class DiamondPattern extends LinearOpMode {
     double timepassed2;
 
     double action;
-    public static double SpeedDM = .00008;
-    public static double SpeedPM = .00006;
-    public static double ThetaPM;
-    public static double ThetaDM;
+    public static double SpeedDM = .0035;
+    public static double SpeedPM = .0035;
+    public static double ThetaPM = .003;
+    public static double ThetaDM = 0;
     public static double yPM;
     public static double yDM;
     public static double xPM;
@@ -65,8 +65,7 @@ public class DiamondPattern extends LinearOpMode {
 
         waitForStart();
 
-        //SpeedCalc.thetaDM = ThetaDM;
-        //SpeedCalc.thetaPM = ThetaPM;
+
         //DirectionClass.xDM = xDM;
         //DirectionClass.xPM = xPM;
         //DirectionClass.yDM = yDM;
@@ -81,22 +80,22 @@ public class DiamondPattern extends LinearOpMode {
         //Enters our 1 loop system, will exit once all actions are done
         while (opModeIsActive() && stopProgram == 0) {
             //Moves to first power shot shooting position
+            SpeedCalc.thetaDM = ThetaDM;
+            SpeedCalc.thetaPM = ThetaPM;
+            SpeedCalc.speedDM = SpeedDM;
+            SpeedCalc.speedPM = SpeedPM;
 
-            SpeedCalc.speedDM = SpeedDM;
-            SpeedCalc.speedPM = SpeedPM;
-            SpeedCalc.speedDM = SpeedDM;
-            SpeedCalc.speedPM = SpeedPM;
             if (action == 1) {
-                xSetpoint = 20;
+                xSetpoint = 30;
                 ySetpoint = 0;
                 thetaSetpoint = 0;
                 targetSpeed = 40;
-                accelerationDistance = .25;
-                decelerationDistance = 6;
-                slowMoveSpeed = 2;
-                slowMovedDistance = 2;
-                thetaDeccelerationDegree = 3;
-                thetaTargetSpeed = 2;
+                accelerationDistance = 0.025;
+                decelerationDistance = 1.5;
+                slowMoveSpeed = 4;
+                slowMovedDistance = 1.5;
+                thetaDeccelerationDegree = 1;
+                thetaTargetSpeed = 10;
                 //Exits once the robot is a certain distance and angle away
                 if (DirectionClass.distanceFromReturn() <= .25 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 1 && OdoClass.thetaInDegreesReturn() > -1)) {
                     StopMotors();
@@ -128,7 +127,7 @@ public class DiamondPattern extends LinearOpMode {
                 xSetpoint = 0;
                 ySetpoint = 20;
                 thetaSetpoint = 0;
-                targetSpeed = 10;
+                targetSpeed = 40;
                 //Exits once the robot is a certain distance and angle away
                 if (DirectionClass.distanceFromReturn() <= .25 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 1 && OdoClass.thetaInDegreesReturn() > -1)) {
                     StopMotors();
@@ -144,11 +143,11 @@ public class DiamondPattern extends LinearOpMode {
                 xSetpoint = 0;
                 ySetpoint = 0;
                 thetaSetpoint = 0;
-                targetSpeed = 30;
+                targetSpeed = 20;
                 //Exits once the robot is a certain distance and angle away
                 if (DirectionClass.distanceFromReturn() <= .25 && breakout != 0 && (OdoClass.thetaInDegreesReturn() < 1 && OdoClass.thetaInDegreesReturn() > -1)) {
                     StopMotors();
-                    action = 4;
+                    action = 1;
                     startPointX = OdoClass.odoXReturn();
                     startPointY = OdoClass.odoYReturn();
                     breakout = 0;
@@ -178,7 +177,9 @@ public class DiamondPattern extends LinearOpMode {
         dashboardTelemetry.addData("Speed", SpeedCalc.speed);
         dashboardTelemetry.addData("SpeedDM", SpeedDM);
         dashboardTelemetry.addData("SpeedPM", SpeedPM);
+        dashboardTelemetry.addData("ThetaSpeed", SpeedCalc.ThetaSpeed());
         dashboardTelemetry.addData("Distance_From", DirectionClass.distanceFromReturn());
+        dashboardTelemetry.addData("Actual Speed", SpeedCalc.CurrentSpeed());
 
         telemetry.addData("Odo X", OdoClass.odoXReturn());
         telemetry.addData("Odo Y", OdoClass.odoYReturn());
