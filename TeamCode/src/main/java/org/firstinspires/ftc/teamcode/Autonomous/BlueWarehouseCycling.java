@@ -627,77 +627,73 @@ public class BlueWarehouseCycling extends LinearOpMode {
     }
    public static class OpenCVPipeline extends OpenCvPipeline {
 
-        //sets colors for the boxes that we will look in
+       //sets colors for the boxes that we will look in
        static final Scalar CRIMSON = new Scalar(220, 20, 60);
        static final Scalar AQUA = new Scalar(79, 195, 247);
-      // static final Scalar PARAKEET = new Scalar(3, 192, 74);
+       // static final Scalar PARAKEET = new Scalar(3, 192, 74);
 
-        //sets the boxes where we will look
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(230, 300);
-       static int REGION1_WIDTH = 80;
-       static int REGION1_HEIGHT = 40;
-       static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(375, 300);
-       static final int REGION2_WIDTH = 80;
-       static final int REGION2_HEIGHT = 40;
-        //static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(430, 260);
-        //static final int REGION3_WIDTH = 60;
-        //static final int REGION3_HEIGHT = 85;
-        //static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(155, 260);
+       //sets the boxes where we will look
+       static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(260, 255);
+       static int REGION1_WIDTH = 30;
+       static int REGION1_HEIGHT = 80;
+       static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(395, 255);
+       static final int REGION2_WIDTH = 30;
+       static final int REGION2_HEIGHT = 80;
+       //static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(430, 260);
+       //static final int REGION3_WIDTH = 60;
+       //static final int REGION3_HEIGHT = 85;
+       //static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(155, 260);
        //static int REGION1_WIDTH = 60;
        //static int REGION1_HEIGHT = 85;
 
-        //uses the boxes setpoints and makes the actual box
-        Point region1_pointA = new Point(REGION1_TOPLEFT_ANCHOR_POINT.x, REGION1_TOPLEFT_ANCHOR_POINT.y);
-        Point region1_pointB = new Point(REGION1_TOPLEFT_ANCHOR_POINT.x + REGION1_WIDTH, REGION1_TOPLEFT_ANCHOR_POINT.y + REGION1_HEIGHT);
+       //uses the boxes setpoints and makes the actual box
+       Point region1_pointA = new Point(REGION1_TOPLEFT_ANCHOR_POINT.x, REGION1_TOPLEFT_ANCHOR_POINT.y);
+       Point region1_pointB = new Point(REGION1_TOPLEFT_ANCHOR_POINT.x + REGION1_WIDTH, REGION1_TOPLEFT_ANCHOR_POINT.y + REGION1_HEIGHT);
 
-        Point region2_pointA = new Point(REGION2_TOPLEFT_ANCHOR_POINT.x, REGION2_TOPLEFT_ANCHOR_POINT.y);
-        Point region2_pointB = new Point(REGION2_TOPLEFT_ANCHOR_POINT.x + REGION2_WIDTH, REGION2_TOPLEFT_ANCHOR_POINT.y + REGION2_HEIGHT);
+       Point region2_pointA = new Point(REGION2_TOPLEFT_ANCHOR_POINT.x, REGION2_TOPLEFT_ANCHOR_POINT.y);
+       Point region2_pointB = new Point(REGION2_TOPLEFT_ANCHOR_POINT.x + REGION2_WIDTH, REGION2_TOPLEFT_ANCHOR_POINT.y + REGION2_HEIGHT);
 
        // Point region3_pointA = new Point(REGION3_TOPLEFT_ANCHOR_POINT.x, REGION3_TOPLEFT_ANCHOR_POINT.y);
-        //Point region3_pointB = new Point(REGION3_TOPLEFT_ANCHOR_POINT.x + REGION3_WIDTH, REGION2_TOPLEFT_ANCHOR_POINT.y + REGION3_HEIGHT);
+       //Point region3_pointB = new Point(REGION3_TOPLEFT_ANCHOR_POINT.x + REGION3_WIDTH, REGION2_TOPLEFT_ANCHOR_POINT.y + REGION3_HEIGHT);
 
 
-        Mat region1_G, region2_G, region3_G, region4_G;
-        Mat RGBA = new Mat();
-        Mat HLS = new Mat();
-        Mat A = new Mat();
-        Mat H = new Mat();
-        Mat GRAY = new Mat();
-        int avg1, avg2, avg3, avg4;
+       Mat region1_G, region2_G, region3_G, region4_G;
+       Mat GRAY = new Mat();
+       int avg1, avg2, avg3, avg4;
 
 
-        //actual image processing
-        void inputToG(Mat input) {
-            Imgproc.cvtColor(input, GRAY, Imgproc.COLOR_RGB2GRAY);
-            Core.extractChannel(GRAY, GRAY, 0);
-        }
+       //actual image processing
+       void inputToG(Mat input) {
+           Imgproc.cvtColor(input, GRAY, Imgproc.COLOR_RGB2GRAY);
+           Core.extractChannel(GRAY, GRAY, 0);
+       }
 
-        @Override
-        public void init(Mat firstFrame) {
-            inputToG(firstFrame);
-            //sets region to look in for color
-            region1_G = GRAY.submat(new Rect(region1_pointA, region1_pointB));
-            region2_G = GRAY.submat(new Rect(region2_pointA, region2_pointB));
-            //region3_G = A.submat(new Rect(region3_pointA, region3_pointB));
-            //region4_G = L.submat(new Rect(region4_pointA, region4_pointB));
-        }
+       @Override
+       public void init(Mat firstFrame) {
+           inputToG(firstFrame);
+           //sets region to look in for color
+           region1_G = GRAY.submat(new Rect(region1_pointA, region1_pointB));
+           region2_G = GRAY.submat(new Rect(region2_pointA, region2_pointB));
+           //region3_G = A.submat(new Rect(region3_pointA, region3_pointB));
+           //region4_G = L.submat(new Rect(region4_pointA, region4_pointB));
+       }
 
-        @Override
-        public Mat processFrame(Mat input) {
+       @Override
+       public Mat processFrame(Mat input) {
 
-            inputToG(input);
+           inputToG(input);
 
-            avg1 = (int) Core.mean(region1_G).val[0];
-            avg2 = (int) Core.mean(region2_G).val[0];
-            //avg3 = (int) Core.mean(region3_G).val[0];
-            //avg4 = (int) Core.mean(region4_G).val[0];
+           avg1 = (int) Core.mean(region1_G).val[0];
+           avg2 = (int) Core.mean(region2_G).val[0];
+           //avg3 = (int) Core.mean(region3_G).val[0];
+           //avg4 = (int) Core.mean(region4_G).val[0];
 
-            Imgproc.rectangle(input, region1_pointA, region1_pointB, CRIMSON, 2);
-            Imgproc.rectangle(input, region2_pointA, region2_pointB, AQUA, 2);
+           Imgproc.rectangle(input, region1_pointA, region1_pointB, CRIMSON, 2);
+           Imgproc.rectangle(input, region2_pointA, region2_pointB, AQUA, 2);
            // Imgproc.rectangle(input, region3_pointA, region3_pointB, PARAKEET, 2);
-            //Imgproc.rectangle(input, region4_pointA, region4_pointB, GOLD, 2);
+           //Imgproc.rectangle(input, region4_pointA, region4_pointB, GOLD, 2);
 
-            return input;
+           return input;
         }
 
         public int region1Avg() {
