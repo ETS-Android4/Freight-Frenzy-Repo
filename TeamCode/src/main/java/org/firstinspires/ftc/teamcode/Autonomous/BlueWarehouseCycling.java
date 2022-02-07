@@ -87,6 +87,7 @@ public class BlueWarehouseCycling extends LinearOpMode {
     boolean STOPMOTORS = false;
     double rotateIntake = 0;
     double stuckTimer = 0, stuckStart = 0, preStuckAction = 0, stuckOne = 0, stuckFixTimer, stuckTiggerOne = 0;
+    double intakeCounter = 0;
     double stuckOneLoopDelay = 0;
 
     double action;
@@ -185,14 +186,19 @@ public class BlueWarehouseCycling extends LinearOpMode {
         slowMoveSpeed = .25;
         slowMovedDistance = 1;
         thetaDeccelerationDegree = 1;
-        thetaTargetSpeed = .4;
+        thetaTargetSpeed = 4.5;
 
         loopcount = 0;
         timepassed = 0;
-        rotateSpeed = 1500;
+        rotateSpeed = 2300;
         extendSpeed = 35;
         VPivotSpeed = 12;
         while (opModeIsActive() && stopProgram == 0) {
+            if(action == 2 && lastAction != 2){
+
+                intakeCounter = intakeCounter + 1;
+            }
+            lastAction = action;
             if(action == 1) {//dropping in correct level
                 if (TSEPos == 3) {
                     rotateSetpoint = 1400;
@@ -279,10 +285,18 @@ public class BlueWarehouseCycling extends LinearOpMode {
             }else if(action == 2){
                 //setting the intake position using a safe path to prevent collisions
                 extendSetpoint = 275;
-                extendSpeed = 35;
+                extendSpeed = 40;
                 if(CombinedTurret.extendModifiedEncoder < 600){
-                    rotateSpeed = 2000;
-                    rotateSetpoint = 0;
+                    if(intakeCounter > 2){
+                        rotateSetpoint = 250;
+                        extendSetpoint = 325;
+
+                    }else{
+                        rotateSetpoint = 0;
+                        extendSetpoint = 275;
+                    }
+                    rotateSpeed = 2300;
+
                 }
 
                 if(Math.abs(extendSetpoint - CombinedTurret.extendModifiedEncoder) < 300 && Math.abs(rotateSetpoint - CombinedTurret.rotateModifiedEncoder) < 450){
@@ -296,7 +310,7 @@ public class BlueWarehouseCycling extends LinearOpMode {
                     //setting drivetrain positions and speeds
                     thetaSetpoint = 0;
                     thetaDeccelerationDegree = 2;
-                    thetaTargetSpeed = 1;
+                    thetaTargetSpeed = 4.5;
                     accelerationDistance = 0;
                     decelerationDistance = 7;
                     slowMoveSpeed = 8;
@@ -310,7 +324,7 @@ public class BlueWarehouseCycling extends LinearOpMode {
 
                 }
 
-                if(robot.LF_C.alpha() > 900  || robot.RF_C.alpha() > 900 || robot.RB_C.alpha() > 900 || robot.RF_C.alpha() > 900 ||action2TimeSafe + 4 < getRuntime()){
+                if(robot.LF_C.alpha() > 800  || robot.RF_C.alpha() > 800 || robot.RB_C.alpha() > 800 || robot.RF_C.alpha() > 800 ||action2TimeSafe + 4 < getRuntime()){
                     hasColorSenssors = true;
 
                 }
@@ -337,14 +351,14 @@ public class BlueWarehouseCycling extends LinearOpMode {
                     //setting drivetrain positions and speeds
                     thetaSetpoint = 0;
                     thetaDeccelerationDegree = 2;
-                    thetaTargetSpeed = 1;
+                    thetaTargetSpeed = 4.5;
                     accelerationDistance = 0;
                     decelerationDistance = 7;
                     slowMoveSpeed = 8;
                     slowMovedDistance = 6;
                     xSetpoint = IntakeXSetpoint;
                     ySetpoint = YChangingSet;
-                    targetSpeed = 25;
+                    targetSpeed = 10;
                     leftIntakeSet = .5;
                     rightIntakeSet = -.5;
                     oneLoop = 1;
@@ -385,7 +399,7 @@ public class BlueWarehouseCycling extends LinearOpMode {
                 slowMoveSpeed = 1;
                 slowMovedDistance = 3;
                 thetaDeccelerationDegree = 2;
-                thetaTargetSpeed = 1;
+                thetaTargetSpeed = 4.5;
                 xSetpoint = 2;
                 ySetpoint = YChangingSet;
                 thetaSetpoint = 0;
@@ -400,7 +414,7 @@ public class BlueWarehouseCycling extends LinearOpMode {
 
 
 
-                VPivotSetpoint = 1450;
+                VPivotSetpoint = 1485;
 
                 if ((CombinedTurret.vPivotModifiedEncoder >= 875)) {
                     rotateSetpoint = 1400;
@@ -412,8 +426,8 @@ public class BlueWarehouseCycling extends LinearOpMode {
                             loopcount = 1;
                             timepassed = getRuntime() + 4;
                         }
-                        leftIntakeSet = -.5;
-                        rightIntakeSet = .5;
+                        leftIntakeSet = -.4;
+                        rightIntakeSet = .4;
 
                         if (robot.I_DS.getDistance(DistanceUnit.INCH) >= 1 || getRuntime() > timepassed) {
                             StopMotors();
@@ -431,7 +445,7 @@ public class BlueWarehouseCycling extends LinearOpMode {
             } else if (action == 6) {
                 extendSetpoint = 200;
                 extendSpeed = 20;
-                rotateSpeed = 1500;
+                rotateSpeed = 2300;
                 rotateSetpoint = 0;
                 VPivotSetpoint = 800;
                 VPivotSpeed = 8;
@@ -442,7 +456,7 @@ public class BlueWarehouseCycling extends LinearOpMode {
                 slowMoveSpeed = 1;
                 slowMovedDistance = 2;
                 thetaDeccelerationDegree = 2;
-                thetaTargetSpeed = 1;
+                thetaTargetSpeed = 4.5;
                 xSetpoint = 41;
                 ySetpoint = YChangingSet;
                 thetaSetpoint = 0;
@@ -468,19 +482,22 @@ public class BlueWarehouseCycling extends LinearOpMode {
                     slowMoveSpeed = 1;
                     slowMovedDistance = 2;
                     thetaDeccelerationDegree = 2;
-                    thetaTargetSpeed = 1;
-                    xSetpoint = startPointX - 10;
-                    ySetpoint = startPointY - 10;
+                    thetaTargetSpeed = 4.5;
+                    xSetpoint = startPointX - 13;
+                    ySetpoint = startPointY - 7;
                     thetaSetpoint = 0;
                     targetSpeed = 10;
                     stuckFixTimer = getRuntime();
                     stuckOne = 1;
+                    VPivotSetpoint = 750;
                 }
                 if(stuckFixTimer + 3 < getRuntime()){
                     action = preStuckAction;
                     oneLoop = 0;
                     stuckOne = 0;
                     stuckStart = getRuntime();
+                    YChangingSet = OdoClass.odoYReturn();
+                    VPivotSetpoint = 400;
                 }
 
             }else if(action == 105){
@@ -494,19 +511,22 @@ public class BlueWarehouseCycling extends LinearOpMode {
                     slowMoveSpeed = 1;
                     slowMovedDistance = 2;
                     thetaDeccelerationDegree = 2;
-                    thetaTargetSpeed = 1;
-                    xSetpoint = startPointX + 10;
-                    ySetpoint = startPointY - 10;
+                    thetaTargetSpeed = 4.5;
+                    xSetpoint = startPointX + 13;
+                    ySetpoint = startPointY - 7;
                     thetaSetpoint = 0;
                     targetSpeed = 10;
                     stuckFixTimer = getRuntime();
                     stuckOne = 1;
+                    VPivotSetpoint = 750;
                 }
                 if(stuckFixTimer + 3 < getRuntime()){
                     action = preStuckAction;
                     oneLoop = 0;
                     stuckOne = 0;
                     stuckStart = getRuntime();
+                    YChangingSet = OdoClass.odoYReturn();
+                    VPivotSetpoint = 400;
                 }
             }
 
@@ -518,7 +538,7 @@ public class BlueWarehouseCycling extends LinearOpMode {
             }
             if(action == 2 && lastAction != 2){
 
-                YChangingSet = YChangingSet - .2;
+                YChangingSet = YChangingSet - .55;
                 rotateIntake = rotateIntake + 100;
             }
             if(SpeedClass.CurrentSpeed() < 1  && targetSpeed > 5){
@@ -544,7 +564,7 @@ public class BlueWarehouseCycling extends LinearOpMode {
                 }
             }
 
-            lastAction = action;
+
             stuckOneLoopDelay = 0;
 
             //Runs all of our equations each loop cycle
