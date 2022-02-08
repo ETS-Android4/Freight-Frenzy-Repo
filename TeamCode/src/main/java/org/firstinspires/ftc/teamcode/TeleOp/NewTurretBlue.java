@@ -151,6 +151,9 @@ public class NewTurretBlue extends LinearOpMode{
                 } else {
                     robot.TC_M.setPower(-.786);
                 }
+            }else{
+                robot.TC_M.setPower(0);
+                oneLoop = false;
             }
 
 
