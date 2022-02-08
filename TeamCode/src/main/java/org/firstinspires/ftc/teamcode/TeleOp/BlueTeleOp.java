@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.TurretClasses.TurretCombined;
 
 @Config
 @TeleOp
-public class NewTurretBlue extends LinearOpMode{
+public class BlueTeleOp extends LinearOpMode{
 
 
 
@@ -23,7 +23,7 @@ public class NewTurretBlue extends LinearOpMode{
     double teleOpExtendSet = 200, teleOpRotateSet = 0, teleOpVPivotSet = 1000;
     double intakeVPivotSet = 480, intakeRotateSet = 0, intakeExtendSet = 275;
     double teleOpExtendSpeedSet = 30, teleOpRotateSpeedSet = 2000, teleOpVPivotSpeedSet = 18;
-    double lastDS = 5, timeStart = 0;
+    double lastDS = 5, timeStart = 0, CarouselMotor = 0;
     boolean oneLoop = false;
 
 
@@ -143,12 +143,13 @@ public class NewTurretBlue extends LinearOpMode{
                     oneLoop = true;
                 }
                 if (getRuntime() - timeStart < .786) {
-                    robot.TC_M.setPower(-.588);
+                    CarouselMotor = (getRuntime() - timeStart / 1) * -.5;
+
                 } else {
-                    robot.TC_M.setPower(-.786);
+                    CarouselMotor = -.786;
                 }
             }else{
-                robot.TC_M.setPower(0);
+                CarouselMotor = 0;
                 oneLoop = false;
             }
 
