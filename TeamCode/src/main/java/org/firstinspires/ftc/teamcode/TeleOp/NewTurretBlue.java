@@ -23,8 +23,8 @@ public class NewTurretBlue extends LinearOpMode{
     double teleOpExtendSet = 200, teleOpRotateSet = 0, teleOpVPivotSet = 1000;
     double intakeVPivotSet = 480, intakeRotateSet = 0, intakeExtendSet = 275;
     double teleOpExtendSpeedSet = 30, teleOpRotateSpeedSet = 2000, teleOpVPivotSpeedSet = 18;
-    double lastDS = 5;
-
+    double lastDS = 5, timeStart = 0;
+    boolean oneLoop = false;
 
 
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
@@ -71,17 +71,7 @@ public class NewTurretBlue extends LinearOpMode{
             }
 
 
-            if(gamepad2.left_bumper){//Carousel trigger to let us use buttons more than once
-                if(gamepad2.b){
-                    robot.TC_M.setPower(0);
-                }else if(gamepad2.a){
-                    robot.TC_M.setPower(-.4);
-                }else if(gamepad2.x){
-                    robot.TC_M.setPower(-1);
-                }else{
-                    robot.TC_M.setPower(robot.TC_M.getPower() + (gamepad2.right_stick_y * .01));
-                }
-            }else{//regular game functions for the intake of the turret
+
                 if(gamepad1.a || gamepad2.a){//intake
                     robot.RI_S.setPower(-.5);
                     robot.LI_S.setPower(.5);
@@ -151,8 +141,21 @@ public class NewTurretBlue extends LinearOpMode{
                     teleOpVPivotSet = teleOpVPivotSet + (gamepad2.left_stick_y * -30);
 
                 }
+            if(gamepad2.right_bumper || gamepad2.left_bumper) {
+                if (oneLoop == false) {
+                    timeStart = getRuntime();
+                    oneLoop = true;
+                }
+                if (getRuntime() - timeStart < .786) {
+                    robot.TC_M.setPower(-.588);
+                } else {
+                    robot.TC_M.setPower(-.786);
+                }
             }
-            //if we have a freight in our intake we raise up our arm
+
+
+
+                //if we have a freight in our intake we raise up our arm
             if(robot.I_DS.getDistance(DistanceUnit.INCH) < 1 && teleOpVPivotSet < 650 && Math.abs(intakeRotateSet - CombinedTurret.rotateModifiedEncoder) < 100){
                 teleOpVPivotSet = 650;
             }
