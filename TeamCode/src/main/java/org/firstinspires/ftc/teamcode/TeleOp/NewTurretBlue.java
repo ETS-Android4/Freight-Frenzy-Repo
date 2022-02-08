@@ -82,10 +82,6 @@ public class NewTurretBlue extends LinearOpMode{
                     robot.RI_S.setPower(0);
                     robot.LI_S.setPower(0);
                 }
-                if(lastDS > 1 && robot.I_DS.getDistance(DistanceUnit.INCH) < 1 && robot.RI_S.getPower() > 0){//shutting down the intake once we have a piece of freight in our intake
-                    robot.RI_S.setPower(0);
-                    robot.LI_S.setPower(0);
-                }//TODO fix this so it works
 
                                 //turret Presets
                 if(gamepad2.y){//Resetting our intake position in case of any encoder drift
@@ -115,14 +111,14 @@ public class NewTurretBlue extends LinearOpMode{
 
                     }
                 }else if(gamepad2.dpad_left){//Shared shipping hub intake position
-                    teleOpVPivotSet = 1000;
-                    if (CombinedTurret.vPivotModifiedEncoder > 800) {
-                        teleOpRotateSet = intakeRotateSet -1000;
+                    teleOpVPivotSet = 900;
+                    if (CombinedTurret.vPivotModifiedEncoder > 700) {
+                        teleOpRotateSet = intakeRotateSet -2000;
                         teleOpExtendSet = 0;
                     }
 
                 }else if(gamepad2.dpad_up){//Mid alliance hub scoring position
-                    teleOpVPivotSet = 1200;
+                    teleOpVPivotSet = 1300;
                     if (CombinedTurret.vPivotModifiedEncoder > 1000) {
                         teleOpRotateSet = intakeRotateSet + 1300;
                         if(CombinedTurret.rotateModifiedEncoder > 700) {
@@ -159,8 +155,8 @@ public class NewTurretBlue extends LinearOpMode{
 
 
                 //if we have a freight in our intake we raise up our arm
-            if(robot.I_DS.getDistance(DistanceUnit.INCH) < 1 && teleOpVPivotSet < 650 && Math.abs(intakeRotateSet - CombinedTurret.rotateModifiedEncoder) < 100){
-                teleOpVPivotSet = 650;
+            if(robot.I_DS.getDistance(DistanceUnit.INCH) < 1 && teleOpVPivotSet < 550 && Math.abs(intakeRotateSet - CombinedTurret.rotateModifiedEncoder) < 100){
+                teleOpVPivotSet = 550;
             }
             //setpoint limits
             if(teleOpVPivotSet > 2600){

@@ -412,7 +412,9 @@ public class BlueWarehouseCycling extends LinearOpMode {
                     rightIntakeSet = 0;
                 }
 
-
+                if(DirectionClass.distanceFromReturn() < 1){
+                    StopMotors();
+                }
 
                 VPivotSetpoint = 1485;
 
