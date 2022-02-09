@@ -26,7 +26,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 @Autonomous
-public class BlueWarehouseCycling extends LinearOpMode {
+public class RedWarehouseCycling extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     SpeedClass SpeedClass = new SpeedClass();
     DirectionCalcClass DirectionClass = new DirectionCalcClass();
@@ -201,7 +201,7 @@ public class BlueWarehouseCycling extends LinearOpMode {
             lastAction = action;
             if(action == 1) {//dropping in correct level
                 if (TSEPos == 3) {
-                    rotateSetpoint = 1400;
+                    rotateSetpoint = -1400;
                     extendSetpoint = 0;
                     VPivotSetpoint = 1450;
                     if (DirectionClass.distanceFromReturn() <= .7) {
@@ -228,7 +228,7 @@ public class BlueWarehouseCycling extends LinearOpMode {
                         }
                     }
                 }else if (TSEPos == 2) {
-                    rotateSetpoint = 1400;
+                    rotateSetpoint = -1400;
                     extendSetpoint = 0;
                     VPivotSetpoint = 1200;
                     if (DirectionClass.distanceFromReturn() <= .7) {
@@ -255,7 +255,7 @@ public class BlueWarehouseCycling extends LinearOpMode {
                         }
                     }
                 }else if (TSEPos == 1) {
-                    rotateSetpoint = 1400;
+                    rotateSetpoint = -1400;
                     extendSetpoint = 0;
                     VPivotSetpoint = 950;
                     if (DirectionClass.distanceFromReturn() <= .7) {
@@ -288,7 +288,7 @@ public class BlueWarehouseCycling extends LinearOpMode {
                 extendSpeed = 40;
                 if(CombinedTurret.extendModifiedEncoder < 600){
                     if(intakeCounter > 2){
-                        rotateSetpoint = 250;
+                        rotateSetpoint = -250;
                         extendSetpoint = 325;
 
                     }else{
@@ -419,8 +419,8 @@ public class BlueWarehouseCycling extends LinearOpMode {
                 VPivotSetpoint = 1485;
 
                 if ((CombinedTurret.vPivotModifiedEncoder >= 875)) {
-                    rotateSetpoint = 1400;
-                    if(CombinedTurret.rotateModifiedEncoder > 1000){
+                    rotateSetpoint = -1400;
+                    if(CombinedTurret.rotateModifiedEncoder < -1000){
                         extendSetpoint = 1250;
                     }
                     if ((CombinedTurret.extendModifiedEncoder <= 1300 && CombinedTurret.extendModifiedEncoder >= 1200) && DirectionClass.distanceFromReturn() <= 2) {
@@ -486,7 +486,7 @@ public class BlueWarehouseCycling extends LinearOpMode {
                     thetaDeccelerationDegree = 2;
                     thetaTargetSpeed = 4.5;
                     xSetpoint = startPointX - 13;
-                    ySetpoint = startPointY - 7;
+                    ySetpoint = startPointY + 7;
                     thetaSetpoint = 0;
                     targetSpeed = 10;
                     stuckFixTimer = getRuntime();
@@ -515,7 +515,7 @@ public class BlueWarehouseCycling extends LinearOpMode {
                     thetaDeccelerationDegree = 2;
                     thetaTargetSpeed = 4.5;
                     xSetpoint = startPointX + 13;
-                    ySetpoint = startPointY - 7;
+                    ySetpoint = startPointY + 7;
                     thetaSetpoint = 0;
                     targetSpeed = 10;
                     stuckFixTimer = getRuntime();
@@ -540,8 +540,7 @@ public class BlueWarehouseCycling extends LinearOpMode {
             }
             if(action == 2 && lastAction != 2){
 
-                YChangingSet = YChangingSet - .55;
-                rotateIntake = rotateIntake + 100;
+                YChangingSet = YChangingSet - 0;
             }
             if(SpeedClass.CurrentSpeed() < 1  && targetSpeed > 5){
                 if(stuckTiggerOne == 0){

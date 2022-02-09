@@ -100,14 +100,18 @@ public class RedTeleOp extends LinearOpMode{
 
                     if (Math.abs(intakeRotateSet - CombinedTurret.rotateModifiedEncoder) < 150 && Math.abs(intakeExtendSet - CombinedTurret.extendModifiedEncoder) < 100) {
                         teleOpVPivotSet = intakeVPivotSet;
-                    }
-                    if (CombinedTurret.vPivotModifiedEncoder > 800) {
-                        if(Math.abs(intakeExtendSet - CombinedTurret.extendModifiedEncoder) < 800){
-                            teleOpRotateSet = intakeRotateSet;
-                        }
-                        teleOpExtendSet = intakeExtendSet;
+                    }else{
+                        if (CombinedTurret.vPivotModifiedEncoder > 800) {
+                            if(Math.abs(intakeExtendSet - CombinedTurret.extendModifiedEncoder) < 800){
+                                teleOpRotateSet = intakeRotateSet;
+                            }
+                            teleOpExtendSet = intakeExtendSet;
 
+                        }else{
+                            teleOpVPivotSet = 900;
+                        }
                     }
+
                 }else if(gamepad2.dpad_left){//Shared shipping hub intake position
                     teleOpVPivotSet = 900;
                     if (CombinedTurret.vPivotModifiedEncoder > 700) {
@@ -136,15 +140,19 @@ public class RedTeleOp extends LinearOpMode{
 
                 }
             if(gamepad2.right_bumper || gamepad2.left_bumper) {
+                teleOpVPivotSet = 2550;
+                if(CombinedTurret.vPivotModifiedEncoder > 800){
+                    teleOpExtendSet = 0;
+                }
                 if (oneLoop == false) {
                     timeStart = getRuntime();
                     oneLoop = true;
                 }
-                if (getRuntime() - timeStart < .786) {
-                    CarouselMotor = (getRuntime() - timeStart / 1) * .5;
+                if (getRuntime() - timeStart < 1) {
+                    CarouselMotor = ((getRuntime() - timeStart) / .5) * .4;
 
                 } else {
-                    CarouselMotor = .786;
+                    CarouselMotor = 1;
                 }
             }else{
                 robot.TC_M.setPower(0);
