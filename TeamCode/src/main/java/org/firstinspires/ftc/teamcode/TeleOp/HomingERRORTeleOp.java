@@ -12,16 +12,16 @@ import org.firstinspires.ftc.teamcode.TurretClasses.TurretCombined;
 
 @Config
 @TeleOp
-public class RedTeleOp extends LinearOpMode{
+public class HomingERRORTeleOp extends LinearOpMode{
 
 
 
     public double x, y, z;
 
-    double teleOpExtendSet = 200, teleOpRotateSet = 0, teleOpVPivotSet = 1000;
+    double teleOpExtendSet = 0, teleOpRotateSet = 0, teleOpVPivotSet = 0;
     double intakeVPivotSet = 480, intakeRotateSet = 0, intakeExtendSet = 275;
     double teleOpExtendSpeedSet = 30, teleOpRotateSpeedSet = 2000, teleOpVPivotSpeedSet = 18;
-    double lastDS = 5, timeStart = 0, CarouselMotor;
+    double lastDS = 5, timeStart = 0, CarouselMotor = 0;
     boolean oneLoop = false;
 
 
@@ -37,13 +37,13 @@ public class RedTeleOp extends LinearOpMode{
     public void runOpMode(){
         robot.init(hardwareMap);
 
-
+    CombinedTurret.turretHomingTrigger = false;
 
         waitForStart();
 
         while (opModeIsActive()){
 
-
+            CombinedTurret.turretHomingTrigger = false;
 
 
 
@@ -81,54 +81,8 @@ public class RedTeleOp extends LinearOpMode{
                     robot.LI_S.setPower(0);
                 }
 
-                                //turret Presets
-                if(gamepad2.y){//Resetting our intake position in case of any encoder drift
-                    intakeVPivotSet = CombinedTurret.vPivotModifiedEncoder;
-                    intakeExtendSet = CombinedTurret.extendModifiedEncoder;
-                    intakeRotateSet = CombinedTurret.rotateModifiedEncoder;
-
-                }else if(gamepad2.dpad_right) {//Alliance hub dropping preset
-                    teleOpVPivotSet = 1600;
-                    if (CombinedTurret.vPivotModifiedEncoder > 1000) {
-                        teleOpRotateSet = intakeRotateSet - 1300;
-                        if(intakeRotateSet + CombinedTurret.rotateModifiedEncoder < -700) {
-                            teleOpExtendSet = 1200;
-                        }
-                    }
-                }else if(gamepad2.dpad_down) {//Intake position
 
 
-                    if (Math.abs(intakeRotateSet - CombinedTurret.rotateModifiedEncoder) < 150 && Math.abs(intakeExtendSet - CombinedTurret.extendModifiedEncoder) < 100) {
-                        teleOpVPivotSet = intakeVPivotSet;
-                    }else{
-                        if (CombinedTurret.vPivotModifiedEncoder > 800) {
-                            if(Math.abs(intakeExtendSet - CombinedTurret.extendModifiedEncoder) < 800){
-                                teleOpRotateSet = intakeRotateSet;
-                            }
-                            teleOpExtendSet = intakeExtendSet;
-
-                        }else{
-                            teleOpVPivotSet = 900;
-                        }
-                    }
-
-                }else if(gamepad2.dpad_left){//Shared shipping hub intake position
-                    teleOpVPivotSet = 900;
-                    if (CombinedTurret.vPivotModifiedEncoder > 700) {
-                        teleOpRotateSet = intakeRotateSet + 2000;
-                        teleOpExtendSet = 0;
-                    }
-
-                }else if(gamepad2.dpad_up){//Mid alliance hub scoring position
-                    teleOpVPivotSet = 1300;
-                    if (CombinedTurret.vPivotModifiedEncoder > 1000) {
-                        teleOpRotateSet = intakeRotateSet - 1300;
-                        if(intakeRotateSet + CombinedTurret.rotateModifiedEncoder < -700) {
-                            teleOpExtendSet = 900;
-                        }
-                    }
-
-                } else{//manual turret position setting
                     teleOpExtendSet = teleOpExtendSet - (gamepad2.right_stick_y * 50);
                     if(gamepad2.right_trigger > .05){
                         teleOpRotateSet = teleOpRotateSet + (gamepad2.right_trigger * 40);
@@ -138,7 +92,7 @@ public class RedTeleOp extends LinearOpMode{
 
                     teleOpVPivotSet = teleOpVPivotSet + (gamepad2.left_stick_y * -30);
 
-                }
+
             if(gamepad2.right_bumper || gamepad2.left_bumper) {
                 teleOpVPivotSet = 2550;
                 if(CombinedTurret.vPivotModifiedEncoder > 800){
@@ -149,40 +103,16 @@ public class RedTeleOp extends LinearOpMode{
                     oneLoop = true;
                 }
                 if (getRuntime() - timeStart < 1) {
-                    CarouselMotor = ((getRuntime() - timeStart) / .5) * .4;
+                    CarouselMotor = ((getRuntime() - timeStart) / .5) * -.4;
 
                 } else {
-                    CarouselMotor = 1;
+                    CarouselMotor = -.8;
                 }
             }else{
-                robot.TC_M.setPower(0);
+                CarouselMotor = 0;
                 oneLoop = false;
             }
 
-
-
-                //if we have a freight in our intake we raise up our arm
-            if(robot.I_DS.getDistance(DistanceUnit.INCH) < 1 && teleOpVPivotSet < 550 && Math.abs(intakeRotateSet - CombinedTurret.rotateModifiedEncoder) < 100){
-                teleOpVPivotSet = 550;
-            }
-            //setpoint limits
-            if(teleOpVPivotSet > 2600){
-                teleOpVPivotSet = 2600;
-            }else if(teleOpVPivotSet < 100){
-                teleOpVPivotSet = 100;
-            }
-
-            if(teleOpExtendSet > 1250){
-                teleOpExtendSet = 1250;
-            }if(teleOpExtendSet < 0){
-                teleOpExtendSet = 0;
-            }
-
-            if(teleOpRotateSet > 5000){
-                teleOpRotateSet = 5000;
-            }else if(teleOpRotateSet < -5000){
-                teleOpRotateSet = -5000;
-            }
 
             CombinedTurret.TurretCombinedMethod(teleOpExtendSet,teleOpExtendSpeedSet,teleOpRotateSet,teleOpRotateSpeedSet, teleOpVPivotSet,teleOpVPivotSpeedSet, robot.TE_M.getCurrentPosition(), robot.TE_G.getState(), robot.TR_M.getCurrentPosition(), robot.TR_G.getState(), robot.TP_M.getCurrentPosition(), robot.TP_G.getState());
 
@@ -198,14 +128,14 @@ public class RedTeleOp extends LinearOpMode{
     }
     public void Telemetry(){
 
-        //  dashboardTelemetry.addData("vPivotMotor Power", CombinedTurret.vPivotFinalMotorPower);
-        //  dashboardTelemetry.addData("vPivot Modified Encoder", CombinedTurret.vPivotModifiedEncoder);
+      //  dashboardTelemetry.addData("vPivotMotor Power", CombinedTurret.vPivotFinalMotorPower);
+      //  dashboardTelemetry.addData("vPivot Modified Encoder", CombinedTurret.vPivotModifiedEncoder);
 
-        //  dashboardTelemetry.addData("extend Motor Power", CombinedTurret.extendFinalMotorPower);
-        //  dashboardTelemetry.addData("extend speed", CombinedTurret.extendSpeed);
-        //  dashboardTelemetry.addData("extend Modified Encoder", CombinedTurret.extendModifiedEncoder);
-        //  dashboardTelemetry.addData("extend Set", CombinedTurret.extendSet);
-        //  dashboardTelemetry.addData("turret Homing trigger", CombinedTurret.turretHomingTrigger);
+      //  dashboardTelemetry.addData("extend Motor Power", CombinedTurret.extendFinalMotorPower);
+      //  dashboardTelemetry.addData("extend speed", CombinedTurret.extendSpeed);
+      //  dashboardTelemetry.addData("extend Modified Encoder", CombinedTurret.extendModifiedEncoder);
+      //  dashboardTelemetry.addData("extend Set", CombinedTurret.extendSet);
+      //  dashboardTelemetry.addData("turret Homing trigger", CombinedTurret.turretHomingTrigger);
 
         telemetry.addData("intake Dist", robot.I_DS.getDistance(DistanceUnit.INCH));
         telemetry.addData("rotate set", CombinedTurret.rotateSet);
@@ -216,7 +146,7 @@ public class RedTeleOp extends LinearOpMode{
         telemetry.addData("carousel timer", getRuntime() - timeStart);
 
 
-        //   dashboardTelemetry.update();
+     //   dashboardTelemetry.update();
         telemetry.update();
     }
 
