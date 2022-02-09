@@ -13,8 +13,8 @@ import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.SpeedClass;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.TestCode.Just_DrivetrainHardware;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.TurnControl;
 
-@Autonomous
-@Config
+//@Autonomous
+//@Config
 public class DiamondPattern extends LinearOpMode {
     Just_DrivetrainHardware robot = new Just_DrivetrainHardware();
     SpeedClass SpeedCalc = new SpeedClass();

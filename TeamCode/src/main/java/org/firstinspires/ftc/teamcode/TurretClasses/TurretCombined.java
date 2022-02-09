@@ -53,7 +53,7 @@ public class TurretCombined {
                 vPivotSpeedSet = 10;
             }
             if(VPivotMag == false && lastVPivotMag == true){
-                vPivotModifiedEncoder = 1200;
+                vPivotModifiedEncoder = 1600;
                 vPivotSet = 1500;
                 vPivotIsHomed = true;
             }

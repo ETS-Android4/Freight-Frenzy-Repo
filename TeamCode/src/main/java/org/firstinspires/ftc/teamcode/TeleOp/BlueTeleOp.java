@@ -211,6 +211,8 @@ public class BlueTeleOp extends LinearOpMode{
 
         telemetry.addData("intake Dist", robot.I_DS.getDistance(DistanceUnit.INCH));
         telemetry.addData("rotate set", CombinedTurret.rotateSet);
+        telemetry.addData("VPivot Mod Encoder", CombinedTurret.vPivotModifiedEncoder);
+        telemetry.addData("extend Mod Encoder", CombinedTurret.extendModifiedEncoder);
         telemetry.addData("rotate mod encoder", CombinedTurret.rotateModifiedEncoder);
         telemetry.addData("rotate RAW Encoder", robot.TR_M.getCurrentPosition());
         telemetry.addData("carousel timer", getRuntime() - timeStart);

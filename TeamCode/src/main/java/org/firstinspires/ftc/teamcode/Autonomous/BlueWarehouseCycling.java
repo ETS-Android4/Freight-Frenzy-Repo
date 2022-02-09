@@ -79,7 +79,7 @@ public class BlueWarehouseCycling extends LinearOpMode {
     public static double MINSPEED = .2;
     public static double SETPOINT = 1500;
     double TSERegionThreshold = 100;
-    double IntakeXSetpoint = 44;
+    double IntakeXSetpoint = 40;
     double YChangingSet = 1;
     double oneLoop = 0;
     boolean hasColorSenssors = false;
@@ -286,18 +286,10 @@ public class BlueWarehouseCycling extends LinearOpMode {
                 //setting the intake position using a safe path to prevent collisions
                 extendSetpoint = 275;
                 extendSpeed = 40;
-                if(CombinedTurret.extendModifiedEncoder < 600){
-                    if(intakeCounter > 2){
-                        rotateSetpoint = 250;
-                        extendSetpoint = 325;
 
-                    }else{
-                        rotateSetpoint = 0;
-                        extendSetpoint = 275;
-                    }
-                    rotateSpeed = 2300;
+                rotateSetpoint = 0;
+                extendSetpoint = 275;
 
-                }
 
                 if(Math.abs(extendSetpoint - CombinedTurret.extendModifiedEncoder) < 300 && Math.abs(rotateSetpoint - CombinedTurret.rotateModifiedEncoder) < 450){
                     VPivotSetpoint = 400;
@@ -317,7 +309,7 @@ public class BlueWarehouseCycling extends LinearOpMode {
                     slowMovedDistance = 6;
                     xSetpoint = 34;
                     ySetpoint = YChangingSet;
-                    targetSpeed = 35;
+                    targetSpeed = 40;
                     oneLoop = 1;
                     action2TimeSafe = getRuntime();
 
@@ -358,14 +350,27 @@ public class BlueWarehouseCycling extends LinearOpMode {
                     slowMovedDistance = 6;
                     xSetpoint = IntakeXSetpoint;
                     ySetpoint = YChangingSet;
-                    targetSpeed = 10;
+                    targetSpeed = 5;
                     leftIntakeSet = .5;
                     rightIntakeSet = -.5;
                     oneLoop = 1;
                 }
 
-                if(DirectionClass.distanceFromReturn() <= .5 && breakout == 1 && (robot.I_DS.getDistance(DistanceUnit.INCH) > 1)){
-                    xSetpoint = xSetpoint + .5;
+                    if(intakeCounter > 2){
+                        rotateSetpoint = 250;
+                        extendSetpoint = 325;
+                        VPivotSetpoint = 460;
+
+                    }else{
+                        rotateSetpoint = 0;
+                        extendSetpoint = 275;
+                    }
+                    rotateSpeed = 2300;
+
+
+
+                if(DirectionClass.distanceFromReturn() <= 1.5 && breakout == 1 && (robot.I_DS.getDistance(DistanceUnit.INCH) > 1)){
+                    xSetpoint = xSetpoint + .2;
                 }
 
                 if(robot.I_DS.getDistance(DistanceUnit.INCH) < 1 && breakout == 1){
@@ -395,12 +400,12 @@ public class BlueWarehouseCycling extends LinearOpMode {
             } else if (action == 5) {//dropping freight in top goal
                 thetaSetpoint = 0;
                 accelerationDistance = 0;
-                decelerationDistance = 25;
-                slowMoveSpeed = 1;
-                slowMovedDistance = 3;
-                thetaDeccelerationDegree = 2;
+                decelerationDistance = 20;
+                slowMoveSpeed = .5;
+                slowMovedDistance = 4;
+                thetaDeccelerationDegree = 3;
                 thetaTargetSpeed = 4.5;
-                xSetpoint = 2;
+                xSetpoint = 1.5;
                 ySetpoint = YChangingSet;
                 thetaSetpoint = 0;
                 targetSpeed = 40;
@@ -421,9 +426,9 @@ public class BlueWarehouseCycling extends LinearOpMode {
                 if ((CombinedTurret.vPivotModifiedEncoder >= 875)) {
                     rotateSetpoint = 1400;
                     if(CombinedTurret.rotateModifiedEncoder > 1000){
-                        extendSetpoint = 1250;
+                        extendSetpoint = 1200;
                     }
-                    if ((CombinedTurret.extendModifiedEncoder <= 1300 && CombinedTurret.extendModifiedEncoder >= 1200) && DirectionClass.distanceFromReturn() <= 2) {
+                    if ((CombinedTurret.extendModifiedEncoder <= 1300 && CombinedTurret.extendModifiedEncoder >= 1150) && DirectionClass.distanceFromReturn() <= 2) {
                         if (loopcount == 0) {
                             loopcount = 1;
                             timepassed = getRuntime() + 4;

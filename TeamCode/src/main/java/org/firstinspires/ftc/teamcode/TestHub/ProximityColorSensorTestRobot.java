@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@TeleOp
+//@TeleOp
 public class ProximityColorSensorTestRobot extends LinearOpMode {
 
     TestHubHardware robot = new TestHubHardware();

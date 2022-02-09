@@ -91,7 +91,7 @@ public class RedTeleOp extends LinearOpMode{
                     teleOpVPivotSet = 1600;
                     if (CombinedTurret.vPivotModifiedEncoder > 1000) {
                         teleOpRotateSet = intakeRotateSet - 1300;
-                        if(intakeRotateSet - CombinedTurret.rotateModifiedEncoder < -700) {
+                        if(intakeRotateSet + CombinedTurret.rotateModifiedEncoder < -700) {
                             teleOpExtendSet = 1200;
                         }
                     }
@@ -123,7 +123,7 @@ public class RedTeleOp extends LinearOpMode{
                     teleOpVPivotSet = 1300;
                     if (CombinedTurret.vPivotModifiedEncoder > 1000) {
                         teleOpRotateSet = intakeRotateSet - 1300;
-                        if(intakeRotateSet - CombinedTurret.rotateModifiedEncoder < -700) {
+                        if(intakeRotateSet + CombinedTurret.rotateModifiedEncoder < -700) {
                             teleOpExtendSet = 900;
                         }
                     }

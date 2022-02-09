@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoClasses.Odometry;
 import org.firstinspires.ftc.teamcode.GeneralRobotCode.FreightFrenzyHardwareMap;
 
-@TeleOp
+//@TeleOp
 public class EncoderTest extends LinearOpMode {
     Odometry OdoClass = new Odometry();
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();

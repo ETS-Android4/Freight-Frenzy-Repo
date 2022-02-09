@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.GeneralRobotCode.FreightFrenzyHardwareMap;
 
-@Autonomous
+//@Autonomous
 public class ColorSensorTestRobot extends LinearOpMode {
 
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();

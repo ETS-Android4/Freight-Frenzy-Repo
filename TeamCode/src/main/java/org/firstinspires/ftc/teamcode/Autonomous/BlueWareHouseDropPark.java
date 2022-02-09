@@ -25,7 +25,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-@Autonomous
+//@Autonomous
 public class BlueWareHouseDropPark extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     SpeedClass SpeedClass = new SpeedClass();

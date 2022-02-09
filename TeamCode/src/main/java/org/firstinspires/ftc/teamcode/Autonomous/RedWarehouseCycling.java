@@ -25,7 +25,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-@Autonomous
+//@Autonomous
 public class RedWarehouseCycling extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     SpeedClass SpeedClass = new SpeedClass();
@@ -79,8 +79,8 @@ public class RedWarehouseCycling extends LinearOpMode {
     public static double MINSPEED = .2;
     public static double SETPOINT = 1500;
     double TSERegionThreshold = 100;
-    double IntakeXSetpoint = 44;
-    double YChangingSet = 1;
+    double IntakeXSetpoint = 40;
+    double YChangingSet = -1;
     double oneLoop = 0;
     boolean hasColorSenssors = false;
     double action2TimeSafe;
@@ -99,7 +99,7 @@ public class RedWarehouseCycling extends LinearOpMode {
     public void runOpMode() {
         robot.init(hardwareMap);
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 2"), cameraMonitorViewId);
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
 
         //allows to call pipline
         pipeline = new OpenCVPipeline();
@@ -126,12 +126,12 @@ public class RedWarehouseCycling extends LinearOpMode {
 
             VPivotSetpoint = 900;
             VPivotSpeed = 10;
-            if(Math.abs(0 - CombinedTurret.extendModifiedEncoder) < 50 && Math.abs(400 - CombinedTurret.rotateModifiedEncoder) < 50){
+            if(Math.abs(0 - CombinedTurret.extendModifiedEncoder) < 50 && Math.abs(-600 - CombinedTurret.rotateModifiedEncoder) < 50){
                 VPivotSetpoint = 570;
             }else if(VPivotSetpoint > 850){
                 extendSetpoint = -30;
                 extendSpeed = 15;
-                rotateSetpoint = 420;
+                rotateSetpoint = -620;
                 rotateSpeed = 1000;
             }
 
@@ -145,10 +145,10 @@ public class RedWarehouseCycling extends LinearOpMode {
                 TSERegionThreshold = TSERegionThreshold - 1;
             }
             if (pipeline.region1Avg() <= TSERegionThreshold) {
-                TSEPos = 2;
+                TSEPos = 3;
                 telemetry.addData("TSE", 2);
             } else if (pipeline.region2Avg() <= TSERegionThreshold) {
-                TSEPos = 3;
+                TSEPos = 2;
                 telemetry.addData("TSE", 3);
             } else {
                 TSEPos = 1;
@@ -201,7 +201,7 @@ public class RedWarehouseCycling extends LinearOpMode {
             lastAction = action;
             if(action == 1) {//dropping in correct level
                 if (TSEPos == 3) {
-                    rotateSetpoint = -1400;
+                    rotateSetpoint = -1500;
                     extendSetpoint = 0;
                     VPivotSetpoint = 1450;
                     if (DirectionClass.distanceFromReturn() <= .7) {
@@ -228,7 +228,7 @@ public class RedWarehouseCycling extends LinearOpMode {
                         }
                     }
                 }else if (TSEPos == 2) {
-                    rotateSetpoint = -1400;
+                    rotateSetpoint = -1500;
                     extendSetpoint = 0;
                     VPivotSetpoint = 1200;
                     if (DirectionClass.distanceFromReturn() <= .7) {
@@ -255,7 +255,7 @@ public class RedWarehouseCycling extends LinearOpMode {
                         }
                     }
                 }else if (TSEPos == 1) {
-                    rotateSetpoint = -1400;
+                    rotateSetpoint = -1500;
                     extendSetpoint = 0;
                     VPivotSetpoint = 950;
                     if (DirectionClass.distanceFromReturn() <= .7) {
@@ -286,18 +286,10 @@ public class RedWarehouseCycling extends LinearOpMode {
                 //setting the intake position using a safe path to prevent collisions
                 extendSetpoint = 275;
                 extendSpeed = 40;
-                if(CombinedTurret.extendModifiedEncoder < 600){
-                    if(intakeCounter > 2){
-                        rotateSetpoint = -250;
-                        extendSetpoint = 325;
+                rotateSetpoint = 0;
+                extendSetpoint = 275;
+                rotateSpeed = 2300;
 
-                    }else{
-                        rotateSetpoint = 0;
-                        extendSetpoint = 275;
-                    }
-                    rotateSpeed = 2300;
-
-                }
 
                 if(Math.abs(extendSetpoint - CombinedTurret.extendModifiedEncoder) < 300 && Math.abs(rotateSetpoint - CombinedTurret.rotateModifiedEncoder) < 450){
                     VPivotSetpoint = 400;
@@ -358,14 +350,27 @@ public class RedWarehouseCycling extends LinearOpMode {
                     slowMovedDistance = 6;
                     xSetpoint = IntakeXSetpoint;
                     ySetpoint = YChangingSet;
-                    targetSpeed = 10;
+                    targetSpeed = 5;
                     leftIntakeSet = .5;
                     rightIntakeSet = -.5;
                     oneLoop = 1;
                 }
+                if(CombinedTurret.extendModifiedEncoder < 600){
+                    if(intakeCounter > 2){
+                        rotateSetpoint = -400;
+                        extendSetpoint = 335;
+                        VPivotSetpoint = 450;
+
+                    } else if (intakeCounter > 2) {
+                        rotateSetpoint = -250;
+                        extendSetpoint = 325;
+                        VPivotSetpoint = 450;
+                    }
+
+                }
 
                 if(DirectionClass.distanceFromReturn() <= .5 && breakout == 1 && (robot.I_DS.getDistance(DistanceUnit.INCH) > 1)){
-                    xSetpoint = xSetpoint + .5;
+                    xSetpoint = xSetpoint + .2;
                 }
 
                 if(robot.I_DS.getDistance(DistanceUnit.INCH) < 1 && breakout == 1){
@@ -400,7 +405,7 @@ public class RedWarehouseCycling extends LinearOpMode {
                 slowMovedDistance = 3;
                 thetaDeccelerationDegree = 2;
                 thetaTargetSpeed = 4.5;
-                xSetpoint = 2;
+                xSetpoint = -1;
                 ySetpoint = YChangingSet;
                 thetaSetpoint = 0;
                 targetSpeed = 40;
@@ -419,7 +424,7 @@ public class RedWarehouseCycling extends LinearOpMode {
                 VPivotSetpoint = 1485;
 
                 if ((CombinedTurret.vPivotModifiedEncoder >= 875)) {
-                    rotateSetpoint = -1400;
+                    rotateSetpoint = -1500;
                     if(CombinedTurret.rotateModifiedEncoder < -1000){
                         extendSetpoint = 1250;
                     }
@@ -540,7 +545,7 @@ public class RedWarehouseCycling extends LinearOpMode {
             }
             if(action == 2 && lastAction != 2){
 
-                YChangingSet = YChangingSet - 0;
+                YChangingSet = YChangingSet - 0.2;
             }
             if(SpeedClass.CurrentSpeed() < 1  && targetSpeed > 5){
                 if(stuckTiggerOne == 0){
@@ -654,10 +659,10 @@ public class RedWarehouseCycling extends LinearOpMode {
        // static final Scalar PARAKEET = new Scalar(3, 192, 74);
 
        //sets the boxes where we will look
-       static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(260, 255);
+       static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(285, 218);
        static int REGION1_WIDTH = 30;
        static int REGION1_HEIGHT = 80;
-       static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(395, 255);
+       static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(425, 218);
        static final int REGION2_WIDTH = 30;
        static final int REGION2_HEIGHT = 80;
        //static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(430, 260);
