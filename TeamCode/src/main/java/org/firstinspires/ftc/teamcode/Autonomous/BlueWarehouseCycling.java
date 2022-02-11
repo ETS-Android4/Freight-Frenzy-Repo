@@ -89,6 +89,7 @@ public class BlueWarehouseCycling extends LinearOpMode {
     double stuckTimer = 0, stuckStart = 0, preStuckAction = 0, stuckOne = 0, stuckFixTimer, stuckTiggerOne = 0;
     double intakeCounter = 0;
     double stuckOneLoopDelay = 0;
+    double waitStart = 0;
 
     double action;
     double initPOsitionOrder = 1;
@@ -282,7 +283,22 @@ public class BlueWarehouseCycling extends LinearOpMode {
                         }
                     }
                 }
-            }else if(action == 2){
+            }else if(action == .5){
+                if(lastAction != .5){
+                    waitStart = getRuntime();
+                }
+                if(getRuntime() - waitStart > 5){
+                    action = 1;
+                    startPointX = OdoClass.odoXReturn();
+                    startPointY = OdoClass.odoYReturn();
+                    breakout = 0;
+                    oneLoop = 0;
+                    leftIntakeSet = 0;
+                    rightIntakeSet = 0;
+
+                }
+            }
+            else if(action == 2){
                 //setting the intake position using a safe path to prevent collisions
                 extendSetpoint = 275;
                 extendSpeed = 40;
