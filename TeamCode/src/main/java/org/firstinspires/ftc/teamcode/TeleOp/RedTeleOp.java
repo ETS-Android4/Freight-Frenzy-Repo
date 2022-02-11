@@ -88,11 +88,11 @@ public class RedTeleOp extends LinearOpMode{
                     intakeRotateSet = CombinedTurret.rotateModifiedEncoder;
 
                 }else if(gamepad2.dpad_right) {//Alliance hub dropping preset
-                    teleOpVPivotSet = 1600;
+                    teleOpVPivotSet = 1500;
                     if (CombinedTurret.vPivotModifiedEncoder > 1000) {
                         teleOpRotateSet = intakeRotateSet - 1300;
                         if(intakeRotateSet + CombinedTurret.rotateModifiedEncoder < -700) {
-                            teleOpExtendSet = 1200;
+                            teleOpExtendSet = 1100;
                         }
                     }
                 }else if(gamepad2.dpad_down) {//Intake position
@@ -115,12 +115,12 @@ public class RedTeleOp extends LinearOpMode{
                 }else if(gamepad2.dpad_left){//Shared shipping hub intake position
                     teleOpVPivotSet = 900;
                     if (CombinedTurret.vPivotModifiedEncoder > 700) {
-                        teleOpRotateSet = intakeRotateSet + 2000;
+                        teleOpRotateSet = intakeRotateSet + 1200;
                         teleOpExtendSet = 0;
                     }
 
                 }else if(gamepad2.dpad_up){//Mid alliance hub scoring position
-                    teleOpVPivotSet = 1300;
+                    teleOpVPivotSet = 1200;
                     if (CombinedTurret.vPivotModifiedEncoder > 1000) {
                         teleOpRotateSet = intakeRotateSet - 1300;
                         if(intakeRotateSet + CombinedTurret.rotateModifiedEncoder < -700) {
@@ -131,9 +131,9 @@ public class RedTeleOp extends LinearOpMode{
                 } else{//manual turret position setting
                     teleOpExtendSet = teleOpExtendSet - (gamepad2.right_stick_y * 50);
                     if(gamepad2.right_trigger > .05){
-                        teleOpRotateSet = teleOpRotateSet + (gamepad2.right_trigger * 40);
+                        teleOpRotateSet = teleOpRotateSet + Smoothing.SmoothRotate(gamepad2.right_trigger * 40);
                     }else if(gamepad2.left_trigger > .05){
-                        teleOpRotateSet = teleOpRotateSet - (gamepad2.left_trigger * 40);
+                        teleOpRotateSet = teleOpRotateSet - Smoothing.SmoothRotate(gamepad2.left_trigger * 40);
                     }
 
                     teleOpVPivotSet = teleOpVPivotSet + (gamepad2.left_stick_y * -30);
@@ -148,14 +148,14 @@ public class RedTeleOp extends LinearOpMode{
                     timeStart = getRuntime();
                     oneLoop = true;
                 }
-                if (getRuntime() - timeStart < 1) {
-                    CarouselMotor = ((getRuntime() - timeStart) / .5) * .4;
+                if (getRuntime() - timeStart < 1.2) {
+                    CarouselMotor = ((getRuntime() - timeStart) ) * .4;
 
                 } else {
-                    CarouselMotor = 1;
+                    CarouselMotor = .6;
                 }
             }else{
-                robot.TC_M.setPower(0);
+                CarouselMotor = 0;
                 oneLoop = false;
             }
 

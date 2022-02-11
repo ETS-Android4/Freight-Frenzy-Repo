@@ -155,4 +155,38 @@ public class Smoothing {
         return DriveZTotal/7;
 
     }
+
+    double RotateTotal;
+    int RotateArrayNum = 0, RotatefirstLoop = 0;
+    double RotateArray[] = new double[5];
+
+    public double SmoothRotate(double input){
+        if(RotatefirstLoop == 0) {
+            RotatefirstLoop = 1;
+            for (int RotateInitialSet = 0; RotateInitialSet < 5; RotateInitialSet++) {
+                RotateArray[RotateInitialSet] = 0;
+            }
+        }
+        RotateTotal = RotateTotal - RotateArray[RotateArrayNum];
+
+        RotateArray[RotateArrayNum] = input;
+
+        RotateTotal = RotateTotal + RotateArray[RotateArrayNum];
+
+
+        RotateArrayNum = RotateArrayNum + 1;
+        if(RotateArrayNum >= 5){
+            RotateArrayNum = 0;
+        }
+
+        if(Math.abs(input) < .08){
+            for (int RotateInitialSet = 0; RotateInitialSet < 7; RotateInitialSet++) {
+                RotateArray[RotateInitialSet] = 0;
+            }
+            RotateTotal = 0;
+        }
+
+        return RotateTotal/5;
+
+    }
 }

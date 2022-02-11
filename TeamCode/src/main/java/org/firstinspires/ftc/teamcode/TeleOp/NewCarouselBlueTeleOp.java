@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import android.app.admin.DeviceAdminService;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -14,7 +16,8 @@ import org.firstinspires.ftc.teamcode.TurretClasses.TurretCombined;
 
 @Config
 @TeleOp
-public class BlueTeleOp extends LinearOpMode{
+
+public class NewCarouselBlueTeleOp extends LinearOpMode{
 
 
 
@@ -23,15 +26,15 @@ public class BlueTeleOp extends LinearOpMode{
     double teleOpExtendSet = 200, teleOpRotateSet = 0, teleOpVPivotSet = 1000;
     double intakeVPivotSet = 480, intakeRotateSet = 0, intakeExtendSet = 275;
     double teleOpExtendSpeedSet = 30, teleOpRotateSpeedSet = 2000, teleOpVPivotSpeedSet = 18;
-    double lastDS = 5, timeStart = 0, CarouselMotor = 0;
+    double lastDS = 5, timeStart = 0, CarouselMotor = 0, carouselP = .00012, lastTime = 0, lastCarouselE = 0;
     boolean oneLoop = false;
 
 
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     TurretCombined CombinedTurret = new TurretCombined();
     Smoothing Smoothing = new Smoothing();
-  //  FtcDashboard dashboard = FtcDashboard.getInstance();
-  //  Telemetry dashboardTelemetry = dashboard.getTelemetry();
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
 
 
@@ -146,16 +149,19 @@ public class BlueTeleOp extends LinearOpMode{
                 if(CombinedTurret.vPivotModifiedEncoder > 800){
                     teleOpExtendSet = 0;
                 }
+
                 if (oneLoop == false) {
                     timeStart = getRuntime();
                     oneLoop = true;
                 }
-                if (getRuntime() - timeStart < 1.2) {
-                    CarouselMotor = ((getRuntime() - timeStart) ) * -.4;
+                if(getRuntime() - timeStart < 1){
+                    CarouselMotor = CarouselMotor + ((((getRuntime() - timeStart) * -950) - ((robot.TC_M.getCurrentPosition() - lastCarouselE)/(getRuntime() - lastTime))) * carouselP);
 
-                } else {
-                    CarouselMotor = -.6;
+                }else {
+                    CarouselMotor = CarouselMotor + ((-950 - ((robot.TC_M.getCurrentPosition() - lastCarouselE) / (getRuntime() - lastTime))) * carouselP);
                 }
+
+
             }else{
                 CarouselMotor = 0;
                 oneLoop = false;
@@ -195,6 +201,8 @@ public class BlueTeleOp extends LinearOpMode{
 
             Telemetry();
             lastDS = robot.I_DS.getDistance(DistanceUnit.INCH);
+            lastTime = getRuntime();
+            lastCarouselE = robot.TC_M.getCurrentPosition();
         }
 
     }
@@ -216,9 +224,11 @@ public class BlueTeleOp extends LinearOpMode{
         telemetry.addData("rotate mod encoder", CombinedTurret.rotateModifiedEncoder);
         telemetry.addData("rotate RAW Encoder", robot.TR_M.getCurrentPosition());
         telemetry.addData("carousel timer", getRuntime() - timeStart);
+        dashboardTelemetry.addData("carousel Speed", ((robot.TC_M.getCurrentPosition() - lastCarouselE)/(getRuntime() - lastTime)));
+        dashboardTelemetry.addData("carosel motor", CarouselMotor);
 
 
-     //   dashboardTelemetry.update();
+        dashboardTelemetry.update();
         telemetry.update();
     }
 

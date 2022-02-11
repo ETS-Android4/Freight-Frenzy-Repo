@@ -25,7 +25,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-//@Autonomous
+@Autonomous
 public class RedWarehouseCycling extends LinearOpMode {
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     SpeedClass SpeedClass = new SpeedClass();
@@ -145,14 +145,14 @@ public class RedWarehouseCycling extends LinearOpMode {
                 TSERegionThreshold = TSERegionThreshold - 1;
             }
             if (pipeline.region1Avg() <= TSERegionThreshold) {
-                TSEPos = 3;
-                telemetry.addData("TSE", 2);
-            } else if (pipeline.region2Avg() <= TSERegionThreshold) {
-                TSEPos = 2;
-                telemetry.addData("TSE", 3);
-            } else {
                 TSEPos = 1;
                 telemetry.addData("TSE", 1);
+            } else if (pipeline.region2Avg() <= TSERegionThreshold) {
+                TSEPos = 2;
+                telemetry.addData("TSE", 2);
+            } else {
+                TSEPos = 3;
+                telemetry.addData("TSE", 3);
             }
             telemetry.addData("region2", pipeline.region1Avg());
             telemetry.addData("region3", pipeline.region2Avg());
