@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
-import android.app.admin.DeviceAdminService;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -17,7 +15,7 @@ import org.firstinspires.ftc.teamcode.TurretClasses.TurretCombined;
 @Config
 @TeleOp
 
-public class NewCarouselBlueTeleOp extends LinearOpMode{
+public class SOLOBlueTeleOp extends LinearOpMode{
 
 
 
@@ -28,6 +26,7 @@ public class NewCarouselBlueTeleOp extends LinearOpMode{
     double teleOpExtendSpeedSet = 30, teleOpRotateSpeedSet = 2000, teleOpVPivotSpeedSet = 18;
     double lastDS = 5, timeStart = 0, CarouselMotor = 0, carouselP = .00012, lastTime = 0, lastCarouselE = 0;
     boolean oneLoop = false;
+    double driveSlowMult = .4;
 
 
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
@@ -57,42 +56,33 @@ public class NewCarouselBlueTeleOp extends LinearOpMode{
             y = Smoothing.SmoothDriveY( -(Math.copySign(gamepad1.left_stick_y, gamepad1.left_stick_y * gamepad1.left_stick_y * gamepad1.left_stick_y)));
             z = Smoothing.SmoothDriveZ(  Math.copySign(gamepad1.right_stick_x, gamepad1.right_stick_x * gamepad1.right_stick_x * gamepad1.right_stick_x));
 
-
-
-
-            //setting the possiblity of a slow speed on the drivetrain
+            //slow Speed Drivetrain Toggle
             if(gamepad1.right_bumper){
-                robot.LF_M.setPower(.4*((y)-x+(z)));//LF
-                robot.LB_M.setPower(.4*((y)+x+(z)));//LB
-                robot.RF_M.setPower(.4*(-((y)+x-(z))));//RF
-                robot.RB_M.setPower(.4*(-((y)-x-(z))));//RB
-            }else{
-                robot.LF_M.setPower(((y)-x+(.65*z)));//LF
-                robot.LB_M.setPower(((y)+x+(.65*z)));//LB
-                robot.RF_M.setPower((-((y)+x-(.65*z))));//RF
-                robot.RB_M.setPower((-((y)-x-(.65*z))));//RB
+                driveSlowMult = .4;
+            }else {
+                driveSlowMult = 1;
             }
 
 
+            if(gamepad1.a || gamepad2.a){//intake
+                robot.RI_S.setPower(-.5);
+                robot.LI_S.setPower(.5);
+            }else if(gamepad1.b || gamepad2.b){//outtake
+                robot.RI_S.setPower(.3);
+                robot.LI_S.setPower(-.3);
+            }else{//servos off
+                robot.RI_S.setPower(0);
+                robot.LI_S.setPower(0);
+            }
 
-                if(gamepad1.a || gamepad2.a){//intake
-                    robot.RI_S.setPower(-.5);
-                    robot.LI_S.setPower(.5);
-                }else if(gamepad1.b || gamepad2.b){//outtake
-                    robot.RI_S.setPower(.3);
-                    robot.LI_S.setPower(-.3);
-                }else{//servos off
-                    robot.RI_S.setPower(0);
-                    robot.LI_S.setPower(0);
-                }
-
-                                //turret Presets
-                if(gamepad2.y || gamepad1.y){//Resetting our intake position in case of any encoder drift
+            if(gamepad1.left_trigger > 0.05 && gamepad1.right_trigger > 0.05){
+                if(gamepad1.y){
                     intakeVPivotSet = CombinedTurret.vPivotModifiedEncoder;
                     intakeExtendSet = CombinedTurret.extendModifiedEncoder;
                     intakeRotateSet = CombinedTurret.rotateModifiedEncoder;
-
-                }else if(gamepad2.dpad_right || gamepad1.dpad_right) {//Alliance hub dropping preset
+                }
+            }else{
+                if(gamepad1.left_bumper){
                     teleOpVPivotSet = 1600;
                     if (CombinedTurret.vPivotModifiedEncoder > 1000) {
                         teleOpRotateSet = intakeRotateSet + 1300;
@@ -100,7 +90,26 @@ public class NewCarouselBlueTeleOp extends LinearOpMode{
                             teleOpExtendSet = 1200;
                         }
                     }
-                }else if(gamepad2.dpad_down || gamepad1.dpad_down) {//Intake position
+                }
+            }
+
+
+
+                                //turret Presets
+                if(gamepad2.y){//Resetting our intake position in case of any encoder drift
+                    intakeVPivotSet = CombinedTurret.vPivotModifiedEncoder;
+                    intakeExtendSet = CombinedTurret.extendModifiedEncoder;
+                    intakeRotateSet = CombinedTurret.rotateModifiedEncoder;
+
+                }else if(gamepad2.dpad_right) {//Alliance hub dropping preset
+                    teleOpVPivotSet = 1600;
+                    if (CombinedTurret.vPivotModifiedEncoder > 1000) {
+                        teleOpRotateSet = intakeRotateSet + 1300;
+                        if(CombinedTurret.rotateModifiedEncoder > 700) {
+                            teleOpExtendSet = 1200;
+                        }
+                    }
+                }else if(gamepad2.dpad_down) {//Intake position
 
 
                     if (Math.abs(intakeRotateSet - CombinedTurret.rotateModifiedEncoder) < 150 && Math.abs(intakeExtendSet - CombinedTurret.extendModifiedEncoder) < 100) {
@@ -117,14 +126,14 @@ public class NewCarouselBlueTeleOp extends LinearOpMode{
                         }
                     }
 
-                }else if(gamepad2.dpad_left || gamepad1.dpad_left){//Shared shipping hub intake position
+                }else if(gamepad2.dpad_left){//Shared shipping hub intake position
                     teleOpVPivotSet = 800;
                     if (CombinedTurret.vPivotModifiedEncoder > 700) {
                         teleOpRotateSet = intakeRotateSet -1200;
                         teleOpExtendSet = 0;
                     }
 
-                }else if(gamepad2.dpad_up || gamepad1.dpad_up){//Mid alliance hub scoring position
+                }else if(gamepad2.dpad_up){//Mid alliance hub scoring position
                     teleOpVPivotSet = 1260;
                     if (CombinedTurret.vPivotModifiedEncoder > 1000) {
                         teleOpRotateSet = intakeRotateSet + 1300;
@@ -144,7 +153,7 @@ public class NewCarouselBlueTeleOp extends LinearOpMode{
                     teleOpVPivotSet = teleOpVPivotSet + (gamepad2.left_stick_y * -30);
 
                 }
-            if(gamepad2.right_bumper || gamepad2.left_bumper || gamepad1.left_bumper) {
+            if(gamepad2.right_bumper || gamepad2.left_bumper) {
                 teleOpVPivotSet = 2550;
                 if(CombinedTurret.vPivotModifiedEncoder > 800){
                     teleOpExtendSet = 0;
@@ -198,6 +207,10 @@ public class NewCarouselBlueTeleOp extends LinearOpMode{
             robot.TR_M.setPower(CombinedTurret.rotateFinalMotorPower);
             robot.TP_M.setPower(CombinedTurret.vPivotFinalMotorPower);
             robot.TC_M.setPower(CarouselMotor);
+                robot.LF_M.setPower(driveSlowMult * ((y)-x+(z)));//LF
+                robot.LB_M.setPower(driveSlowMult * ((y)+x+(z)));//LB
+                robot.RF_M.setPower(driveSlowMult * (-((y)+x-(z))));//RF
+                robot.RB_M.setPower(driveSlowMult * (-((y)-x-(z))));//RB
 
             Telemetry();
             lastDS = robot.I_DS.getDistance(DistanceUnit.INCH);

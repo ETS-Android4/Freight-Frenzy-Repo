@@ -1,5 +1,8 @@
-package org.firstinspires.ftc.teamcode.TestHub;
+package org.firstinspires.ftc.teamcode.GeneralRobotCode;
 
+import android.media.MediaMuxer;
+
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -14,7 +17,8 @@ import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
-//@TeleOp
+@TeleOp
+
 public class OpenCVTest extends LinearOpMode {
 
     //creates the pipline call and webcam call
@@ -64,6 +68,8 @@ public class OpenCVTest extends LinearOpMode {
             if ((pipeline.region3Avg() > pipeline.region1Avg()) && (pipeline.region3Avg() > pipeline.region2Avg())){
                 telemetry.addLine("Top");
             }
+            webcam.resumeViewport();
+
 
             telemetry.update();
         }
@@ -120,8 +126,8 @@ public class OpenCVTest extends LinearOpMode {
          */
         //actual image processing
         void inputToG(Mat input) {
-            Imgproc.cvtColor(input, GRAY, Imgproc.COLOR_RGB2GRAY);
-            Core.extractChannel(GRAY, GRAY, 0);
+            Imgproc.cvtColor(input, RGBA, Imgproc.COLOR_RGB2RGBA);
+            Core.extractChannel(RGBA, RGBA, 3);
 
         }
 
@@ -129,9 +135,9 @@ public class OpenCVTest extends LinearOpMode {
         public void init(Mat firstFrame) {
             inputToG(firstFrame);
             //sets region to look in for color
-            region1_G = GRAY.submat(new Rect(region1_pointA, region1_pointB));
-            region2_G = GRAY.submat(new Rect(region2_pointA, region2_pointB));
-            region3_G = GRAY.submat(new Rect(region3_pointA, region3_pointB));
+            region1_G = RGBA.submat(new Rect(region1_pointA, region1_pointB));
+            region2_G = RGBA.submat(new Rect(region2_pointA, region2_pointB));
+            region3_G = RGBA.submat(new Rect(region3_pointA, region3_pointB));
             //region4_G = L.submat(new Rect(region4_pointA, region4_pointB));
         }
 

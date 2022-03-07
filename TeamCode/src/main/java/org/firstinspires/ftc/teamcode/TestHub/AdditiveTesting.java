@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
-//@TeleOp
+@TeleOp
 public class AdditiveTesting extends LinearOpMode {
 
     TestHubHardware robot = new TestHubHardware();
@@ -34,20 +34,27 @@ public class AdditiveTesting extends LinearOpMode {
                 crservo1current = crservo1current - .005;
                 crservo2current = crservo2current - .005;
             }
-            if(gamepad1.a){
+            if(gamepad1.b){
                 motor1current = 0;
                 motor2current = 0;
                 motor3current = 0;
                 motor4current = 0;
                 crservo1current = 0;
                 crservo2current = 0;
-            }else if (gamepad1.b){
+            }else if (gamepad1.a){
                 motor1current = 1;
                 motor2current = 1;
                 motor3current = 1;
                 motor4current = 1;
-                crservo1current = 1;
-                crservo2current = 1;
+                crservo1current = .5;
+                crservo2current = .5;
+            }else if(gamepad1.x){
+                motor1current = -1;
+                motor2current = -1;
+                motor3current = -1;
+                motor4current = -1;
+                crservo1current = -.5;
+                crservo2current = -.5;
             }
             robot.Motor1.setPower(-motor1current);
             robot.Motor2.setPower(motor2current);

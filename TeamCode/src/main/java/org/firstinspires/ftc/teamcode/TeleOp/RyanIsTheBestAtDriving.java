@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
-import android.app.admin.DeviceAdminService;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -17,7 +15,7 @@ import org.firstinspires.ftc.teamcode.TurretClasses.TurretCombined;
 @Config
 @TeleOp
 
-public class NewCarouselBlueTeleOp extends LinearOpMode{
+public class RyanIsTheBestAtDriving extends LinearOpMode{
 
 
 
@@ -53,9 +51,9 @@ public class NewCarouselBlueTeleOp extends LinearOpMode{
 
 
 
-            x = Smoothing.SmoothDriveX(-Math.copySign(gamepad1.left_stick_x, gamepad1.left_stick_x * gamepad1.left_stick_x * gamepad1.left_stick_x));
-            y = Smoothing.SmoothDriveY( -(Math.copySign(gamepad1.left_stick_y, gamepad1.left_stick_y * gamepad1.left_stick_y * gamepad1.left_stick_y)));
-            z = Smoothing.SmoothDriveZ(  Math.copySign(gamepad1.right_stick_x, gamepad1.right_stick_x * gamepad1.right_stick_x * gamepad1.right_stick_x));
+            z = Smoothing.SmoothDriveX(Math.copySign(gamepad1.left_stick_x, gamepad1.left_stick_x * gamepad1.left_stick_x * gamepad1.left_stick_x));
+            y = Smoothing.SmoothDriveY(-(Math.copySign(gamepad1.left_stick_y, gamepad1.left_stick_y * gamepad1.left_stick_y * gamepad1.left_stick_y)));
+            x = Smoothing.SmoothDriveZ(  -Math.copySign(gamepad1.right_stick_x, gamepad1.right_stick_x * gamepad1.right_stick_x * gamepad1.right_stick_x));
 
 
 
@@ -87,12 +85,12 @@ public class NewCarouselBlueTeleOp extends LinearOpMode{
                 }
 
                                 //turret Presets
-                if(gamepad2.y || gamepad1.y){//Resetting our intake position in case of any encoder drift
+                if(gamepad2.y){//Resetting our intake position in case of any encoder drift
                     intakeVPivotSet = CombinedTurret.vPivotModifiedEncoder;
                     intakeExtendSet = CombinedTurret.extendModifiedEncoder;
                     intakeRotateSet = CombinedTurret.rotateModifiedEncoder;
 
-                }else if(gamepad2.dpad_right || gamepad1.dpad_right) {//Alliance hub dropping preset
+                }else if(gamepad2.dpad_right) {//Alliance hub dropping preset
                     teleOpVPivotSet = 1600;
                     if (CombinedTurret.vPivotModifiedEncoder > 1000) {
                         teleOpRotateSet = intakeRotateSet + 1300;
@@ -100,7 +98,7 @@ public class NewCarouselBlueTeleOp extends LinearOpMode{
                             teleOpExtendSet = 1200;
                         }
                     }
-                }else if(gamepad2.dpad_down || gamepad1.dpad_down) {//Intake position
+                }else if(gamepad2.dpad_down) {//Intake position
 
 
                     if (Math.abs(intakeRotateSet - CombinedTurret.rotateModifiedEncoder) < 150 && Math.abs(intakeExtendSet - CombinedTurret.extendModifiedEncoder) < 100) {
@@ -117,14 +115,14 @@ public class NewCarouselBlueTeleOp extends LinearOpMode{
                         }
                     }
 
-                }else if(gamepad2.dpad_left || gamepad1.dpad_left){//Shared shipping hub intake position
+                }else if(gamepad2.dpad_left){//Shared shipping hub intake position
                     teleOpVPivotSet = 800;
                     if (CombinedTurret.vPivotModifiedEncoder > 700) {
                         teleOpRotateSet = intakeRotateSet -1200;
                         teleOpExtendSet = 0;
                     }
 
-                }else if(gamepad2.dpad_up || gamepad1.dpad_up){//Mid alliance hub scoring position
+                }else if(gamepad2.dpad_up){//Mid alliance hub scoring position
                     teleOpVPivotSet = 1260;
                     if (CombinedTurret.vPivotModifiedEncoder > 1000) {
                         teleOpRotateSet = intakeRotateSet + 1300;
@@ -144,7 +142,7 @@ public class NewCarouselBlueTeleOp extends LinearOpMode{
                     teleOpVPivotSet = teleOpVPivotSet + (gamepad2.left_stick_y * -30);
 
                 }
-            if(gamepad2.right_bumper || gamepad2.left_bumper || gamepad1.left_bumper) {
+            if(gamepad2.right_bumper || gamepad2.left_bumper) {
                 teleOpVPivotSet = 2550;
                 if(CombinedTurret.vPivotModifiedEncoder > 800){
                     teleOpExtendSet = 0;

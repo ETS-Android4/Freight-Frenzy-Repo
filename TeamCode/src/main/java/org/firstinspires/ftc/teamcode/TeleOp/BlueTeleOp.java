@@ -26,7 +26,6 @@ public class BlueTeleOp extends LinearOpMode{
     double lastDS = 5, timeStart = 0, CarouselMotor = 0;
     boolean oneLoop = false;
 
-
     FreightFrenzyHardwareMap robot = new FreightFrenzyHardwareMap();
     TurretCombined CombinedTurret = new TurretCombined();
     Smoothing Smoothing = new Smoothing();
